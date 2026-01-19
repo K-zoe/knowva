@@ -1,0 +1,85 @@
+{%extends "base.html"%}
+
+{%block title%}
+ログイン - Knowva
+{%endblock%}
+
+{%block extra_css%}
+{%load static%}
+<link rel="stylesheet" href="{%static 'accounts/css/signup.css'%}">
+{%endblock%}
+
+{%block content%}
+
+<div class="signup-container">
+    <form method="post" class="signup-form">
+        {%csrf_token%}
+
+        {%if form.non_field_errors%}
+            <ul class="errorlist">
+                {%for error in form.non_field_errors%}
+                    {{error}}<br>
+                {%endfor%}
+            </ul>
+        {%endif%}
+        
+        <div class="user-name">
+            <label>ユーザー名</label>
+            {% if form.username.errors %}
+                <ul class="errorlist">
+                    {% for error in form.username.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {{form.username}}
+        </div>
+
+        <div class="email">
+            <label>メールアドレス</label>
+            {% if form.email.errors %}
+                <ul class="errorlist">
+                    {% for error in form.email.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {{form.email}}
+        </div>
+
+        <div class="password1">
+            <label>パスワード</label>
+            {% if form.password1.errors %}
+                <ul class="errorlist">
+                    {% for error in form.password.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {{form.password1}}
+        </div>
+
+        <div class="password2">
+            <label>再入力</label>
+            {% if form.password2.errors %}
+                <ul class="errorlist">
+                    {% for error in form.password2.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {{form.password2}}
+        </div>
+
+        <div>
+            <button type="submit" class="signup-btn">新規作成</button>
+        </div>
+
+    </form>
+</div>
+
+{%endblock%}

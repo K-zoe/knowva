@@ -1,0 +1,142 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {%block title%}{%endblock%}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-circle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Knowva</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="" class="nav-link">ホーム</a>
+                <a href="#" class="nav-link">ランキング</a>
+                    {%if user.is_authenticated%}
+                        <a href="" class="nav-link">マイページ</a>
+                        <div class="nav-links">
+                        <form method="post" action="">
+                            {%csrf_token%}
+                            <button type="submit" class="btn-login">ログアウト</button>
+                        </form>
+                    {%else%}
+                        <a href="{% url 'login' %}" class="btn-login">ログイン</a>
+                    {%endif%}
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+
+        <!-- モバイルメニュー -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="" class="mobile-nav-link">ホーム</a>
+            <a href="#" class="mobile-nav-link">ランキング</a>
+            {%if user.is_authenticated%}
+                <a href="#" class="mobile-nav-link">マイページ</a>
+                <form method="post" action="">
+                    {%csrf_token%}
+                    <button type="submit" class="btn-login mobile">ログアウト</button>
+                </form>
+            {%else%}
+                <a href="" class="btn-login mobile">ログイン</a>
+            {%endif%}
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <div class="logo-circle small">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <span>Knowva</span>
+                </div>
+                <p class="footer-description">輝くために、学び続ける</p>
+            </div>
+            
+            <div class="footer-section">
+                <a href="#">お知らせ</a>
+                <a href="#">使い方</a>
+                <a href="#">ガイドライン</a>
+            </div>
+            
+            <div class="footer-section">
+                <a href="#">利用規約</a>
+                <a herf="#">ご意見・ご要望</a>
+                <a href="#">お問い合わせ</a>
+            </div>
+            
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Knowva. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // モバイルメニュートグル
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+        });
+
+        // メニュー外クリックで閉じる
+        document.addEventListener('click', (e) => {
+            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenuBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+        });
+
+        // スムーススクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

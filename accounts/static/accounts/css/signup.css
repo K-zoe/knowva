@@ -1,0 +1,62 @@
+
+/* 全体の配置 */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* フォーム全体 */
+.signup-form {
+    background: #ffffff;
+    padding: 30px 20px;
+    border-radius: 16px;        /* 丸み */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* ふんわり影 */
+    width: 350px;               /* 固定幅 */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* username と password 共通 */
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 12px;         /* 丸み */
+    outline: none;
+    transition: 0.2s;
+}
+
+/* フォーカス時の強調 */
+.signup-form input[type="text"]:focus,
+.signup-fomr input[type="email"]:focus,
+.signup-form input[type="password"]:focus{
+    border-color: #00d084;
+    box-shadow: 0 0 4px #00d084;;
+}
+
+/* ログインボタン */
+.signup-btn {
+    width: 100%;
+    padding: 12px 14px;
+    background: #00d084;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+/* ホバー */
+.signup-btn:hover {
+    background: #31d297;
+}
+
+.errorlist{
+    color:red;
+}

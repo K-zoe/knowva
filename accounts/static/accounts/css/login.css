@@ -1,0 +1,69 @@
+
+/* 全体の配置 */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* フォーム全体 */
+.login-form {
+    background: #ffffff;
+    padding: 30px 20px;
+    border-radius: 16px;        /* 丸み */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* ふんわり影 */
+    width: 350px;               /* 固定幅 */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* username と password 共通 */
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 12px;         /* 丸み */
+    outline: none;
+    transition: 0.2s;
+}
+
+/* フォーカス時の強調 */
+.login-form input[type="email"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: #00d084;
+    box-shadow: 0 0 4px #00d084;;
+}
+
+/* ログインボタン */
+.login-btn {
+    width: 100%;
+    padding: 12px 14px;
+    background: #00d084;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+/* ホバー */
+.login-btn:hover {
+    background: #31d297;
+}
+
+.signup-url{
+    text-align: center;
+}
+
+.password-reset-url{
+    text-align:center;
+}
+
+.errorlist{
+    color:red;
+}
+

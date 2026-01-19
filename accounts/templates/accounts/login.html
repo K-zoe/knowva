@@ -1,0 +1,70 @@
+{%extends "base.html"%}
+
+{%block title%}
+ログイン - Knowva
+{%endblock%}
+
+{%block extra_css%}
+{%load static%}
+<link rel="stylesheet" href="{%static 'accounts/css/login.css'%}">
+{%endblock%}
+
+{%block content%}
+
+<div class="login-container">
+    <form method="post" class="login-form">
+        {%csrf_token%}
+        
+        {%if form.non_field_errors%}
+            <ul class="errorlist">
+                {%for error in form.non_field_errors%}
+                    <div>
+                        {{error|safe}}
+                    </div>
+                {%endfor%}
+            </ul>
+        {%endif%}
+
+
+        <div class="user-name">
+            <label>メールアドレス</label>
+            {% if form.username.errors %}
+                <ul class="errorlist">
+                    {% for error in form.username.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            {{form.username}}
+        </div>
+
+        <div class="password">
+            <label>パスワード</label>
+            {% if form.password.errors %}
+                <ul class="errorlist">
+                    {% for error in form.password.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {{form.password}}
+        </div>
+
+        <div>
+            <button type="submit" class="login-btn">ログイン</button>
+        </div>
+
+        <div class="password-reset-url">
+            <a href="#">パスワードを忘れた場合</a>
+        </div>
+        
+        <div class="signup-url">
+            <a href="{%url 'signup'%}">新規登録</a>
+        </dvi>
+
+    </form>
+</div>
+
+{%endblock%}
