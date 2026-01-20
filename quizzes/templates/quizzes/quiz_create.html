@@ -1,0 +1,26 @@
+{%extends "base.html"%}
+
+{%block title%}
+問題作成 - Knowva
+{%endblock%}
+
+{%block extra_css%}
+{%load static%}
+<link rel="stylesheet" href="">
+{%endblock%}
+
+{%block content%}
+
+<form method="post">
+    {%csrf_token%}
+    <div>
+        {{form.title}}
+        {{form.tag}}
+        {{form.discription}}
+        {{form.is_public}}
+    </div>
+
+    <button type="submit">作成</button>
+</form>
+
+{%endblock%}
