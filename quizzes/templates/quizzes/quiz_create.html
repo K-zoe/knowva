@@ -1,7 +1,7 @@
 {%extends "base.html"%}
 
 {%block title%}
-問題作成 - Knowva
+問題タイトル作成 - Knowva
 {%endblock%}
 
 {%block extra_css%}
@@ -10,6 +10,8 @@
 {%endblock%}
 
 {%block content%}
+
+<h1>問題タイトル作成</h1>
 
 <form method="post">
     {%csrf_token%}

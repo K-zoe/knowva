@@ -17,15 +17,13 @@ class Quiz(models.Model):
 
 
 class Question(models.Model):
-    quiz = models.ForeignKey('Quiz', on_delete = models.CASCADE, related_name = 'questions')
+    quiz = models.ForeignKey('Quiz', on_delete = models.CASCADE, related_name = 'question')
     title = models.CharField(max_length = 200)
     text = models.TextField()
     explanation = models.TextField(blank = True, null = True)
-    sort_order = models.IntegerField()
-
 
 class Choice(models.Model):
-    question = models.ForeignKey('Question', on_delete = models.CASCADE, related_name = 'choices')
+    question = models.ForeignKey('Question', on_delete = models.CASCADE, related_name = 'choice')
     text = models.TextField()
     explanation = models.TextField(blank=True, null = True)
     is_scorrect = models.BooleanField(default = False)

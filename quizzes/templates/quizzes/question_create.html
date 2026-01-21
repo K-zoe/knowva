@@ -1,7 +1,7 @@
 {%extends "base.html"%}
 
 {%block title%}
-コース作成 - Knowva
+問題作成 - Knowva
 {%endblock%}
 
 {%block extra_css%}
@@ -11,15 +11,14 @@
 
 {%block content%}
 
-<h1>コース作成</h1>
+<h1>問題作成</h1>
 
 <form method="post">
     {%csrf_token%}
     <div>
         {{form.title}}
-        {{form.tag}}
-        {{form.discription}}
-        {{form.is_public}}
+        {{form.text}}
+        {{form.explanation}}
     </div>
 
     <button type="submit">作成</button>
