@@ -1,28 +1,37 @@
-{%extends "base.html"%}
+{% extends "base.html" %}
 
-{%block title%}
+{% block title %}
 問題タイトル作成 - Knowva
-{%endblock%}
+{% endblock %}
 
-{%block extra_css%}
-{%load static%}
-<link rel="stylesheet" href="">
-{%endblock%}
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static '/quizzes/css/quiz_create.css' %}">
+{% endblock %}
 
-{%block content%}
+{% block content %}
+<div class="problem-create">
+    <h1 class="page-title">問題タイトル作成</h1>
 
-<h1>問題タイトル作成</h1>
+    <form method="post" class="problem-form">
+        {% csrf_token %}
 
-<form method="post">
-    {%csrf_token%}
-    <div>
-        {{form.title}}
-        {{form.tag}}
-        {{form.discription}}
-        {{form.is_public}}
-    </div>
+        <div class="form-group">
+            <label>タイトル</label>
+            {{ form.title }}
+        </div>
 
-    <button type="submit">作成</button>
-</form>
+        <div class="form-group">
+            <label>説明</label>
+            {{ form.discription }}
+        </div>
 
-{%endblock%}
+        <div class="form-group checkbox">
+            {{ form.is_public }}
+            <label>公開する</label>
+        </div>
+
+        <button type="submit" class="btn-submit">作成</button>
+    </form>
+</div>
+{% endblock %}

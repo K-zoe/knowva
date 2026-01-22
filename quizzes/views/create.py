@@ -1,8 +1,10 @@
 from django.views.generic import CreateView
-from quizzes.models import Course,Quiz,Question
+from ..models import Course,Quiz,Question,Choice
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy,reverse
 from django.shortcuts import get_object_or_404
+from ..forms import ChoiceForm
+from django.forms import inlineformset_factory
 
 class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
@@ -43,11 +45,19 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
             kwargs = {'quiz_id': self.object.pk}
         )
     
-#TODO: QuestionCreateViewの作成。問題と質問を同時に作成できるようにするかそれとも別々にするか悩むなー
 class QuestionCreateView(LoginRequiredMixin, CreateView):
+    #NOTE: QuestionとChoiceを同時に作成できるようにしている。
     model = Question
     fields = ['title', 'text', 'explanation']
     template_name = 'quizzes/question_create.html'
+    #NOTE: Choiceは複数作成できるようにinlineformsetを採用
+    choice_formset = inlineformset_factory(
+        Question,
+        Choice,
+        fields = ['text', 'explanation', 'is_correct'],
+        extra = 2,
+        can_delete = False
+    )
 
     def dispatch(self, request, *args, **kwargs):
         self.quiz = get_object_or_404(
@@ -57,6 +67,12 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
         )
         return super().dispatch(request, *args, **kwargs)
     
+    def get_context_data(self, **kwargs):
+        #TODO: POST時のformsetも対応させる。
+        context = super().get_context_data(**kwargs)
+        context['choice_formset'] = self.choice_formset()
+        return context
+
     def form_valid(self, form):
         form.instance.quiz = self.quiz
         return super().form_valid(form)

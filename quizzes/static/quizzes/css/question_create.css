@@ -1,0 +1,178 @@
+/* ========================================
+   問題作成ページ（完全版）
+======================================== */
+
+.problem-create {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ページタイトル */
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* フォーム全体 */
+.problem-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+/* セクション見出し */
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 1rem;
+}
+
+/* 問題カード */
+.problem-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-md);
+}
+
+/* 入力グループ */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.4rem;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+/* 入力共通 */
+.problem-form input[type="text"],
+.problem-form textarea {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--gray-300);
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.problem-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.problem-form input:focus,
+.problem-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 208, 132, 0.15);
+}
+
+/* =========================
+   選択肢
+========================= */
+
+.choices {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* 選択肢カード */
+.choice-card {
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 2rem;
+    transition: var(--transition);
+}
+
+/* ヘッダー */
+.choice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px dashed var(--gray-300);
+}
+
+/* 選択肢番号 */
+.choice-number {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary-dark);
+}
+
+/* 正解チェック */
+.correct-flag {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    cursor: pointer;
+}
+
+.correct-flag input {
+    accent-color: var(--primary);
+}
+
+/* ホバー */
+.choice-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(0, 208, 132, 0.12);
+}
+
+/* 正解が入っている選択肢 */
+.choice-card:has(input:checked) {
+    border-color: var(--primary);
+    background: linear-gradient(
+        135deg,
+        rgba(0, 208, 132, 0.06),
+        rgba(0, 255, 163, 0.06)
+    );
+}
+
+/* 送信ボタン */
+.btn-submit {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius-full);
+    border: none;
+    background: var(--gradient-main);
+    color: var(--white);
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .problem-card,
+    .choice-card {
+        padding: 1.8rem 1.4rem;
+    }
+}

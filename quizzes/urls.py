@@ -1,5 +1,5 @@
 from django.urls import path
-from quizzes.views.create import (
+from .views.create import (
     CourseCreateView,
     QuizCreateView,
     QuestionCreateView

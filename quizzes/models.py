@@ -26,5 +26,5 @@ class Choice(models.Model):
     question = models.ForeignKey('Question', on_delete = models.CASCADE, related_name = 'choice')
     text = models.TextField()
     explanation = models.TextField(blank=True, null = True)
-    is_scorrect = models.BooleanField(default = False)
+    is_correct = models.BooleanField(default = False)
     
