@@ -3,12 +3,17 @@ from ..models import Course,Quiz,Question,Choice
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy,reverse
 from django.shortcuts import get_object_or_404
-from ..forms import ChoiceForm
+from ..forms import (
+    CourseForm,
+    QuizForm,
+    QuestionForm,
+    ChoiceForm
+)
 from django.forms import inlineformset_factory
 
 class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
-    fields = ['title', 'tag', 'discription', 'is_public']
+    form_class = CourseForm
     template_name = 'quizzes/course_create.html'
 
     def form_valid(self, form):
@@ -23,7 +28,7 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
 
 class QuizCreateView(LoginRequiredMixin, CreateView):
     model = Quiz
-    fields = ['title', 'discription', 'is_public']
+    form_class = QuizForm
     template_name = 'quizzes/quiz_create.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -48,13 +53,13 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
 class QuestionCreateView(LoginRequiredMixin, CreateView):
     #NOTE: QuestionとChoiceを同時に作成できるようにしている。
     model = Question
-    fields = ['title', 'text', 'explanation']
+    form_class = QuestionForm
     template_name = 'quizzes/question_create.html'
     #NOTE: Choiceは複数作成できるようにinlineformsetを採用
     choice_formset = inlineformset_factory(
         Question,
         Choice,
-        fields = ['text', 'explanation', 'is_correct'],
+        form = ChoiceForm,
         extra = 2,
         can_delete = False
     )
