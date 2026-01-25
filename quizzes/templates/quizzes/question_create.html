@@ -39,6 +39,7 @@
         <!-- 選択肢 -->
         <div class="choices">
             <h2 class="section-title">選択肢</h2>
+            {{ choice_formset.management_form }}
 
             {% for form in choice_formset %}
             <div class="choice-card">

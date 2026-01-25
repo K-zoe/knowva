@@ -75,9 +75,13 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         #TODO: POST時のformsetも対応させる。
         context = super().get_context_data(**kwargs)
-        context['choice_formset'] = self.choice_formset()
+        if self.request.POST:
+            context['choice_formset'] = self.choice_formset(self.request.POST)
+        else:
+            context['choice_formset'] = self.choice_formset()
         return context
 
     def form_valid(self, form):
+        #TODO: formsetのバリデーションと、quizの保存処理を追加する。
         form.instance.quiz = self.quiz
         return super().form_valid(form)
