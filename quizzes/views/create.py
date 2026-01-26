@@ -9,6 +9,7 @@ from ..forms import (
     QuestionForm,
     ChoiceForm
 )
+from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
 
 class CourseCreateView(LoginRequiredMixin, CreateView):
@@ -84,4 +85,14 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         #TODO: formsetのバリデーションと、quizの保存処理を追加する。
         form.instance.quiz = self.quiz
-        return super().form_valid(form)
+        question = form.save(commit=False)
+        formset = self.choice_formset(self.request.POST, instance = question)
+        
+        #TODO: ここはトランザクション処理にしたほうがいいかも。
+        if formset.is_valid():
+            question.save()
+            formset.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+
+        return self.form_invalid(form)
