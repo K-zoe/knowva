@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="problem-create">
     <h1 class="page-title">問題作成</h1>
 
@@ -22,16 +23,19 @@
 
             <div class="form-group">
                 <label>タイトル</label>
+                {{ form.title.errors}}
                 {{ form.title }}
             </div>
 
             <div class="form-group">
                 <label>問題文</label>
+                {{ form.text.errors }}
                 {{ form.text }}
             </div>
 
             <div class="form-group">
                 <label>解説</label>
+                {{ form.explanation.errors }}
                 {{ form.explanation }}
             </div>
         </div>
@@ -41,7 +45,7 @@
             <h2 class="section-title">選択肢</h2>
             {{ choice_formset.management_form }}
 
-            {% for form in choice_formset %}
+            {% for formset in choice_formset %}
             <div class="choice-card">
                 <div class="choice-header">
                     <span class="choice-number">
@@ -49,25 +53,29 @@
                     </span>
 
                     <label class="correct-flag">
-                        {{ form.is_correct }}
+                        {{ formset.is_correct.errors }}
+                        {{ formset.is_correct }}
                         <span>正解</span>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label>選択肢文</label>
-                    {{ form.text }}
+                    {{ formset.text.errors }}
+                    {{ formset.text }}
                 </div>
 
                 <div class="form-group">
                     <label>解説</label>
-                    {{ form.explanation }}
+                    {{ formset.explanation.errors }}
+                    {{ formset.explanation }}
                 </div>
             </div>
             {% endfor %}
         </div>
 
-        <button type="submit" class="btn-submit">作成</button>
+        <button type="submit" name="action" value="next" class="btn-submit">保存して、次の問題</button>
+        <button type="submit" name="action" value="finish" class="btn-submit">保存して、終了</button>
     </form>
 </div>
 {% endblock %}

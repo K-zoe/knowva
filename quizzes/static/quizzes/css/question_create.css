@@ -78,6 +78,15 @@
     box-shadow: 0 0 0 3px rgba(0, 208, 132, 0.15);
 }
 
+.errorlist {
+    list-style: none;        /* ・を消す */
+    padding: 0;
+    margin: 0;
+    color: red;              /* 赤 */
+    font-weight: bold;       /* 太字 */
+    text-align: center;      /* 中央寄せ */
+}
+
 /* =========================
    選択肢
 ========================= */

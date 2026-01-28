@@ -11,6 +11,7 @@ from ..forms import (
 )
 from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
+from django.db import transaction
 
 class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
@@ -50,7 +51,7 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
             'question_create',
             kwargs = {'quiz_id': self.object.pk}
         )
-    
+
 class QuestionCreateView(LoginRequiredMixin, CreateView):
     #NOTE: QuestionとChoiceを同時に作成できるようにしている。
     model = Question
@@ -76,23 +77,43 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         #TODO: POST時のformsetも対応させる。
         context = super().get_context_data(**kwargs)
-        if self.request.POST:
+        if self.request.method == 'POST':
             context['choice_formset'] = self.choice_formset(self.request.POST)
         else:
             context['choice_formset'] = self.choice_formset()
         return context
+    
+    def get_success_url(self):
+        return reverse(
+            'question_create',
+            kwargs = {'quiz_id': self.quiz.pk}
+        )
 
     def form_valid(self, form):
         #TODO: formsetのバリデーションと、quizの保存処理を追加する。
+        print(form.errors)
         form.instance.quiz = self.quiz
         question = form.save(commit=False)
         formset = self.choice_formset(self.request.POST, instance = question)
+
+        if not formset.is_valid():
+            return self.formset_invalid(formset)
+
+        else:
+            #NOTE: トランザクション処理
+            with transaction.atomic():
+                question.save()
+                formset.save()
+        #NOTE: ボタンによって画面遷移先を変更する。
+        action = self.request.POST.get("action")
         
-        #TODO: ここはトランザクション処理にしたほうがいいかも。
-        if formset.is_valid():
-            question.save()
-            formset.save()
-
+        if action == "next":
             return HttpResponseRedirect(self.get_success_url())
-
-        return self.form_invalid(form)
+        
+        else:
+            #TODO: リダイレクト先の画面を作成した後に実装する。
+            return 
+        
+    def formset_invalid(self, form):
+        context = self.get_context_data(form = form)
+        return self.render_to_response(context)
