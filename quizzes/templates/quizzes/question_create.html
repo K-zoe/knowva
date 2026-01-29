@@ -1,11 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 問題作成 - Knowva
 {% endblock %}
 
 {% block extra_css %}
-{% load static %}
 <link rel="stylesheet" href="{% static 'quizzes/css/question_create.css' %}">
 {% endblock %}
 
@@ -23,7 +23,7 @@
 
             <div class="form-group">
                 <label>タイトル</label>
-                {{ form.title.errors}}
+                {{ form.title.errors }}
                 {{ form.title }}
             </div>
 
@@ -41,22 +41,31 @@
         </div>
 
         <!-- 選択肢 -->
-        <div class="choices">
+        <div class="choices"
+             id="choice-formset"
+             data-prefix="{{ choice_formset.prefix }}">
+
             <h2 class="section-title">選択肢</h2>
+
             {{ choice_formset.management_form }}
 
             {% for formset in choice_formset %}
-            <div class="choice-card">
+            <div class="choice-card choice-form">
                 <div class="choice-header">
                     <span class="choice-number">
                         選択肢 {{ forloop.counter }}
                     </span>
 
-                    <label class="correct-flag">
-                        {{ formset.is_correct.errors }}
-                        {{ formset.is_correct }}
-                        <span>正解</span>
-                    </label>
+                    <div class="choice-controls">
+                        <label class="correct-flag">
+                            {{ formset.is_correct }}
+                            <span>正解</span>
+                        </label>
+
+                        <button type="button" class="btn-delete-choice">
+                            削除
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -74,8 +83,21 @@
             {% endfor %}
         </div>
 
-        <button type="submit" name="action" value="next" class="btn-submit">保存して、次の問題</button>
-        <button type="submit" name="action" value="finish" class="btn-submit">保存して、終了</button>
+        <!-- 操作ボタン -->
+        <div class="choice-actions">
+            <button type="button" id="add-choice" class="btn-add">
+                ＋ 選択肢を追加
+            </button>
+        </div>
+        <button type="submit" name="action" value="next" class="btn-next">
+            保存して、次の問題
+        </button>
+        <button type="submit" name="action" value="finish" class="btn-complete">
+            保存して、終了
+        </button>
     </form>
 </div>
+
+<script src="{% static 'quizzes/js/choice_formset.js' %}"></script>
+
 {% endblock %}

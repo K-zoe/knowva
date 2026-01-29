@@ -63,7 +63,7 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
         Choice,
         form = ChoiceForm,
         extra = 2,
-        can_delete = False
+        can_delete = True
     )
 
     def dispatch(self, request, *args, **kwargs):
@@ -98,7 +98,6 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
 
         if not formset.is_valid():
             return self.formset_invalid(formset)
-
         else:
             #NOTE: トランザクション処理
             with transaction.atomic():
@@ -109,10 +108,9 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
         
         if action == "next":
             return HttpResponseRedirect(self.get_success_url())
-        
         else:
             #TODO: リダイレクト先の画面を作成した後に実装する。
-            return 
+            return HttpResponseRedirect()
         
     def formset_invalid(self, form):
         context = self.get_context_data(form = form)
