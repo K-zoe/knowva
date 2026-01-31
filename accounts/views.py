@@ -17,7 +17,7 @@ class SignupPageView(CreateView):
         if user is not None:
             login(self.request, user)
         
-        return redirect(self.success_url)
+        return super().form_valid(form)
 
 class LoginPageView(LoginView):
     template_name = 'accounts/login.html'

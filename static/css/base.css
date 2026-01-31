@@ -14,6 +14,13 @@
     --primary-light: #4dffb8;
     --secondary: #00ffa3;
     --accent: #7c3aed;
+
+    /* レッド系カラーパレット */
+    --danger: #e53935;
+    --danger-dark: #c62828;
+    --danger-light: #ff867c;
+    --danger-secondary: #ff5252;
+    --danger-accent: #b91c1c;
     
     /* グラデーション */
     --gradient-main: linear-gradient(135deg, #00d084 0%, #00ffa3 100%);
@@ -158,9 +165,34 @@ body.menu-open {
     width: 100%;
 }
 
+/*ログアウトボタン*/
+.btn-logout {
+    padding: 0.75rem 2rem;
+    background: var(--danger);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    text-decoration: none; /* <a> タグに対応 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--danger-light);
+}
 
+.btn-logout:active {
+    transform: translateY(0);
+}
 
+/*ログインボタン*/
 .btn-login {
     padding: 0.75rem 2rem;
     background: var(--gradient-main);
@@ -264,7 +296,7 @@ body.menu-open {
 .main-content {
     min-height: calc(100vh - 400px);
     padding: 3rem 0;
-    padding-top:40px;
+    padding-top: 30px;
 }
 
 /* ========================================

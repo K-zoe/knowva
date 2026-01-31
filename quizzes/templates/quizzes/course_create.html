@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+コース作成 - Knowva
+{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static '/quizzes/css/course_create.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="course-create">
+    <h1 class="page-title">コース作成</h1>
+
+    <form method="post" class="course-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>コース名</label>
+            {{ form.title }}
+        </div>
+
+        <div class="form-group">
+            <label>タグ</label>
+            {{ form.tag }}
+        </div>
+
+        <div class="form-group">
+            <label>説明</label>
+            {{ form.description }}
+        </div>
+
+        <div class="form-group checkbox">
+            {{ form.is_public }}
+            <label>公開する</label>
+        </div>
+
+        <button type="submit" class="btn-submit">作成</button>
+    </form>
+</div>
+{% endblock %}

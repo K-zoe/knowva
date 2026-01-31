@@ -34,7 +34,7 @@
                         <div class="nav-links">
                         <form method="post" action="">
                             {%csrf_token%}
-                            <button type="submit" class="btn-login">ログアウト</button>
+                            <button type="submit" class="btn-logout">ログアウト</button>
                         </form>
                     {%else%}
                         <a href="{% url 'login' %}" class="btn-login">ログイン</a>
@@ -57,7 +57,7 @@
                 <a href="#" class="mobile-nav-link">マイページ</a>
                 <form method="post" action="">
                     {%csrf_token%}
-                    <button type="submit" class="btn-login mobile">ログアウト</button>
+                    <button type="submit" class="btn-logout mobile">ログアウト</button>
                 </form>
             {%else%}
                 <a href="" class="btn-login mobile">ログイン</a>
