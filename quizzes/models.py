@@ -13,7 +13,7 @@ class Quiz(models.Model):
     description = models.TextField(blank = True, null = True)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
-    is_public = models.BooleanField(default = True)
+    is_public = models.BooleanField(default = False)
 
 
 class Question(models.Model):

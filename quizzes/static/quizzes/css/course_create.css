@@ -64,9 +64,14 @@
 
 /* チェックボックス */
 .form-group.checkbox {
+    margin-left: 10px;
     flex-direction: row;
     align-items: center;
     gap: 0.75rem;
+}
+
+.course-form input[type="checkbox"]{
+    transform: scale(1.5); /* 1.0 が標準 */
 }
 
 .form-group.checkbox label {

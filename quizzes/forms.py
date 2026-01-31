@@ -25,7 +25,7 @@ class CourseForm(forms.ModelForm):
 class QuizForm(forms.ModelForm):
     class Meta:
         model = Quiz
-        fields = ['title', 'description', 'is_public']
+        fields = ['title', 'description']
         widgets = {
             'title':forms.TextInput(
                 attrs = {'placeholder':'例：午後問題'}
