@@ -1,0 +1,54 @@
+{%extends "base.html"%}
+
+{%block title%}
+マイページ - Knowva
+{%endblock %}
+
+{%block extra_css%}
+{%load static%}
+
+<link rel="stylesheet" href="{% static 'accounts/css/mypage.css' %}">
+{%endblock%}
+
+{%block content%}
+
+<div class="mypage-container">
+    <h1 class="mypage-title">マイページ</h1>
+
+<!--とりあえず試作品-->
+<section class="mypage-section">
+    <h2 class="section-title">ユーザー情報</h2>
+    <div class="user-card">
+        <p><strong>ユーザー名：</strong>{{ user.username }}</p>
+        <p><strong>メールアドレス：</strong>{{ user.email }}</p>
+        <p><strong>紹介文：</strong>{{ user.profile.biography }}</p>
+    </div>
+</section>
+
+<section class="mypage-section">
+    <h2 class="section-title">回答したコース</h2>
+
+    {% if courses %}
+        <div class="course-list">
+            {% for course in courses %}
+            <div class="course-card">
+                <h3 class="course-title">{{ course.title }}</h3>
+                <p class="course-description">{{ course.description|default:"説明はありません" }}</p>
+                <div class="course-actions">
+                    <a href="{% url 'course_detail' course.id %}" class="btn btn-view">詳細</a>
+                    <a href="{% url 'course_edit' course.id %}" class="btn btn-edit">編集</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-text">まだコースを作成していません。</p>
+    {% endif %}
+</section>
+
+<section class="mypage-section actions">
+    <a href="{% url 'course_create' %}" class="btn btn-primary">新しいコースを作成</a>
+</section>
+
+</div>
+{%endblock%}

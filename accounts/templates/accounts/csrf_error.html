@@ -1,0 +1,22 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>セッションエラー</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/csrf_error.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="error-container">
+        <h1>セッションが切れました</h1>
+        <p>
+            ログアウト、または長時間操作がなかったため、
+            セキュリティ上の理由で処理を中断しました。
+        </p>
+
+        <a href="{% url 'login' %}">ログイン画面へ</a>
+    </div>
+</body>
+
+</html>

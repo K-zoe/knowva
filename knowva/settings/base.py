@@ -105,3 +105,5 @@ STATICFILES_DIRS = [ BASE_DIR / 'static', ]
 AUTH_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = ['accounts.backends.CustomModelBackend']
+
+CSRF_FAILURE_VIEW = 'accounts.views.csrf_failure'
