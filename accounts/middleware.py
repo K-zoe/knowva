@@ -8,7 +8,7 @@ class BanCheckMiddleware:
     def __call__(self, request):
         user = request.user
 
-        if user.is_authenticated and getattr(user, 'is_banned', False):
+        if user.is_authenticated and (getattr(user, 'is_banned', False) or not user.is_active):
             logout(request)
             return redirect('login')
         
