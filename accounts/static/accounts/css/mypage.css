@@ -1,154 +1,442 @@
-/* =========================
-   マイページ全体
-========================= */
+/* ========================================
+   マイページ
+======================================== */
+
 .mypage-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 32px 20px;
+    padding: 2rem;
 }
 
-/* タイトル */
-.mypage-title {
+.page-title {
+    text-align: center;
     font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 32px;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ========================================
+   レイアウト
+======================================== */
+
+.mypage-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+}
+
+/* ========================================
+   サイドバー
+======================================== */
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* プロフィールカード */
+.profile-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
     text-align: center;
 }
 
-/* =========================
-   セクション共通
-========================= */
-.mypage-section {
-    margin-bottom: 40px;
+.avatar {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem;
+    background: var(--gradient-main);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
 }
 
-/* セクション見出し */
-.section-title {
-    font-size: 1.4rem;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #e5e7eb;
+.avatar-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
 }
 
-/* =========================
-   ユーザー情報
-========================= */
-.user-card {
-    background-color: #f9fafb;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
+.username {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 0.25rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-.user-card p {
-    margin: 8px 0;
-    font-size: 1rem;
+.user-email {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-/* =========================
-   コース一覧
-========================= */
-.course-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
+/* メニュー */
+.menu {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
 }
 
-/* コースカード */
-.course-card {
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 20px;
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--gray-100);
+    transition: var(--transition);
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item:hover {
+    background: var(--gray-50);
+    color: var(--primary);
+}
+
+.menu-item.active {
+    background: linear-gradient(135deg, rgba(0, 208, 132, 0.1) 0%, rgba(0, 148, 255, 0.1) 100%);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.menu-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.menu-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ========================================
+   メインコンテンツ
+======================================== */
+
+.main-content {
     display: flex;
     flex-direction: column;
+    gap: 2rem;
+}
+
+.content-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    display: flex;
     justify-content: space-between;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--gray-100);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.card-title,
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-800);
+}
+
+.btn-edit,
+.btn-view-all {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    background: var(--gradient-main);
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.btn-edit:hover,
+.btn-view-all:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ========================================
+   プロフィール情報
+======================================== */
+
+.profile-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info-item.full {
+    grid-column: 1 / -1;
+}
+
+.info-item label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-600);
+}
+
+.info-item p,
+.info-item .bio-text {
+    font-size: 1rem;
+    color: var(--gray-800);
+    padding: 0.75rem;
+    background: var(--gray-50);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--gray-200);
+}
+
+.info-item .bio-text {
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ========================================
+   コースグリッド
+======================================== */
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.course-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: var(--shadow-md);
 }
 
 .course-card:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
 }
 
-/* コースタイトル */
-.course-title {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-}
-
-/* コース説明 */
-.course-description {
-    font-size: 0.95rem;
-    color: #555;
-    margin-bottom: 16px;
-    line-height: 1.5;
-}
-
-/* =========================
-   ボタン
-========================= */
-.course-actions {
+.course-header {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.course-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    line-height: 1.4;
+    flex: 1;
+}
+
+.course-badge {
+    padding: 0.25rem 0.75rem;
+    background: linear-gradient(135deg, rgba(0, 208, 132, 0.15) 0%, rgba(0, 148, 255, 0.15) 100%);
+    color: var(--primary);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.course-description {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    line-height: 1.6;
+    flex: 1;
+}
+
+/* プログレスバー */
+.course-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.progress-bar {
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-main);
+    border-radius: var(--radius-full);
+    transition: width 0.6s ease;
+}
+
+.progress-text {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    font-weight: 500;
+}
+
+.btn-continue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--gradient-main);
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: var(--radius-full);
+    transition: var(--transition);
+    box-shadow: var(--shadow);
     margin-top: auto;
 }
 
-.btn {
-    display: inline-block;
-    padding: 8px 14px;
-    font-size: 0.9rem;
-    border-radius: 6px;
-    text-decoration: none;
+.btn-continue svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-continue:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ========================================
+   空の状態
+======================================== */
+
+.empty-state {
     text-align: center;
-    transition: background-color 0.2s ease, opacity 0.2s ease;
+    padding: 3rem 2rem;
 }
 
-/* 詳細ボタン */
-.btn-view {
-    background-color: #3b82f6;
-    color: #ffffff;
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 208, 132, 0.1) 0%, rgba(0, 148, 255, 0.1) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
 }
 
-.btn-view:hover {
-    background-color: #2563eb;
+.empty-icon svg {
+    width: 40px;
+    height: 40px;
 }
 
-/* 編集ボタン */
-.btn-edit {
-    background-color: #10b981;
-    color: #ffffff;
+.empty-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 0.5rem;
 }
 
-.btn-edit:hover {
-    background-color: #059669;
-}
-
-/* メインアクション */
-.btn-primary {
-    background-color: #6366f1;
-    color: #ffffff;
-    padding: 12px 24px;
-    font-size: 1rem;
-    border-radius: 8px;
-}
-
-.btn-primary:hover {
-    background-color: #4f46e5;
-}
-
-/* =========================
-   空状態
-========================= */
 .empty-text {
-    color: #6b7280;
-    font-size: 1rem;
-    margin-top: 16px;
+    font-size: 0.95rem;
+    color: var(--gray-600);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
 }
 
-/* =========================
-   アクションセクション
-========================= */
-.mypage-section.actions {
-    text-align: center;
+.btn-explore {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    background: var(--gradient-main);
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.btn-explore:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ========================================
+   レスポンシブ
+======================================== */
+
+@media (max-width: 968px) {
+    .mypage-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .mypage-container {
+        padding: 1.5rem 1rem;
+    }
+    
+    .content-card {
+        padding: 1.5rem;
+    }
+    
+    .profile-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
 }

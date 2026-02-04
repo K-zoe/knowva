@@ -1,54 +1,146 @@
-{%extends "base.html"%}
+{% extends "base.html" %}
 
-{%block title%}
+{% block title %}
 マイページ - Knowva
-{%endblock %}
+{% endblock %}
 
-{%block extra_css%}
-{%load static%}
-
+{% block extra_css %}
+{% load static %}
 <link rel="stylesheet" href="{% static 'accounts/css/mypage.css' %}">
-{%endblock%}
+{% endblock %}
 
-{%block content%}
+{% block content %}
 
 <div class="mypage-container">
-    <h1 class="mypage-title">マイページ</h1>
+    <h1 class="page-title">マイページ</h1>
 
-<!--とりあえず試作品-->
-<section class="mypage-section">
-    <h2 class="section-title">ユーザー情報</h2>
-    <div class="user-card">
-        <p><strong>ユーザー名：</strong>{{ user.username }}</p>
-        <p><strong>メールアドレス：</strong>{{ user.email }}</p>
-        <p><strong>紹介文：</strong>{{ user.profile.biography }}</p>
-    </div>
-</section>
-
-<section class="mypage-section">
-    <h2 class="section-title">回答したコース</h2>
-
-    {% if courses %}
-        <div class="course-list">
-            {% for course in courses %}
-            <div class="course-card">
-                <h3 class="course-title">{{ course.title }}</h3>
-                <p class="course-description">{{ course.description|default:"説明はありません" }}</p>
-                <div class="course-actions">
-                    <a href="{% url 'course_detail' course.id %}" class="btn btn-view">詳細</a>
-                    <a href="{% url 'course_edit' course.id %}" class="btn btn-edit">編集</a>
+    <div class="mypage-layout">
+        <!-- サイドバー -->
+        <aside class="sidebar">
+            <div class="profile-card">
+                <div class="avatar">
+                    <span class="avatar-text">{{ user.username|slice:":1"|upper }}</span>
                 </div>
+                <h3 class="username">{{ user.username }}</h3>
+                <p class="user-email">{{ user.email }}</p>
             </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p class="empty-text">まだコースを作成していません。</p>
-    {% endif %}
-</section>
 
-<section class="mypage-section actions">
-    <a href="{% url 'course_create' %}" class="btn btn-primary">新しいコースを作成</a>
-</section>
+            <nav class="menu">
+                <a href="" class="menu-item active">
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    <span>ダッシュボード</span>
+                </a>
+                <a href="{% url 'course_create' %}" class="menu-item">
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    <span>問題作成</span>
+                </a>
+                <a href="" class="menu-item">
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <span>プロフィール編集</span>
+                </a>
+                <a href="" class="menu-item">
+                    <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <span>パスワード変更</span>
+                </a>
+            </nav>
+        </aside>
 
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <!-- プロフィールセクション -->
+            <section class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">プロフィール</h2>
+                    <a href="" class="btn-edit">編集</a>
+                </div>
+                
+                <div class="profile-info">
+                    <div class="info-item">
+                        <label>ユーザー名</label>
+                        <p>{{ user.username }}</p>
+                    </div>
+                    <div class="info-item">
+                        <label>メールアドレス</label>
+                        <p>{{ user.email }}</p>
+                    </div>
+                    <div class="info-item full">
+                        <label>自己紹介</label>
+                        <p class="bio-text">{{ user.profile.biography|default:"まだ自己紹介が設定されていません。" }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- コースセクション -->
+            <section>
+                <div class="section-header">
+                    <h2 class="section-title">学習中のコース</h2>
+                    {% if courses %}
+                    <a href="" class="btn-view-all">すべて見る</a>
+                    {% endif %}
+                </div>
+
+                {% if courses %}
+                <div class="course-grid">
+                    {% for course in courses %}
+                    <article class="course-card">
+                        <div class="course-header">
+                            <h3 class="course-title">{{ course.title }}</h3>
+                            <span class="course-badge">進行中</span>
+                        </div>
+                        
+                        <p class="course-description">
+                            {{ course.description|default:"このコースで新しい知識を習得しましょう。" }}
+                        </p>
+                        
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: {{ course.progress|default:35 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ course.progress|default:35 }}% 完了</span>
+                        </div>
+                        
+                        <a href="" class="btn-continue">
+                            続きを学習
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </a>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="empty-title">まだコースがありません</h3>
+                    <p class="empty-text">新しいコースを始めて、学習をスタートしましょう。</p>
+                    <a href="" class="btn-explore">コースを探す</a>
+                </div>
+                {% endif %}
+            </section>
+        </main>
+    </div>
 </div>
-{%endblock%}
+
+{% endblock %}
