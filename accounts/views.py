@@ -1,12 +1,12 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView,ListView
+from django.views.generic import CreateView,ListView,View
 from django.contrib.auth.views import LoginView,LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import SignUpForm,LoginForm
+from .forms import SignUpForm,LoginForm,UserForm,ProfileForm
 from django.contrib.auth import login,authenticate
-from .models import Profile
+from .models import Profile,User
 from django.db import transaction
 from django.views.csrf import csrf_failure
 
@@ -51,3 +51,27 @@ class MyPageView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         #TODO: 解いている問題のリスト作成が完了したら、修正する。
         return None#super().get_queryset()
+    
+class ProfileEditView(LoginRequiredMixin, View):
+    template_name = 'accounts/profile_edit.html'
+
+    def get(self, request):
+        user_form = UserForm(instance = request.user)
+        profile_form = ProfileForm(instance = request.user.profile)
+
+        context = {'user_form':user_form, 'profile_form':profile_form}
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        user_form = UserForm(request.POST, instance = request.user)
+        profile_form = ProfileForm(request.POST, instance = request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            with transaction.atomic():
+                user_form.save()
+                profile_form.save()
+
+                return redirect('mypage')
+        else:
+            context = {'user_form':user_form, 'profile_form':profile_form}
+            return render(request, self.template_name, context)

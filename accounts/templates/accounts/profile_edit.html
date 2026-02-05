@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}プロフィール編集{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile_edit.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-edit-container">
+    <h1 class="page-title">プロフィール編集</h1>
+
+    <form method="post" enctype="multipart/form-data" class="profile-form">
+        {% csrf_token %}
+
+        <section class="form-section">
+            <h2 class="section-title">ユーザー情報</h2>
+            {{ user_form.username.errors }}
+            {{ user_form.username }}
+        </section>
+        
+        <section class="form-section">
+            <h2 class="section-title">メールアドレス</h2>
+            {{ user_form.email.errors }}
+            {{ user_form.email }}
+        </section>
+
+        <section class="form-section">
+            <h2 class="section-title">プロフィール</h2>
+            {{ profile_form.biography }}
+        </section>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">保存する</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

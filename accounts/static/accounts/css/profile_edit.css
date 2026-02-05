@@ -1,0 +1,145 @@
+/* ===============================
+   レイアウト
+================================ */
+.profile-edit-container {
+    padding: 1rem 1rem;
+}
+
+/* フォーム全体 */
+.profile-form {
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2.5rem 2.75rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    box-sizing: border-box;
+}
+
+/* ===============================
+   タイトル
+================================ */
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===============================
+   セクション
+================================ */
+.form-section {
+    margin-bottom: 2.2rem;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--gray-100);
+}
+
+/* ===============================
+   Django form.as_p
+================================ */
+.profile-form p {
+    margin-bottom: 1.4rem;
+}
+
+.profile-form label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    color: var(--gray-700);
+}
+
+/* ===============================
+   入力欄
+================================ */
+.profile-form input,
+.profile-form textarea,
+.profile-form select {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.95rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--gray-300);
+    background: var(--white);
+    box-sizing: border-box;
+}
+
+.profile-form textarea {
+    resize: vertical;
+    min-height: 5.5rem;
+}
+
+/* フォーカス */
+.profile-form input:focus,
+.profile-form textarea:focus,
+.profile-form select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.errorlist {
+    margin: 0.4rem 0 0;
+    padding: 0;
+    list-style: none;      /* ・を消す */
+    color: #dc2626;        /* 赤文字 */
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.errorlist li {
+    margin: 0.2rem 0;
+}
+
+/* ===============================
+   ボタン
+================================ */
+.form-actions {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 2.6rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-full);
+    background: var(--gradient-main);
+    color: var(--white);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ===============================
+   スマホ
+================================ */
+@media (max-width: 480px) {
+    .profile-form {
+        padding: 1.6rem 1.4rem;
+    }
+
+    .page-title {
+        font-size: 1.6rem;
+    }
+}
