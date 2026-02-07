@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+マイページ - Knowva
+{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'accounts/css/mypage.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="mypage-container">
+    <h1 class="page-title">マイページ</h1>
+
+    <!-- 上部：メニュー＋プロフィール -->
+    <div class="top-area">
+        <!-- 左：メニュー -->
+        <nav class="menu">
+            <span class="menu-item active">ダッシュボード</span>
+            <a href="{% url 'course_create' %}" class="menu-item">コース作成</a>
+            <a href="{% url 'my_created_courses' %}" class="menu-item">作成したコース</a>
+            <a href="{% url 'mypage_current_courses' %}" class="menu-item">学習中のコース</a>
+            <a href="{% url 'profile_edit' %}" class="menu-item">プロフィール編集</a>
+            <a href="" class="menu-item">パスワード変更</a>
+        </nav>
+
+        <!-- 右：プロフィール -->
+        <section class="profile-panel">
+            <div class="avatar">
+                <span class="avatar-text">{{ user.username|slice:":1"|upper }}</span>
+            </div>
+
+            <div class="profile-main">
+                <h2 class="username">{{ user.username }}</h2>
+                <p class="user-email">{{ user.email }}</p>
+
+                <p class="profile-bio">
+                    {{ user.profile.biography}}
+                </p>
+            </div>
+        </section>
+    </div>
+
+    {% block mypage_content %}
+    {% endblock %}
+
+{% endblock %}

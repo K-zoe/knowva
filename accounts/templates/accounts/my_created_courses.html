@@ -1,0 +1,74 @@
+{% extends "accounts/mypage_base.html" %}
+
+{% block mypage_content %}
+
+    <section class="course-section">
+        <div class="section-header">
+            <h2 class="section-title">作成したコース</h2>
+        </div>
+
+        {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">最初</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+                {% endif %}
+                
+                <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">次へ</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">最後</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if courses %}
+        <div class="course-grid">
+            {% for course in courses %}
+            <article class="course-card">
+                <div class="course-header">
+                    <h3 class="course-title">{{ course.title }}</h3>
+                    {% if course.is_public %}
+                        <span class="course-public">公開中</span>
+                    {% else %}
+                        <span class="course-private">非公開</span>                        
+                    {% endif %}
+                </div>
+
+                <p class="course-description">
+                    {{ course.description|default:"このコースで新しい知識を習得しましょう。" }}
+                </p>
+
+                <a href="" class="btn-continue">編集</a>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p class="empty-text">作成したコースはありません。</p>
+        </div>
+        {% endif %}
+
+
+        {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">最初</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+                {% endif %}
+                
+                <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">次へ</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">最後</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    </section>
+</div>
+
+
+{% endblock %}

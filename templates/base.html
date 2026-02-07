@@ -30,7 +30,7 @@
                 <a href="" class="nav-link">ホーム</a>
                 <a href="#" class="nav-link">ランキング</a>
                     {%if user.is_authenticated%}
-                        <a href="{% url 'mypage' %}" class="nav-link">マイページ</a>
+                        <a href="{% url 'mypage_current_courses' %}" class="nav-link">マイページ</a>
                         <div class="nav-links">
                         <form method="post" action="{% url 'logout' %}">
                             {%csrf_token%}
@@ -54,7 +54,7 @@
             <a href="" class="mobile-nav-link">ホーム</a>
             <a href="#" class="mobile-nav-link">ランキング</a>
             {%if user.is_authenticated%}
-                <a href="{% url 'mypage' %}" class="mobile-nav-link">マイページ</a>
+                <a href="{% url 'mypage_current_courses' %}" class="mobile-nav-link">マイページ</a>
                 <form method="post" action="{% url 'logout' %}">
                     {%csrf_token%}
                     <button type="submit" class="btn-logout mobile">ログアウト</button>
