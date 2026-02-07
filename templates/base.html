@@ -60,7 +60,7 @@
                     <button type="submit" class="btn-logout mobile">ログアウト</button>
                 </form>
             {%else%}
-                <a href="" class="btn-login mobile">ログイン</a>
+                <a href="{% url 'login' %}" class="btn-login mobile">ログイン</a>
             {%endif%}
         </div>
     </header>
