@@ -91,7 +91,6 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         #TODO: formsetのバリデーションと、quizの保存処理を追加する。
-        print(form.errors)
         form.instance.quiz = self.quiz
         question = form.save(commit=False)
         formset = self.choice_formset(self.request.POST, instance = question)

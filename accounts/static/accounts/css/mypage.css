@@ -1,0 +1,603 @@
+/* ========================================
+   マイページ
+======================================== */
+
+.mypage-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0rem 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ========================================
+   ページタイトル
+======================================== */
+
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 2rem;
+}
+
+/* ========================================
+   上部エリア
+======================================== */
+
+.top-area {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 520px);
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* ========================================
+   メニュー
+======================================== */
+
+.menu {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.menu-item {
+    display: block;
+    padding: 1rem 1.25rem;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--gray-100);
+    transition: var(--transition);
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item:hover {
+    background: var(--gray-50);
+    color: var(--primary);
+}
+
+.menu-item.active {
+    background: linear-gradient(
+        135deg,
+        rgba(0, 208, 132, 0.1),
+        rgba(0, 148, 255, 0.1)
+    );
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* ========================================
+   プロフィール
+======================================== */
+
+.profile-panel {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-main);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-md);
+}
+
+.avatar-text {
+    color: var(--white);
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.profile-main {
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+}
+
+.username {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 0.25rem;
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.user-email {
+    font-size: 0.95rem;
+    color: var(--gray-600);
+    margin-bottom: 1rem;
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+.profile-bio {
+    font-size: 0.95rem;
+    color: var(--gray-700);
+    line-height: 1.6;
+    max-height: 7.2em;
+    overflow-y: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding: 0 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-300) transparent;
+}
+
+.profile-bio::-webkit-scrollbar {
+    width: 6px;
+}
+
+.profile-bio::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.profile-bio::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: 3px;
+}
+
+.profile-bio::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+
+/* ========================================
+   学習中のコースセクション
+======================================== */
+
+.course-section {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.section-header {
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    text-align: center;
+}
+
+/* ========================================
+   コースグリッド
+======================================== */
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* ========================================
+   コースカード
+======================================== */
+
+.course-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 1.5rem;
+    transition: var(--transition);
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.course-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    line-height: 1.4;
+    flex: 1;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* 2行まで */
+    overflow: hidden;
+    word-break: break-word;
+}
+
+/* ========================================
+   ページネーション
+======================================== */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 2rem 0 2.5rem;
+    flex-wrap: wrap;
+}
+
+/* ページ番号表示 */
+.pagination span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    padding: 0.4rem 0.75rem;
+    background: var(--gray-100);
+    border-radius: var(--radius-sm);
+}
+
+/* ページリンク */
+.pagination a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px; /* スマホタップ対策 */
+    height: 36px;
+    padding: 0 0.75rem;
+    background: var(--white);
+    color: var(--gray-700);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+/* ホバー */
+.pagination a:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(0, 208, 132, 0.12),
+        rgba(0, 148, 255, 0.12)
+    );
+    color: var(--primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* クリック */
+.pagination a:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+/* 無効っぽく見せたい場合（将来拡張用） */
+.pagination .disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+
+/*===========================================
+   学習中のコース
+============================================*/
+.course-badge {
+    background: var(--gradient-main);
+    color: var(--white);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.course-description {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
+
+/*===========================================
+   作成したコース
+============================================*/
+.course-public,
+.course-private {
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+/* 公開中 */
+.course-public {
+    background: rgba(0, 208, 132, 0.15);
+    color: var(--primary);
+}
+
+/* 非公開 */
+.course-private {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+
+/* ========================================
+   プログレスバー
+======================================== */
+
+.course-progress {
+    margin-bottom: 1.25rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-main);
+    border-radius: var(--radius-full);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    font-weight: 500;
+}
+
+/* ========================================
+   ボタン
+======================================== */
+
+.btn-continue {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background: var(--gradient-main);
+    color: var(--white);
+    text-align: center;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    margin-top: auto;
+}
+
+.btn-continue:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-continue:active {
+    transform: translateY(0);
+}
+
+/* ========================================
+   空の状態
+======================================== */
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+}
+
+.empty-text {
+    font-size: 1rem;
+    color: var(--gray-600);
+}
+
+/* ========================================
+   レスポンシブ
+======================================== */
+
+@media (max-width: 900px) {
+    .top-area {
+        grid-template-columns: 1fr;
+        /* プロフィールを上に、メニューを下に */
+        grid-template-rows: auto auto;
+    }
+
+    .menu {
+        order: 2;
+    }
+
+    .profile-panel {
+        order: 1;
+    }
+
+    .course-section {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .mypage-container {
+        padding: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .top-area {
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .course-card {
+        width: 100%;
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mypage-container {
+        padding: 1rem;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .top-area {
+        gap: 1rem;
+    }
+
+    .profile-panel {
+        padding: 1.5rem 1rem;
+        gap: 0.75rem;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .avatar-text {
+        font-size: 2rem;
+    }
+
+    .username {
+        font-size: 1.25rem;
+    }
+
+    .user-email {
+        font-size: 0.875rem;
+    }
+
+    .profile-bio {
+        font-size: 0.9rem;
+        padding: 0;
+    }
+
+    .menu-item {
+        padding: 0.875rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+    }
+
+    .course-grid {
+        gap: 1rem;
+        grid-template-columns: 1fr;
+    }
+
+    .course-card {
+        width: 100%;
+        max-width: 100%;
+        padding: 1.25rem;
+    }
+
+    .course-title {
+        font-size: 1rem;
+    }
+
+    .course-description {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .mypage-container {
+        padding: 0.75rem;
+    }
+
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    .profile-panel {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+    .avatar-text {
+        font-size: 1.75rem;
+    }
+
+    .username {
+        font-size: 1.125rem;
+    }
+
+    .course-card {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination {
+        gap: 0.5rem;
+        margin: 1.5rem 0 2rem;
+    }
+
+    .pagination a {
+        min-width: 40px;
+        height: 34px;
+        font-size: 0.85rem;
+        padding: 0 0.6rem;
+    }
+
+    .pagination span {
+        font-size: 0.85rem;
+        padding: 0.35rem 0.6rem;
+    }
+}

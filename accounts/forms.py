@@ -1,12 +1,20 @@
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import User
+from .models import User,Profile
 
 class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email')
+        widgets = {
+            'username':forms.TextInput(
+                attrs = {'placeholder':'20文字以内で入力してください。'}
+            ),
+            'email':forms.EmailInput(
+                attrs = {'placeholder':''}
+            ),
+        }
 
 class LoginForm(AuthenticationForm):
     #emailでログインするが継承元の制約のため変数名はusernameのままにする。
@@ -32,3 +40,14 @@ class LoginForm(AuthenticationForm):
                 self.error_messages['is_active'],
                 code = 'is_active'
             )
+        
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['biography']

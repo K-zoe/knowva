@@ -166,4 +166,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    biography = models.CharField(max_length=300)
+    biography = models.TextField(blank=True, null = True)
