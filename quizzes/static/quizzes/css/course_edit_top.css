@@ -1,0 +1,230 @@
+/* ========================================
+   コース編集トップ（問題編集入口）
+======================================== */
+
+.edit-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* ===== コース情報 ===== */
+.course-info {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 2rem;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-md);
+}
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.course-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.4;
+}
+
+.course-edit-btn {
+    padding: 0.75rem 1.8rem;
+    background: var(--gradient-main);
+    color: var(--white);
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.course-edit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.course-description {
+    margin-top: 1.2rem;
+    color: var(--gray-600);
+    font-size: 1rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.course-meta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+
+/* ===== 問題集 ===== */
+.quiz-set-section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--gray-900);
+}
+
+.quiz-set-list {
+    display: grid;
+
+    /* 最大3列 */
+    grid-template-columns: repeat(3, minmax(280px, 1fr));
+
+    gap: 1.5rem;
+
+    /* 中央寄せ */
+    justify-content: center;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.quiz-set-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-set-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-subtle);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.quiz-set-card:hover::before {
+    opacity: 1;
+}
+
+.quiz-set-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ヘッダー */
+.quiz-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-bottom: 0.6rem;
+}
+
+.quiz-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* 公開状態 */
+.quiz-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+}
+
+.quiz-status.public {
+    background: var(--gradient-subtle);
+    color: var(--primary-dark);
+}
+
+.quiz-status.private {
+    background: var(--gray-200);
+    color: var(--gray-700);
+}
+
+/* 説明 */
+.quiz-description {
+    font-size: 0.95rem;
+    color: var(--gray-600);
+    margin-bottom: 1rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* フッター */
+.quiz-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quiz-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.quiz-edit-btn {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-full);
+    background: var(--gradient-main);
+    color: var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.quiz-set-card:hover .quiz-edit-btn {
+    box-shadow: var(--shadow-glow);
+}
+
+/* 空表示 */
+.empty-text {
+    color: var(--gray-600);
+    font-size: 0.95rem;
+}
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 768px) {
+    .course-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .course-edit-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 1024px) {
+    .quiz-set-list {
+        grid-template-columns: repeat(2, minmax(260px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .quiz-set-list {
+        grid-template-columns: 1fr;
+    }
+}

@@ -36,7 +36,7 @@
                     {% endif %}
                 </div>
 
-                <a href="" class="btn-continue">編集</a>
+                <a href="{% url 'course_edit_top' course.pk %}" class="btn-continue">編集</a>
             </article>
             {% endfor %}
         </div>

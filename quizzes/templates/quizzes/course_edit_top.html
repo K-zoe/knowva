@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+コース編集 - Knowva
+{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'quizzes/css/course_edit_top.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="edit-container">
+
+    <!-- コース情報 -->
+    <section class="course-info">
+        <div class="course-header">
+            <h1 class="course-title">
+                コース名：{{ course.title }}
+            </h1>
+
+            <a href="" class="course-edit-btn">
+                コース編集
+            </a>
+        </div>
+
+        <p class="course-description">
+            説明：{{ course.description }}
+        </p>
+
+        <div class="course-meta">
+            <span>作成者：{{ course.created_by.username }}</span>
+            <span>更新日：{{ course.updated_at|date:"Y/m/d" }}</span>
+        </div>
+    </section>
+
+    <!-- 問題集選択 -->
+    <section class="quiz-set-section">
+        <h2 class="section-title">編集する問題集を選択</h2>
+
+        <div class="quiz-set-list">
+            {% for quiz in quizzes %}
+            <a href="" class="quiz-set-card">
+
+                <div class="quiz-card-header">
+                    <h3 class="quiz-title">{{ quiz.title }}</h3>
+
+                    {% if quiz.is_public %}
+                        <span class="quiz-status public">公開</span>
+                    {% else %}
+                        <span class="quiz-status private">非公開</span>
+                    {% endif %}
+                </div>
+
+                <p class="quiz-description">
+                    {{ quiz.description }}
+                </p>
+
+                <div class="quiz-card-footer">
+                    <span class="quiz-count">
+                        問題数：{{ quiz.question.count }}
+                    </span>
+
+                    <span class="quiz-edit-btn">編集</span>
+                </div>
+
+            </a>
+            {% empty %}
+                <p class="empty-text">問題集がまだ作成されていません。</p>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}
