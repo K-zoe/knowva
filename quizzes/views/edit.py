@@ -1,4 +1,5 @@
 from django.views.generic import CreateView, View
+from django.views.decorators.http import require_POST
 from ..models import Course,Quiz,Question,Choice
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy,reverse
@@ -26,6 +27,28 @@ class CourseEditTopView(LoginRequiredMixin, View):
         quizzes = Quiz.objects.filter(course = course).all()
         context = {'course':course, 'quizzes':quizzes}
         return render(request, self.template_name, context)
+
+@require_POST
+def quiz_delete_view(request, *args, **kwargs):
+    course = get_object_or_404(
+        Course,
+        user = request.user,
+        pk = kwargs.get('course_pk')
+    )
+    quiz = get_object_or_404(
+        Quiz,
+        course = course,
+        pk = kwargs.get('quiz_pk')
+    )
+    quiz.delete()
+
+    return HttpResponseRedirect(
+        reverse('course_edit_top', kwargs = {'pk': course.pk})
+        )
+
+
+
+
 
 class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course

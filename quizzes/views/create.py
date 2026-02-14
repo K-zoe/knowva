@@ -109,7 +109,9 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(self.get_success_url())
         else:
             #TODO: リダイレクト先の画面を作成した後に実装する。
-            return HttpResponseRedirect()
+            return HttpResponseRedirect(
+                reverse('course_edit_top', kwargs = {'pk': self.quiz.course.pk})
+            )
         
     def formset_invalid(self, form):
         context = self.get_context_data(form = form)
