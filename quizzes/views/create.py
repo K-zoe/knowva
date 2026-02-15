@@ -25,7 +25,7 @@ class CourseCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse(
             'quiz_create',
-            kwargs = {'course_id': self.object.pk}
+            kwargs = {'course_pk': self.object.pk}
         )
 
 class QuizCreateView(LoginRequiredMixin, CreateView):
@@ -37,7 +37,7 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
         #NOTE:後々、この処理がほかのクラスでも出るのであればベースクラスの作成を検討
         self.course = get_object_or_404(
             Course,
-            pk = kwargs.get('course_id'),
+            pk = kwargs.get('course_pk'),
             user = self.request.user
         )
         return super().dispatch(request, *args, **kwargs)
@@ -49,7 +49,7 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse(
             'question_create',
-            kwargs = {'quiz_id': self.object.pk}
+            kwargs = {'quiz_pk': self.object.pk}
         )
 
 class QuestionCreateView(LoginRequiredMixin, CreateView):
@@ -69,7 +69,7 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
     def dispatch(self, request, *args, **kwargs):
         self.quiz = get_object_or_404(
             Quiz,
-            pk = kwargs.get('quiz_id'),
+            pk = kwargs.get('quiz_pk'),
             course__user = self.request.user
         )
         return super().dispatch(request, *args, **kwargs)
@@ -86,7 +86,7 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse(
             'question_create',
-            kwargs = {'quiz_id': self.quiz.pk}
+            kwargs = {'quiz_pk': self.quiz.pk}
         )
 
     def form_valid(self, form):
@@ -110,7 +110,7 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
         else:
             #TODO: リダイレクト先の画面を作成した後に実装する。
             return HttpResponseRedirect(
-                reverse('course_edit_top', kwargs = {'pk': self.quiz.course.pk})
+                reverse('course_edit_top', kwargs = {'course_pk': self.quiz.course.pk})
             )
         
     def formset_invalid(self, form):

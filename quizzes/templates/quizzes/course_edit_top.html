@@ -42,9 +42,9 @@
 
         <!-- コース操作 -->
         <div class="course-actions">
-            <a href="" class="course-edit-btn">コース編集</a>
+            <a href="{% url 'course_edit' course.pk%}" class="course-edit-btn">コース編集</a>
 
-            <form method="post" action="" class="inline-form">
+            <form method="post" action="{% url 'course_delete' course.pk %}" class="inline-form">
                 {% csrf_token %}
                 <button type="submit" class="course-delete-btn"
                         onclick="return confirm('このコースを削除しますか？');">
@@ -92,7 +92,7 @@
                     </span>
 
                     <div class="quiz-actions">
-                        <a href="" class="quiz-edit-btn">編集</a>
+                        <a href="{% url 'quiz_edit' course.pk quiz.pk %}" class="quiz-edit-btn">編集</a>
 
                         <form method="post" action="{% url 'quiz_delete' course.pk quiz.pk%}" class="inline-form">
                             {% csrf_token %}
