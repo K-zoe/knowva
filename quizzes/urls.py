@@ -13,14 +13,15 @@ from .views.edit import(
 )
 
 urlpatterns = [
+    #Create
     path('cource_create/', CourseCreateView.as_view(), name = 'course_create'),
     path('quiz_create/<int:course_pk>/', QuizCreateView.as_view(), name = 'quiz_create'),
     path('question_create/<int:quiz_pk>/', QuestionCreateView.as_view(), name = 'question_create'),
-    
-    path('cource_edit_top/<int:course_pk>/', CourseEditTopView.as_view(), name = 'course_edit_top'),
+    #Edit
+    path('course_edit_top/<int:course_pk>/', CourseEditTopView.as_view(), name = 'course_edit_top'),
     path('course_edit/<int:course_pk>/', CourseEditView.as_view(), name = 'course_edit'),
     path('quiz_edit/<int:course_pk>/<int:quiz_pk>/', QuizEditView.as_view(), name = 'quiz_edit'),
-    
-    path('cource_delete/<int:course_pk>/', course_delete_view, name = 'course_delete'),
+    #Delete
+    path('course_delete/<int:course_pk>/', course_delete_view, name = 'course_delete'),
     path('quiz_delete/<int:course_pk>/<int:quiz_pk>/', quiz_delete_view, name = 'quiz_delete'),
 ]

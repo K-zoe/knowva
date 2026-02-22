@@ -6,14 +6,15 @@ from django.urls import reverse_lazy,reverse
 from django.shortcuts import get_object_or_404, render
 from ..forms import (
     CourseForm,
-    QuizForm,
+    QuizEditForm,
     QuestionForm,
     ChoiceForm
 )
 from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
 from django.db import transaction
-
+from django.core.paginator import Paginator
+from pprint import pprint
 
 class CourseEditTopView(LoginRequiredMixin, View):
     template_name = 'quizzes/course_edit_top.html'
@@ -79,14 +80,22 @@ class CourseEditView(LoginRequiredMixin, UpdateView):
     
 class QuizEditView(LoginRequiredMixin, UpdateView):
     model = Quiz
-    form_class = QuizForm
+    form_class = QuizEditForm
     template_name = 'quizzes/quiz_edit.html'
 
     def get_context_data(self, **kwargs):
-        #TODO: 問題集の編集画面で問題の一覧を表示する。
+        #TODO: 問題一覧をページに分けて表示するようにする。
         context = super().get_context_data(**kwargs)
+
+        object = Question.objects.filter(
+            quiz = self.get_object()
+        )
+        p = Paginator(object, 10)
+        page_obj = p.get_page(self.request.GET.get('page'))
+        context['page_obj'] = page_obj
+        context['page_obj_count'] = p.count
+        context['questions'] = page_obj.object_list
         return context
-        pass
 
     def get_object(self):
         course = get_object_or_404(

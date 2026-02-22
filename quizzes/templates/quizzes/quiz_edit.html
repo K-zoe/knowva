@@ -6,7 +6,7 @@
 
 {% block extra_css %}
 {% load static %}
-<link rel="stylesheet" href="{% static '/quizzes/css/quiz_create.css' %}">
+<link rel="stylesheet" href="{% static '/quizzes/css/quiz_edit.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -26,7 +26,95 @@
             {{ form.description }}
         </div>
 
+        <div class="form-group checkbox">
+            {{ form.is_public }}
+            <label>公開する</label>
+        </div>
+
         <button type="submit" class="btn-submit">編集</button>
     </form>
 </div>
+
+<div class="question-list-wrapper">
+    <h2 class="section-title">
+        登録されている問題（{{ page_obj_count }}問）
+    </h2>
+
+    <a href="{% url 'question_create' quiz.pk %}" class="question-create-btn">
+        ＋ 問題を作成
+    </a>
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">最初</a>
+                <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+            {% endif %}
+            
+            <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">次へ</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">最後</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if questions %}
+        <ul class="question-list">
+            {% for question in questions %}
+                <li class="question-item">
+                    <div class="question-text">
+                        {{ question.title }}
+                    </div>
+
+                    <div class="question-actions">
+                        <a class="question-edit-btn"
+                        href="{% url 'question_edit'
+                                course_pk=object.course.pk
+                                quiz_pk=object.pk
+                                question_pk=question.pk %}">
+                            編集
+                        </a>
+
+                        <form method="post"
+                            action="{% url ''
+                                course_pk=object.course.pk
+                                quiz_pk=object.pk
+                                question_pk=question.pk %}"
+                            class="inline-form"
+                            onsubmit="return confirm('この問題を削除しますか？');">
+                            {% csrf_token %}
+                            <button type="submit" class="question-delete-btn">
+                                削除
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-question">
+            まだ問題が登録されていません。
+        </p>
+    {% endif %}
+
+    {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">最初</a>
+                <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+            {% endif %}
+            
+            <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">次へ</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">最後</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+
 {% endblock %}

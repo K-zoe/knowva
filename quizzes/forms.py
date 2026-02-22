@@ -35,6 +35,19 @@ class QuizForm(forms.ModelForm):
             )
         }
 
+class QuizEditForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['title', 'description','is_public']
+        widgets = {
+            'title':forms.TextInput(
+                attrs = {'placeholder':'例：午後問題'}
+            ),
+            'description':forms.Textarea(
+                attrs = {'placeholder':'説明を入力してください。'}
+            )
+        }
+
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
