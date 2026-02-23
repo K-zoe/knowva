@@ -14,7 +14,6 @@ from django.http import HttpResponseRedirect
 from django.forms import inlineformset_factory
 from django.db import transaction
 from django.core.paginator import Paginator
-from pprint import pprint
 
 class CourseEditTopView(LoginRequiredMixin, View):
     template_name = 'quizzes/course_edit_top.html'
@@ -89,7 +88,7 @@ class QuizEditView(LoginRequiredMixin, UpdateView):
 
         object = Question.objects.filter(
             quiz = self.get_object()
-        )
+        ).order_by('pk')
         p = Paginator(object, 10)
         page_obj = p.get_page(self.request.GET.get('page'))
         context['page_obj'] = page_obj
@@ -118,3 +117,100 @@ class QuizEditView(LoginRequiredMixin, UpdateView):
                 'quiz_pk': self.kwargs.get('quiz_pk')
             }
         )
+
+@require_POST
+def question_delete_view(request, *args, **kwargs):
+    course = get_object_or_404(
+        Course,
+        user = request.user,
+        pk = kwargs.get('course_pk')
+    )
+    quiz = get_object_or_404(
+        Quiz,
+        course = course,
+        pk = kwargs.get('quiz_pk')
+    )
+    question = get_object_or_404(
+        Question,
+        quiz = quiz,
+        pk = kwargs.get('question_pk')
+    )
+    question.delete()
+
+    return HttpResponseRedirect(
+        reverse('quiz_edit', kwargs = {
+            'course_pk': course.pk,
+            'quiz_pk': quiz.pk
+        })
+    )
+
+class QuestionEditView(LoginRequiredMixin, View):
+    template_name = 'quizzes/question_edit.html'
+    form = QuestionForm
+    formset = inlineformset_factory(
+        Question,
+        Choice,
+        form = ChoiceForm,
+        extra = 0,
+        can_delete = True
+    )
+
+    def get(self, request, *args, **kwargs):
+        course = get_object_or_404(
+            Course,
+            user = request.user,
+            pk = kwargs.get('course_pk')
+        )
+        quiz = get_object_or_404(
+            Quiz,
+            course = course,
+            pk = kwargs.get('quiz_pk')
+        )
+        question = get_object_or_404(
+            Question,
+            quiz = quiz,
+            pk = kwargs.get('question_pk')
+        )
+
+        form = self.form(instance = question)
+        choice_formset = self.formset(instance = question)
+
+        context = {'form': form, 'choice_formset': choice_formset}
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *args, **kwargs):
+        course = get_object_or_404(
+            Course,
+            user = request.user,
+            pk = kwargs.get('course_pk')
+        )
+        quiz = get_object_or_404(
+            Quiz,
+            course = course,
+            pk = kwargs.get('quiz_pk')
+        )
+        question = get_object_or_404(
+            Question,
+            quiz = quiz,
+            pk = kwargs.get('question_pk')
+        )
+
+        form = self.form(request.POST, instance = question)
+        choice_formset = self.formset(request.POST, instance = question)
+
+        if form.is_valid() and choice_formset.is_valid():
+            with transaction.atomic():
+                form.save()
+                choice_formset.save()
+                
+                return HttpResponseRedirect(
+                    reverse('quiz_edit', kwargs = {
+                        'course_pk': kwargs.get('course_pk'),
+                        'quiz_pk': kwargs.get('quiz_pk')
+                    })
+                )
+        else:
+            print(form.errors)
+            print(choice_formset.errors)
+            context = {'form': form, 'choice_formset': choice_formset}
+            return render(request, self.template_name, context)

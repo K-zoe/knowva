@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+問題作成 - Knowva
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'quizzes/css/question_create.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="problem-create">
+    <h1 class="page-title">問題編集</h1>
+
+    <form method="post" class="problem-form">
+        {% csrf_token %}
+
+        <!-- 問題本体 -->
+        <div class="problem-card">
+            <h2 class="section-title">問題内容</h2>
+
+            <div class="form-group">
+                <label>タイトル</label>
+                {{ form.title.errors }}
+                {{ form.title }}
+            </div>
+
+            <div class="form-group">
+                <label>問題文</label>
+                {{ form.text.errors }}
+                {{ form.text }}
+            </div>
+
+            <div class="form-group">
+                <label>解説</label>
+                {{ form.explanation.errors }}
+                {{ form.explanation }}
+            </div>
+        </div>
+
+        <!-- 選択肢 -->
+        <div class="choices"
+             id="choice-formset"
+             data-prefix="{{ choice_formset.prefix }}">
+
+            <h2 class="section-title">選択肢</h2>
+
+            {{ choice_formset.management_form }}
+
+            {% for formset in choice_formset %}
+            <div class="choice-card choice-form">
+                <div class="choice-header">
+                    <span class="choice-number">
+                        選択肢 {{ forloop.counter }}
+                    </span>
+
+                    <div class="choice-controls">
+                        <label class="correct-flag">
+                            {{ formset.is_correct }}
+                            <span>正解</span>
+                        </label>
+
+                        <button type="button" class="btn-delete-choice">
+                            削除
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>選択肢文</label>
+                    {{ formset.text.errors }}
+                    {{ formset.text }}
+                </div>
+
+                <div class="form-group">
+                    <label>解説</label>
+                    {{ formset.explanation.errors }}
+                    {{ formset.explanation }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- 操作ボタン -->
+        <div class="choice-actions">
+            <button type="button" id="add-choice" class="btn-add">
+                ＋ 選択肢を追加
+            </button>
+        </div>
+        <button type="submit" name="action" class="btn-next">
+            編集完了
+        </button>
+    </form>
+</div>
+
+<script src="{% static 'quizzes/js/choice_formset.js' %}"></script>
+
+{% endblock %}

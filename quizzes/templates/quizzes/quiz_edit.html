@@ -13,7 +13,7 @@
 <div class="problem-create">
     <h1 class="page-title">問題集編集</h1>
 
-    <form method="post" class="problem-form">
+    <form method="post" class="problem-form" onsubmit="return confirm('編集しますか？');">
         {% csrf_token %}
 
         <div class="form-group">
@@ -70,18 +70,12 @@
 
                     <div class="question-actions">
                         <a class="question-edit-btn"
-                        href="{% url 'question_edit'
-                                course_pk=object.course.pk
-                                quiz_pk=object.pk
-                                question_pk=question.pk %}">
+                        href="{% url 'question_edit' quiz.course.pk quiz.pk question.pk %}">
                             編集
                         </a>
 
                         <form method="post"
-                            action="{% url ''
-                                course_pk=object.course.pk
-                                quiz_pk=object.pk
-                                question_pk=question.pk %}"
+                            action="{% url 'question_delete' quiz.course.pk quiz.pk question.pk %}"
                             class="inline-form"
                             onsubmit="return confirm('この問題を削除しますか？');">
                             {% csrf_token %}
@@ -115,6 +109,12 @@
         </div>
     {% endif %}
 
+</div>
+
+<div class="back-nav">
+    <a href="{% url 'course_edit_top' quiz.course.pk %}" class="back-btn">
+        ← コース編集画面に戻る
+    </a>
 </div>
 
 {% endblock %}
