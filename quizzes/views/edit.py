@@ -175,42 +175,55 @@ class QuestionEditView(LoginRequiredMixin, View):
         form = self.form(instance = question)
         choice_formset = self.formset(instance = question)
 
-        context = {'form': form, 'choice_formset': choice_formset}
+        context = {
+            'form': form,
+            'choice_formset': choice_formset,
+            'course': course,
+            'quiz': quiz
+        }
         return render(request, self.template_name, context)
     
     def post(self, request, *args, **kwargs):
         course = get_object_or_404(
             Course,
-            user = request.user,
-            pk = kwargs.get('course_pk')
+            user=request.user,
+            pk=kwargs.get('course_pk')
         )
         quiz = get_object_or_404(
             Quiz,
-            course = course,
-            pk = kwargs.get('quiz_pk')
+            course=course,
+            pk=kwargs.get('quiz_pk')
         )
         question = get_object_or_404(
             Question,
-            quiz = quiz,
-            pk = kwargs.get('question_pk')
+            quiz=quiz,
+            pk=kwargs.get('question_pk')
         )
 
-        form = self.form(request.POST, instance = question)
-        choice_formset = self.formset(request.POST, instance = question)
+        form = self.form(request.POST, instance=question)
+        choice_formset = self.formset(
+            request.POST,
+            instance=question   # ← ★これがすべて
+        )
 
         if form.is_valid() and choice_formset.is_valid():
             with transaction.atomic():
                 form.save()
                 choice_formset.save()
-                
-                return HttpResponseRedirect(
-                    reverse('quiz_edit', kwargs = {
-                        'course_pk': kwargs.get('course_pk'),
-                        'quiz_pk': kwargs.get('quiz_pk')
-                    })
-                )
+
+            return HttpResponseRedirect(
+                reverse('quiz_edit', kwargs={
+                    'course_pk': course.pk,
+                    'quiz_pk': quiz.pk
+                })
+            )
+
         else:
-            print(form.errors)
             print(choice_formset.errors)
-            context = {'form': form, 'choice_formset': choice_formset}
+            context = {
+                'form': form,
+                'choice_formset': choice_formset,
+                'course': course,
+                'quiz': quiz
+            }
             return render(request, self.template_name, context)

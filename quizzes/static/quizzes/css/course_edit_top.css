@@ -8,6 +8,16 @@
 
 /* ===== コース情報 ===== */
 
+.page-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .course-info {
     max-width: 900px;
     margin: 0 auto 3rem;

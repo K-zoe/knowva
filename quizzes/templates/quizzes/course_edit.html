@@ -39,4 +39,11 @@
         <button type="submit" class="btn-submit">編集</button>
     </form>
 </div>
+
+<div class="back-nav">
+    <a href="{% url 'course_edit_top' course.pk %}" class="back-btn">
+        ← コース情報に戻る
+    </a>
+</div>
+
 {% endblock %}

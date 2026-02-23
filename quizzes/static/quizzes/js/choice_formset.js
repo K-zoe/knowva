@@ -68,3 +68,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const choiceForms = document.querySelectorAll('.choice-form');
+
+    choiceForms.forEach(form => {
+        const deleteCheckbox = form.querySelector('input[type="checkbox"][name$="-DELETE"]');
+        const correctCheckbox = form.querySelector('input[type="checkbox"][name$="-is_correct"]');
+
+        if (!deleteCheckbox || !correctCheckbox) return;
+
+        // 削除にチェック → 正解を外す
+        deleteCheckbox.addEventListener('change', () => {
+            if (deleteCheckbox.checked) {
+                correctCheckbox.checked = false;
+                correctCheckbox.disabled = true; // ← 任意（UX向上）
+            } else {
+                correctCheckbox.disabled = false;
+            }
+        });
+    });
+
+});

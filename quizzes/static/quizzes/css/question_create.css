@@ -158,7 +158,44 @@
 }
 
 
+/* 編集画面の削除チェックボックス */
 
+.delete-flag {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ff4d4f;
+    cursor: pointer;
+}
+
+.delete-flag input {
+    accent-color: #ff4d4f;
+}
+
+
+/* 正解チェックボックス */
+.delete-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* チェックボックスの見た目調整 */
+.delete-flag input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+
+
+
+/* 正解チェック時 */
 /* ホバー */
 .choice-card:hover {
     border-color: var(--primary);
@@ -166,7 +203,7 @@
 }
 
 /* 正解が入っている選択肢 */
-.choice-card:has(input:checked) {
+.choice-card:has(input[name$="-is_correct"]:checked) {
     border-color: var(--primary);
     background: linear-gradient(
         135deg,
@@ -174,6 +211,20 @@
         rgba(0, 255, 163, 0.06)
     );
 }
+
+/* 削除チェック時 */
+.choice-card:has(input[name$="-DELETE"]:checked) {
+    border-color: #ff4d4f;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 77, 79, 0.08),
+        rgba(255, 120, 120, 0.08)
+    );
+    box-shadow: 0 0 0 4px rgba(255, 77, 79, 0.15);
+}
+
+
+
 
 /* nextボタン */
 .btn-next {
@@ -313,4 +364,30 @@
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+.back-nav {
+    max-width: 900px;
+    margin: 32px auto 0;
+    padding: 0 16px;
+    text-align: center;
+}
+
+.back-btn {
+    display: inline-flex;
+    gap: 6px;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    color: var(--gray-600);
+    text-decoration: none;
+
+    padding: 8px 4px;
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    color: var(--primary);
+    text-decoration: underline;
 }

@@ -50,6 +50,7 @@
             {{ choice_formset.management_form }}
 
             {% for formset in choice_formset %}
+            {{ formset.id}}
             <div class="choice-card choice-form">
                 <div class="choice-header">
                     <span class="choice-number">
@@ -62,9 +63,10 @@
                             <span>正解</span>
                         </label>
 
-                        <button type="button" class="btn-delete-choice">
-                            削除
-                        </button>
+                        <label class="delete-flag">
+                            {{ formset.DELETE}}
+                            <span>削除</span>
+                        </label>
                     </div>
                 </div>
 
@@ -94,6 +96,13 @@
         </button>
     </form>
 </div>
+
+<div class="back-nav">
+    <a href="{% url 'quiz_edit' course.pk quiz.pk %}" class="back-btn">
+        ← 問題集編集画面に戻る
+    </a>
+</div>
+
 
 <script src="{% static 'quizzes/js/choice_formset.js' %}"></script>
 
