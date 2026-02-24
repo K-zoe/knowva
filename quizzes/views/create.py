@@ -108,7 +108,6 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
         if action == "next":
             return HttpResponseRedirect(self.get_success_url())
         else:
-            #TODO: リダイレクト先の画面を作成した後に実装する。
             return HttpResponseRedirect(
                 reverse('course_edit_top', kwargs = {'course_pk': self.quiz.course.pk})
             )

@@ -1,41 +1,6 @@
-from django.test import TestCase
+from .base import BaseTest
 from django.urls import reverse
-from accounts.models import User
-from .models import (
-    Course,
-    Quiz,
-    Question,
-    Choice
-)
-
-class BaseTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(
-            username = 'login_user',
-            email = 'login_user@co.jp',
-            password = 'test12345'
-        )
-        self.client.login(
-            username = 'login_user@co.jp',
-            password = 'test12345'
-        )
-
-    def course_create(self):
-        course = Course.objects.create(
-            title = 'テストコース',
-            tag = 'テストタグ',
-            user = self.user,
-            description = 'テストコースの説明',
-        )
-        return course
-    
-    def quiz_create(self, course):
-        course = self.course_create()
-        quiz = Quiz.objects.create(
-            course = course,
-            title = 'テストクイズ',
-        )
-        return quiz
+from quizzes.models import Course
 
 class CourseCreateTest(BaseTest):
     def test_course_create_success(self):
@@ -111,15 +76,3 @@ class CourseEditTest(BaseTest):
         after = Course.objects.get(pk = course.pk)
         self.assertEqual(before.title, after.title)
 
-
-class QuizCreateTest(BaseTest):
-    pass
-
-class QuizEditTest(BaseTest):
-    pass
-
-class QuestionCreateTest(BaseTest):
-    pass
-
-class QuestionEditTest(BaseTest):
-    pass

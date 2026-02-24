@@ -219,7 +219,6 @@ class QuestionEditView(LoginRequiredMixin, View):
             )
 
         else:
-            print(choice_formset.errors)
             context = {
                 'form': form,
                 'choice_formset': choice_formset,
