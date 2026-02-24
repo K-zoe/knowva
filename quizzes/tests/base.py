@@ -46,7 +46,7 @@ class BaseTest(TestCase):
 
         return question
 
-    def choice_create(self, question):
+    def choice1_create(self, question):
         choice1 = Choice.objects.create(
             question = question,
             text = 'テストチョイス',
@@ -54,9 +54,14 @@ class BaseTest(TestCase):
             is_correct = True
         )
 
+        return choice1
+    
+    def choice2_create(self, question):
         choice2 = Choice.objects.create(
             question = question,
             text = 'テストチョイス2',
             explanation = 'テストチョイス2の解説',
             is_correct = False
         )
+
+        return choice2

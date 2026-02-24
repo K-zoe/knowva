@@ -80,7 +80,8 @@ class ChoiceEditTest(BaseTest):
         course = self.course_create()
         quiz = self.quiz_create(course)
         question = self.question_create(quiz)
-        choice = self.choice_create(question)
+        choice1 = self.choice1_create(question)
+        choice2 = self.choice2_create(question)
 
         response = self.client.post(
             reverse(
@@ -101,12 +102,12 @@ class ChoiceEditTest(BaseTest):
                 'choice-MIN_NUM_FORMS': '0',
                 'choice-MAX_NUM_FORMS': '1000',
                 #データ1
-                'choice-0-id': choice.pk,
+                'choice-0-id': choice1.pk,
                 'choice-0-text': 'テストチョイス1編集',
                 'choice-0-explanation': 'テストチョイス1の解説編集',
                 'choice-0-is_correct': 'on',
                 #データ2
-                'choice-1-id': choice.pk,
+                'choice-1-id': choice2.pk,
                 'choice-1-text': 'テストチョイス2',
                 'choice-1-explanation': 'テストチョイス2の解説',
                 'choice-1-is_correct': '',
@@ -114,5 +115,51 @@ class ChoiceEditTest(BaseTest):
         )
 
         self.assertEqual(response.status_code, 302)
-        after_choice = Choice.objects.get(pk = choice.pk)
-        self.assertNotEqual(choice.text, after_choice.text)
+        after_choice1 = Choice.objects.get(pk = choice1.pk)
+        self.assertNotEqual(choice1.text, after_choice1.text)
+        after_choice2 = Choice.objects.get(pk = choice2.pk)
+        self.assertEqual(choice2.text, after_choice2.text)
+
+    def test_choice_edit_failure(self):
+        course = self.course_create()
+        quiz = self.quiz_create(course)
+        question = self.question_create(quiz)
+        choice1 = self.choice1_create(question)
+        choice2 = self.choice2_create(question)
+
+        response = self.client.post(
+            reverse(
+                'question_edit',
+                kwargs = {
+                    'course_pk': course.pk,
+                    'quiz_pk': quiz.pk,
+                    'question_pk': question.pk
+                }
+            ),
+            {
+                'title': 'テストクエッション編集',
+                'text': 'テストクエッションの内容編集',
+                'explanation': 'テストクエッションの解説編集',
+                #管理フォーム
+                'choice-TOTAL_FORMS': '2',
+                'choice-INITIAL_FORMS': '1',
+                'choice-MIN_NUM_FORMS': '0',
+                'choice-MAX_NUM_FORMS': '1000',
+                #データ1
+                'choice-0-id': choice1.pk,
+                'choice-0-text': '',
+                'choice-0-explanation': 'テストチョイス1の解説編集',
+                'choice-0-is_correct': 'on',
+                #データ2
+                'choice-1-id': choice2.pk,
+                'choice-1-text': 'テストチョイス2',
+                'choice-1-explanation': 'テストチョイス2の解説',
+                'choice-1-is_correct': '',
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+        after_choice1 = Choice.objects.get(pk = choice1.pk)
+        self.assertEqual(choice1.text, after_choice1.text)
+        after_choice2 = Choice.objects.get(pk = choice2.pk)
+        self.assertEqual(choice2.text, after_choice2.text)
