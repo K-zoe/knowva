@@ -24,6 +24,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Application definition
 
 INSTALLED_APPS = [
+    'answers.apps.AnswersConfig',
     'accounts.apps.AccountsConfig',
     'quizzes.apps.QuizzesConfig',
     'django.contrib.admin',
