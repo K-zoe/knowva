@@ -1,0 +1,46 @@
+/* =========================
+   回答画面 追加スタイル
+========================= */
+
+.question-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--gray-800);
+}
+
+.question-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--gray-700);
+}
+
+/* 選択肢本体 */
+.choice-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.choice-body input[type="radio"] {
+    margin-top: 4px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.choice-text {
+    font-size: 0.95rem;
+    color: var(--gray-800);
+    line-height: 1.6;
+}
+
+/* 選択中 */
+.choice-card:has(input[type="radio"]:checked) {
+    border-color: var(--primary);
+    background: linear-gradient(
+        135deg,
+        rgba(0, 208, 132, 0.06),
+        rgba(0, 255, 163, 0.06)
+    );
+    box-shadow: 0 0 0 4px rgba(0, 208, 132, 0.12);
+}

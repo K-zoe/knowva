@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+問題に回答 - Knowva
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'answers/css/answer.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="problem-create">
+
+    <h1 class="page-title">
+        {{ question.title }}
+    </h1>
+
+    <form method="post" class="problem-form">
+        {% csrf_token %}
+
+        <!-- 問題カード -->
+        <div class="problem-card">
+            <h2 class="section-title">
+                問題 {{ current_number }} / {{ total_count }}
+            </h2>
+
+            <h3 class="question-title">
+                {{ question.title }}
+            </h3>
+
+            <p class="question-text">
+                {{ question.text|linebreaksbr }}
+            </p>
+        </div>
+
+        <!-- 選択肢 -->
+        <div class="choices">
+            <h2 class="section-title">選択肢</h2>
+
+            {% for choice in question.choice.all %}
+            <label class="choice-card">
+
+                <div class="choice-header">
+                    <span class="choice-number">
+                        選択肢 {{ forloop.counter }}
+                    </span>
+                </div>
+
+                <div class="choice-body">
+                    <input
+                        type="radio"
+                        name="choice"
+                        value="{{ choice.id }}"
+                        required
+                    >
+
+                    <span class="choice-text">
+                        {{ choice.text }}
+                    </span>
+                </div>
+
+            </label>
+            {% endfor %}
+        </div>
+
+        <!-- 操作 -->
+        <div class="choice-actions">
+            <button type="submit" class="btn-next">
+                回答する
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
