@@ -71,59 +71,84 @@ class AnswerAttemptMixin:
                 quiz=quiz
             )
         }
+        #TODO: 問題がなかった場合はcurrent_indexを更新しないと後々破綻する。
 
         return next(
             (questions[pk] for pk in question_ids if pk in questions),
             None
         )
-
-
+    
 
 class AnswerStartView(LoginRequiredMixin, AnswerAttemptMixin, View):
     template_name = 'answers/answer.html'
     
+    def dispatch(self, request, *args, **kwargs):
+        self.quiz = self.get_quiz(kwargs)
+        self.session = self.get_session(request, self.quiz)
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
-        quiz = self.get_quiz(kwargs)
-        session = self.get_session(request, quiz)
-        
-        if session:
-            if session.finished_at:
+        if self.session:
+            if self.session.finished_at:
                 #NOTE: 完了後の場合は再挑戦。※不正な操作扱いでもいいかも？
                 return redirect()
             else:
                 #NOTE: 途中の場合は再開。
                 return redirect('answer_resume', kwargs.get('course_pk'), kwargs.get('quiz_pk'))
-        
+                    
         with transaction.atomic():
             #NOTE: 問題がないのにsessionだけが作成されるのを防ぐ。
-            session = self.create_session(request, quiz)
+            session = self.create_session(request, self.quiz)
             question = get_object_or_404(
                 Question,
                 pk = session.question_order[session.current_index],
-                quiz = quiz
+                quiz = self.quiz
             )
 
         context = {'question': question}
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        if self.session is None or self.session.finished_at is not None:
+            #NOTE: 不正な操作にする。
+            return redirect()
+        
+        #TODO: 正解チェック処理作成。
+        question = get_object_or_404(
+            Question,
+            quiz = self.quiz,
+            pk = self.session.question_order[self.session.current_index]
+        )
+
+        Answer.objects.create(
+            session = self.session,
+            question = question,
+            
+        )
+
+
+
+        
         return redirect()
     
 class AnswerResumeView(LoginRequiredMixin, AnswerAttemptMixin, View):
     template_name = 'answers/answer.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        self.quiz = self.get_quiz(kwargs)
+        self.session = self.get_session(request, self.quiz)
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
-        quiz = self.get_quiz(kwargs)
-        session = self.get_session(request, quiz)
         
-        if not session:
+        if self.session is None:
             return redirect('answer_start', kwargs.get('course_pk'), kwargs.get('quiz_pk'))
         
-        elif session.finished_at:
+        elif self.session.finished_at:
             #NOTE: 完了後の場合は再挑戦。※不正な操作扱いでもいいかも？
             return redirect()
 
-        question = self.get_question(session = session, quiz = quiz)
+        question = self.get_question(session = self.session, quiz = self.quiz)
 
         if question is None:
             #NOTE: 問題がなければ完了にして終了。
