@@ -83,7 +83,6 @@ class QuizEditView(LoginRequiredMixin, UpdateView):
     template_name = 'quizzes/quiz_edit.html'
 
     def get_context_data(self, **kwargs):
-        #TODO: 問題一覧をページに分けて表示するようにする。
         context = super().get_context_data(**kwargs)
 
         object = Question.objects.filter(
@@ -108,6 +107,14 @@ class QuizEditView(LoginRequiredMixin, UpdateView):
             pk = self.kwargs.get('quiz_pk')
         )
         return quiz
+    
+    def form_valid(self, form):
+        is_public = form.cleaned_data['is_public']
+        
+        if is_public is False:
+            #TODO: ユーザーの回答状況をリセット
+            pass
+        return super().form_valid(form)
     
     def get_success_url(self):
         return reverse(
@@ -164,7 +171,8 @@ class QuestionEditView(LoginRequiredMixin, View):
         quiz = get_object_or_404(
             Quiz,
             course = course,
-            pk = kwargs.get('quiz_pk')
+            pk = kwargs.get('quiz_pk'),
+            is_public = False
         )
         question = get_object_or_404(
             Question,
@@ -187,12 +195,13 @@ class QuestionEditView(LoginRequiredMixin, View):
         course = get_object_or_404(
             Course,
             user=request.user,
-            pk=kwargs.get('course_pk')
+            pk=kwargs.get('course_pk'),
         )
         quiz = get_object_or_404(
             Quiz,
             course=course,
-            pk=kwargs.get('quiz_pk')
+            pk=kwargs.get('quiz_pk'),
+            is_public = False
         )
         question = get_object_or_404(
             Question,
@@ -203,7 +212,7 @@ class QuestionEditView(LoginRequiredMixin, View):
         form = self.form(request.POST, instance=question)
         choice_formset = self.formset(
             request.POST,
-            instance=question   # ← ★これがすべて
+            instance=question
         )
 
         if form.is_valid() and choice_formset.is_valid():
