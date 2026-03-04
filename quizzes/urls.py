@@ -6,12 +6,14 @@ from .views.create import (
 )
 from .views.edit import(
     CourseEditTopView,
-    course_delete_view,
-    quiz_delete_view,
     CourseEditView,
     QuizEditView,
-    question_delete_view,
     QuestionEditView,
+)
+from .views.delete import(
+    course_delete_view,
+    quiz_delete_view,
+    question_delete_view,
 )
 
 urlpatterns = [

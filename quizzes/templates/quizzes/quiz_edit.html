@@ -13,7 +13,7 @@
 <div class="problem-create">
     <h1 class="page-title">問題集編集</h1>
 
-    <form method="post" class="problem-form" onsubmit="return confirm('編集しますか？');">
+    <form method="post" class="problem-form" onsubmit="return confirm('編集しますか？\n※公開から非公開に切り替えた場合はユーザーの回答状況はリセットされます。');">
         {% csrf_token %}
 
         <div class="form-group">
@@ -28,7 +28,7 @@
 
         <div class="form-group checkbox">
             {{ form.is_public }}
-            <label>公開する</label>
+            <label>公開する　※公開中は問題の編集はできません。</label>
         </div>
 
         <button type="submit" class="btn-submit">編集</button>
@@ -40,9 +40,11 @@
         登録されている問題（{{ page_obj_count }}問）
     </h2>
 
-    <a href="{% url 'question_create' quiz.pk %}" class="question-create-btn">
-        ＋ 問題を作成
-    </a>
+    {% if quiz.is_public is False %}
+        <a href="{% url 'question_create' quiz.pk %}" class="question-create-btn">
+            ＋ 問題を作成
+        </a>
+    {% endif %}
 
     {% if page_obj.has_other_pages %}
         <div class="pagination">
@@ -67,23 +69,25 @@
                     <div class="question-text">
                         {{ question.title }}
                     </div>
+                    
+                    {% if quiz.is_public is False %}
+                        <div class="question-actions">
+                            <a class="question-edit-btn"
+                            href="{% url 'question_edit' quiz.course.pk quiz.pk question.pk %}">
+                                編集
+                            </a>
 
-                    <div class="question-actions">
-                        <a class="question-edit-btn"
-                        href="{% url 'question_edit' quiz.course.pk quiz.pk question.pk %}">
-                            編集
-                        </a>
-
-                        <form method="post"
-                            action="{% url 'question_delete' quiz.course.pk quiz.pk question.pk %}"
-                            class="inline-form"
-                            onsubmit="return confirm('この問題を削除しますか？');">
-                            {% csrf_token %}
-                            <button type="submit" class="question-delete-btn">
-                                削除
-                            </button>
-                        </form>
-                    </div>
+                            <form method="post"
+                                action="{% url 'question_delete' quiz.course.pk quiz.pk question.pk %}"
+                                class="inline-form"
+                                onsubmit="return confirm('この問題を削除しますか？');">
+                                {% csrf_token %}
+                                <button type="submit" class="question-delete-btn">
+                                    削除
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
