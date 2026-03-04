@@ -114,20 +114,6 @@ class AnswerStartView(LoginRequiredMixin, AnswerAttemptMixin, View):
             return redirect()
         
         #TODO: 正解チェック処理作成。
-        question = get_object_or_404(
-            Question,
-            quiz = self.quiz,
-            pk = self.session.question_order[self.session.current_index]
-        )
-
-        Answer.objects.create(
-            session = self.session,
-            question = question,
-            
-        )
-
-
-
         
         return redirect()
     
@@ -159,6 +145,24 @@ class AnswerResumeView(LoginRequiredMixin, AnswerAttemptMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        if self.session is None or self.session.finished_at is not None:
+            #NOTE: 不正な操作にする。
+            return redirect()
+        
+        print(request.POST.getlist('choice'))
+        #Questionの存在チェック。
+        question = get_object_or_404(
+            Question,
+            quiz = self.quiz,
+            pk = self.session.question_order[self.session.current_index]        
+        )
+
+        if request.POST.get('choice') is None:
+            print('選択されてないぜ。')
+
+        choice = Choice.objects.filter(question = question, pk__in = request.POST.getlist('choice'))
+        print(choice)
+
         return redirect()
         
 
