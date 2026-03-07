@@ -14,8 +14,19 @@ class QuizSession(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True, blank=True)
 
+    is_active = models.BooleanField(default = True)
+
     def __str__(self):
         return f"{self.user} - {self.quiz} ({self.started_at})"
+    
+    class Meta:
+        #NOTE:1ユーザー、1クイズセッションのため。
+        constraints = [
+            models.UniqueConstraint(
+                fields = ['user', 'quiz'],
+                name = 'unique_user_quiz'
+            )
+        ]
 
 
 class Answer(models.Model):
