@@ -5,6 +5,7 @@ from quizzes.models import (
     Question,
     Choice
 )
+from django.utils import timezone
 from answers.models import(
     QuizSession,
     Answer
@@ -32,6 +33,10 @@ class AnswerAttemptMixin:
         )
         random.shuffle(question_list)
 
+        if not question_list:
+            #NOTE: questionがない場合は回答ボタンを表示させないようにするが、念のため
+            raise ValueError('このクイズには問題がありません。')
+        
         session = QuizSession.objects.create(
             user = self.request.user,
             quiz = quiz,
@@ -45,7 +50,7 @@ class AnswerAttemptMixin:
             user = self.request.user
         ).delete()
 
-    def session_check(self, quiz):
+    def check_and_get_session(self, quiz):
         session = self.get_session(quiz)
         if session:
             if session.is_active is False or session.finished_at:
@@ -54,7 +59,6 @@ class AnswerAttemptMixin:
                 session = self.create_session(quiz)
         else:
             session = self.create_session(quiz)
-
 
         return session
 
@@ -74,6 +78,7 @@ class AnswerAttemptMixin:
         return quiz
     
     def get_question(self, session) -> Question | None:
+        #NOTE:問題表示の取得時だけ使用する。回答時の取得は別に用意する。
         for idx in range(session.current_index, len(session.question_order)):
             question = Question.objects.filter(
                 pk=session.question_order[idx],
@@ -87,3 +92,34 @@ class AnswerAttemptMixin:
                 return question
 
         return None
+    
+    def next_or_finish_question(self, session):
+        session.current_index +=1
+
+        total = len(session.question_order)
+        if session.current_index >= total:
+            session.finished_at = timezone.now()
+            session.save(update_fields = [
+                'current_indes',
+                'finished_at'
+            ])
+        else:
+            session.save(update_fields = ['current_index'])
+
+
+class AnswerCheckMixin:
+    #NOTE:　回答チェック
+    
+    def check_answer(self, session, choice):
+        session.question_order
+        quiz_list = list(
+            Question.objects.filter(
+                quiz = session.quiz
+            ).values_list('pk', flat = True)
+        )
+        question_pk = quiz_list[session.current_index]
+        Choice.objects.filter()
+
+
+        
+        return

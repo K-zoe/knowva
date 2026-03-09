@@ -41,5 +41,13 @@ class Answer(models.Model):
 
     def __str__(self):
         return f"{self.session} - {self.question}"
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields = ['session', 'question'],
+                name = 'unique_session_question'
+            )
+        ]
 
 
