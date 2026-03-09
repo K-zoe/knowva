@@ -95,12 +95,13 @@ class AnswerAttemptMixin:
     
     def next_or_finish_question(self, session):
         session.current_index +=1
-
+        
         total = len(session.question_order)
+
         if session.current_index >= total:
             session.finished_at = timezone.now()
             session.save(update_fields = [
-                'current_indes',
+                'current_index',
                 'finished_at'
             ])
         else:

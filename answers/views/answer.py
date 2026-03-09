@@ -59,6 +59,8 @@ class AnswerAttempView(LoginRequiredMixin, AnswerAttemptMixin, View):
             )
             answer.choices.add(*user_choice)
 
+        self.next_or_finish_question(session)
+
         if session is None:
             pass
         #status = self.next_or_finish_question(session)
