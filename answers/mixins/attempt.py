@@ -66,15 +66,17 @@ class AnswerAttemptMixin:
         #NOTE: 公開フラグが有効になっているものだけを返す。
         course = get_object_or_404(
             Course,
-            pk = kwargs.get('course_pk'),
+            uuid = kwargs.get('course_uuid'),
             is_public = True
         )
+        print("a")
         quiz = get_object_or_404(
             Quiz,
             course = course,
-            pk = kwargs.get('quiz_pk'),
+            uuid = kwargs.get('quiz_uuid'),
             is_public = True
         )
+        print("b")
         return quiz
     
     def get_question(self, session) -> Question | None:

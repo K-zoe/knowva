@@ -42,7 +42,7 @@ class CourseEditTest(BaseTest):
         response = self.client.post(
             reverse(
                 'course_edit',
-                kwargs = {'course_pk': course.pk},
+                kwargs = {'course_uuid': course.uuid},
             ),
             {
                 'title': 'テストコース編集',
@@ -62,7 +62,7 @@ class CourseEditTest(BaseTest):
         response = self.client.post(
             reverse(
                 'course_edit',
-                kwargs = {'course_pk': course.pk},
+                kwargs = {'course_uuid': course.uuid},
             ),
             {
                 'title': "",

@@ -9,7 +9,7 @@ def course_delete_view(request, *args, **kwargs):
     course = get_object_or_404(
         Course,
         user = request.user,
-        pk = kwargs.get('course_pk')
+        uuid = kwargs.get('course_uuid')
     )
     course.delete()
 
@@ -20,17 +20,17 @@ def quiz_delete_view(request, *args, **kwargs):
     course = get_object_or_404(
         Course,
         user = request.user,
-        pk = kwargs.get('course_pk')
+        uuid = kwargs.get('course_uuid')
     )
     quiz = get_object_or_404(
         Quiz,
         course = course,
-        pk = kwargs.get('quiz_pk')
+        uuid = kwargs.get('quiz_uuid')
     )
     quiz.delete()
 
     return HttpResponseRedirect(
-        reverse('course_edit_top', kwargs = {'course_pk': course.pk})
+        reverse('course_edit_top', kwargs = {'course_uuid': course.uuid})
         )
 
 @require_POST
@@ -38,23 +38,23 @@ def question_delete_view(request, *args, **kwargs):
     course = get_object_or_404(
         Course,
         user = request.user,
-        pk = kwargs.get('course_pk')
+        uuid = kwargs.get('course_uuid')
     )
     quiz = get_object_or_404(
         Quiz,
         course = course,
-        pk = kwargs.get('quiz_pk')
+        uuid = kwargs.get('quiz_uuid')
     )
     question = get_object_or_404(
         Question,
         quiz = quiz,
-        pk = kwargs.get('question_pk')
+        uuid = kwargs.get('question_uuid')
     )
     question.delete()
 
     return HttpResponseRedirect(
         reverse('quiz_edit', kwargs = {
-            'course_pk': course.pk,
-            'quiz_pk': quiz.pk
+            'course_uuid': course.uuid,
+            'quiz_uuid': quiz.uuid
         })
     )

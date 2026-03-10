@@ -12,7 +12,7 @@ class QuestionCreateTest(BaseTest):
         response = self.client.post(
             reverse(
                 'question_create',
-                kwargs = {'quiz_pk': quiz.pk}
+                kwargs = {'quiz_uuid': quiz.uuid}
             ),
             {
                 'title': 'テストクエッション',
@@ -48,7 +48,7 @@ class QuestionCreateTest(BaseTest):
         response = self.client.post(
             reverse(
                 'question_create',
-                kwargs = {'quiz_pk': quiz.pk}
+                kwargs = {'quiz_uuid': quiz.uuid}
             ),
             {
                 'title': '',
@@ -86,9 +86,9 @@ class QuestionEditTest(BaseTest):
             reverse(
                 'question_edit',
                 kwargs = {
-                    'course_pk': course.pk,
-                    'quiz_pk': quiz.pk,
-                    'question_pk': question.pk
+                    'course_uuid': course.uuid,
+                    'quiz_uuid': quiz.uuid,
+                    'question_uuid': question.uuid
                 }
             ),
             {
@@ -124,9 +124,9 @@ class QuestionEditTest(BaseTest):
             reverse(
                 'question_edit',
                 kwargs = {
-                    'course_pk': course.pk,
-                    'quiz_pk': quiz.pk,
-                    'question_pk': question.pk
+                    'course_uuid': course.uuid,
+                    'quiz_uuid': quiz.uuid,
+                    'question_uuid': question.uuid
                 }
             ),
             {

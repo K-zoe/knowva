@@ -41,7 +41,7 @@
     </h2>
 
     {% if quiz.is_public is False %}
-        <a href="{% url 'question_create' quiz.pk %}" class="question-create-btn">
+        <a href="{% url 'question_create' quiz.uuid %}" class="question-create-btn">
             ＋ 問題を作成
         </a>
     {% endif %}
@@ -73,12 +73,12 @@
                     {% if quiz.is_public is False %}
                         <div class="question-actions">
                             <a class="question-edit-btn"
-                            href="{% url 'question_edit' quiz.course.pk quiz.pk question.pk %}">
+                            href="{% url 'question_edit' quiz.course.uuid quiz.uuid question.uuid %}">
                                 編集
                             </a>
 
                             <form method="post"
-                                action="{% url 'question_delete' quiz.course.pk quiz.pk question.pk %}"
+                                action="{% url 'question_delete' quiz.course.uuid quiz.uuid question.uuid %}"
                                 class="inline-form"
                                 onsubmit="return confirm('この問題を削除しますか？');">
                                 {% csrf_token %}
@@ -116,7 +116,7 @@
 </div>
 
 <div class="back-nav">
-    <a href="{% url 'course_edit_top' quiz.course.pk %}" class="back-btn">
+    <a href="{% url 'course_edit_top' quiz.course.uuid %}" class="back-btn">
         ← コース編集画面に戻る
     </a>
 </div>

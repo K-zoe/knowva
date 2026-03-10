@@ -6,9 +6,9 @@ from answers.views.answer import (
 )
 
 urlpatterns = [
-    path('course_quiz_list/<int:course_pk>/', CourseQuizListView.as_view(), name = 'course_quiz_list'),
+    path('course_quiz_list/<uuid:course_uuid>/', CourseQuizListView.as_view(), name = 'course_quiz_list'),
 
-    path('answer_attempt/<int:course_pk>/<int:quiz_pk>/', AnswerAttempView.as_view(), name = 'answer_attempt'),
+    path('answer_attempt/<uuid:course_uuid>/<uuid:quiz_uuid>/', AnswerAttempView.as_view(), name = 'answer_attempt'),
 
-    path('answer_feedback/<int:quiz>/<int:question>/', AnswerFeedbackView.as_view(), name = 'answer_feedback'),
+    path('answer_feedback/<uuid:quiz_uuid>/<uuid:question_uuid>/', AnswerFeedbackView.as_view(), name = 'answer_feedback'),
 ]

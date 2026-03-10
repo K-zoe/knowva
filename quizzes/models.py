@@ -1,6 +1,8 @@
 from django.db import models
+import uuid
 
 class Course(models.Model):
+    uuid = models.UUIDField(default = uuid.uuid4, unique = True)
     title = models.CharField(max_length = 100)
     tag = models.CharField(max_length = 200)
     user = models.ForeignKey('accounts.User', on_delete = models.CASCADE, related_name = 'course')
@@ -8,6 +10,7 @@ class Course(models.Model):
     is_public = models.BooleanField(default=False)
 
 class Quiz(models.Model):
+    uuid = models.UUIDField(default = uuid.uuid4, unique = True)
     course = models.ForeignKey('Course', on_delete = models.CASCADE, related_name = 'quiz')
     title = models.CharField(max_length = 100)
     description = models.TextField(blank = True, null = True)
@@ -17,6 +20,7 @@ class Quiz(models.Model):
 
 
 class Question(models.Model):
+    uuid = models.UUIDField(default = uuid.uuid4, unique = True)
     quiz = models.ForeignKey('Quiz', on_delete = models.CASCADE, related_name = 'question')
     title = models.CharField(max_length = 200)
     text = models.TextField()

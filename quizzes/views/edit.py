@@ -21,7 +21,7 @@ class CourseEditTopView(LoginRequiredMixin, View):
         course = get_object_or_404(
             Course,
             user = self.request.user,
-            pk = kwargs.get('course_pk')
+            uuid = kwargs.get('course_uuid')
         )
         quizzes = Quiz.objects.filter(course = course).all()
         context = {'course':course, 'quizzes':quizzes}
@@ -36,14 +36,14 @@ class CourseEditView(LoginRequiredMixin, UpdateView):
         queryset = get_object_or_404(
             Course,
             user = self.request.user,
-            pk = self.kwargs.get('course_pk')
+            uuid = self.kwargs.get('course_uuid')
         )
         return queryset
     
     def get_success_url(self):
         return reverse(
             'course_edit_top',
-            kwargs = {'course_pk': self.kwargs.get('course_pk')}
+            kwargs = {'course_uuid': self.kwargs.get('course_uuid')}
         )
     
 class QuizEditView(LoginRequiredMixin, UpdateView):
@@ -68,12 +68,12 @@ class QuizEditView(LoginRequiredMixin, UpdateView):
         course = get_object_or_404(
             Course,
             user = self.request.user,
-            pk = self.kwargs.get('course_pk')
+            uuid = self.kwargs.get('course_uuid')
         )
         quiz = get_object_or_404(
             Quiz,
             course = course,
-            pk = self.kwargs.get('quiz_pk')
+            uuid = self.kwargs.get('quiz_uuid')
         )
         return quiz
     
@@ -89,8 +89,8 @@ class QuizEditView(LoginRequiredMixin, UpdateView):
         return reverse(
             'quiz_edit',
             kwargs = {
-                'course_pk': self.kwargs.get('course_pk'),
-                'quiz_pk': self.kwargs.get('quiz_pk')
+                'course_uuid': self.kwargs.get('course_uuid'),
+                'quiz_uuid': self.kwargs.get('quiz_uuid')
             }
         )
 
@@ -109,18 +109,18 @@ class QuestionEditView(LoginRequiredMixin, View):
         course = get_object_or_404(
             Course,
             user = request.user,
-            pk = kwargs.get('course_pk')
+            uuid = kwargs.get('course_uuid')
         )
         quiz = get_object_or_404(
             Quiz,
             course = course,
-            pk = kwargs.get('quiz_pk'),
+            uuid = kwargs.get('quiz_uuid'),
             is_public = False
         )
         question = get_object_or_404(
             Question,
             quiz = quiz,
-            pk = kwargs.get('question_pk')
+            uuid = kwargs.get('question_uuid')
         )
 
         form = self.form(instance = question)
@@ -138,18 +138,18 @@ class QuestionEditView(LoginRequiredMixin, View):
         course = get_object_or_404(
             Course,
             user=request.user,
-            pk=kwargs.get('course_pk'),
+            uuid=kwargs.get('course_uuid'),
         )
         quiz = get_object_or_404(
             Quiz,
             course=course,
-            pk=kwargs.get('quiz_pk'),
+            uuid=kwargs.get('quiz_uuid'),
             is_public = False
         )
         question = get_object_or_404(
             Question,
             quiz=quiz,
-            pk=kwargs.get('question_pk')
+            uuid=kwargs.get('question_uuid')
         )
 
         form = self.form(request.POST, instance=question)
@@ -165,8 +165,8 @@ class QuestionEditView(LoginRequiredMixin, View):
 
             return HttpResponseRedirect(
                 reverse('quiz_edit', kwargs={
-                    'course_pk': course.pk,
-                    'quiz_pk': quiz.pk
+                    'course_uuid': course.uuid,
+                    'quiz_uuid': quiz.uuid
                 })
             )
 

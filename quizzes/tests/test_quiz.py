@@ -9,7 +9,7 @@ class QuizCreateTest(BaseTest):
         response = self.client.post(
             reverse(
                 'quiz_create',
-                kwargs = {'course_pk': course.pk}
+                kwargs = {'course_uuid': course.uuid}
             ),
             {
                 'title': 'テストクイズ',
@@ -28,7 +28,7 @@ class QuizCreateTest(BaseTest):
         response = self.client.post(
             reverse(
                 'quiz_create',
-                kwargs = {'course_pk': course.pk}
+                kwargs = {'course_uuid': course.uuid}
             ),
             {
                 'title': '',
@@ -49,7 +49,7 @@ class QuizEditTest(BaseTest):
         response = self.client.post(
             reverse(
                 'quiz_edit',
-                kwargs = {'course_pk': course.pk, 'quiz_pk': quiz.pk}
+                kwargs = {'course_uuid': course.uuid, 'quiz_uuid': quiz.uuid}
             ),
             {
                 'title': 'テストクイズ編集',
@@ -69,7 +69,7 @@ class QuizEditTest(BaseTest):
         response = self.client.post(
             reverse(
                 'quiz_edit',
-                kwargs = {'course_pk': course.pk, 'quiz_pk': quiz.pk}
+                kwargs = {'course_uuid': course.uuid, 'quiz_uuid': quiz.uuid}
             ),
             {
                 'title': '',
