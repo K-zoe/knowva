@@ -11,12 +11,9 @@ from answers.models import(
     Answer
 )
 import random
-from django.db import transaction
-from pprint import pprint
+from django.db import IntegrityError
 
-class AnswerAttemptMixin:
-    #NOTE:　使いまわす機能はMixinにしておく
-
+class QuizSessionMixin:
     def get_session(self,quiz) -> QuizSession:
         session = QuizSession.objects.filter(
             user = self.request.user,
@@ -61,7 +58,22 @@ class AnswerAttemptMixin:
             session = self.create_session(quiz)
 
         return session
+    
+    def next_or_finish_question(self, session):
+        current_index = session.current_index + 1
+        
+        total = len(session.question_order)
 
+        if current_index >= total:
+            session.finished_at = timezone.now()
+            session.save(update_fields = [
+                'finished_at'
+            ])
+        else:
+            session.current_index+=1
+            session.save(update_fields = ['current_index'])
+    
+class QuizObjectMixin:
     def get_quiz(self, kwargs) -> Quiz:
         #NOTE: 公開フラグが有効になっているものだけを返す。
         course = get_object_or_404(
@@ -69,14 +81,12 @@ class AnswerAttemptMixin:
             uuid = kwargs.get('course_uuid'),
             is_public = True
         )
-        print("a")
         quiz = get_object_or_404(
             Quiz,
             course = course,
             uuid = kwargs.get('quiz_uuid'),
             is_public = True
         )
-        print("b")
         return quiz
     
     def get_question(self, session) -> Question | None:
@@ -94,35 +104,29 @@ class AnswerAttemptMixin:
                 return question
 
         return None
-    
-    def next_or_finish_question(self, session):
-        session.current_index +=1
-        
-        total = len(session.question_order)
-
-        if session.current_index >= total:
-            session.finished_at = timezone.now()
-            session.save(update_fields = [
-                'current_index',
-                'finished_at'
-            ])
-        else:
-            session.save(update_fields = ['current_index'])
-
 
 class AnswerCheckMixin:
     #NOTE:　回答チェック
     
-    def check_answer(self, session, choice):
-        session.question_order
-        quiz_list = list(
-            Question.objects.filter(
-                quiz = session.quiz
-            ).values_list('pk', flat = True)
-        )
-        question_pk = quiz_list[session.current_index]
-        Choice.objects.filter()
+    def check_answer(self, session, user_choice):
+        question_pk = session.question_order[session.current_index]
+        question = Question.objects.filter(pk = question_pk).first()
+        choices = Choice.objects.filter(
+            question = question,
+            is_correct = True
+        ).values_list('pk', flat = True)
 
-
+        if set(map(int, user_choice)) == set(choices):
+            is_correct = True
+        else:
+            is_correct = False
         
-        return
+        try:
+            answer = Answer.objects.create(
+                session = session,
+                question = question,
+                is_correct = is_correct
+            )
+            answer.choices.add(*user_choice)
+        except IntegrityError:
+            print("不正な操作")

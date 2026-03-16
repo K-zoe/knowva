@@ -1,7 +1,12 @@
 from django.shortcuts import render,get_object_or_404, redirect
+from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from answers.mixins.attempt import AnswerAttemptMixin
+from answers.mixins.attempt import (
+    QuizSessionMixin,
+    QuizObjectMixin,
+    AnswerCheckMixin
+)
 from quizzes.models import (
     Course,
     Quiz,
@@ -13,9 +18,14 @@ from answers.models import(
     Answer
 )
 from django.db import transaction
-from pprint import pprint
 
-class AnswerAttempView(LoginRequiredMixin, AnswerAttemptMixin, View):
+class AnswerAttempView(
+    LoginRequiredMixin,
+    QuizSessionMixin,
+    QuizObjectMixin,
+    AnswerCheckMixin,
+    View
+):
     template_name = 'answers/answer.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -35,39 +45,57 @@ class AnswerAttempView(LoginRequiredMixin, AnswerAttemptMixin, View):
         session = self.get_session(self.quiz)
         user_choice = request.POST.getlist('choice')
         #NOTE: session情報を前提にする。
-        question_pk = session.question_order[session.current_index]
-        question = Question.objects.filter(pk = question_pk).first()
-        choices = Choice.objects.filter(
-            question = question,
-            is_correct = True
-        ).values_list('pk', flat = True)
+        self.check_answer(session, user_choice)
 
-        if set(map(int, user_choice)) == set(choices):
-            print('あっているよ')
-            answer = Answer.objects.create(
-                session = session,
-                question = question,
-                is_correct = True
-            )
-            answer.choices.add(*user_choice)
-
-        else:
-            answer = Answer.objects.create(
-                session = session,
-                question = question,
-                is_correct = False
-            )
-            answer.choices.add(*user_choice)
+        url_index = session.current_index
 
         self.next_or_finish_question(session)
 
         if session is None:
             pass
         #status = self.next_or_finish_question(session)
-        return redirect()
+        return redirect('answer_feedback', kwargs.get('course_uuid'), kwargs.get('quiz_uuid'), url_index)
 
-class AnswerFeedbackView(LoginRequiredMixin, View):
-    template_name = 'answer/answer_feedback.html'
+class AnswerFeedbackView(LoginRequiredMixin, QuizSessionMixin, QuizObjectMixin, View):
+    template_name = 'answers/answer_feedback.html'
+
+    def dispatch(self,request, *args, **kwargs):
+        self.quiz = self.get_quiz(kwargs)
+        return super().dispatch(request, *args, **kwargs)        
 
     def get(self, request, *args, **kwargs):
-        return 
+        session = self.get_session(self.quiz)
+        current_index = session.current_index
+        url_index = kwargs.get('index')
+
+        if url_index is None:
+            raise Http404()
+        if url_index < 0 or url_index > current_index:
+            raise Http404()
+
+        question_pk = session.question_order[url_index]
+        question = get_object_or_404(
+            Question,
+            pk = question_pk
+        )
+        
+
+        choice = Choice.objects.filter(
+            question = question
+        ).all()
+
+        answer = get_object_or_404(
+            Answer,
+            session = session,
+            question = question
+        )
+
+        selected_choices = answer.choices.all()
+
+        context = {
+            'answer':answer,
+            'question':question,
+            'choices':choice,
+            'selected_choices':selected_choices
+        }
+        return render(request, self.template_name, context)

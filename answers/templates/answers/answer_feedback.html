@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+問題に回答 - Knowva
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'answers/css/answer.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>テスト</h1>
+
+
+
+<h2>{{ question.text }}</h2>
+
+{% if not selected_choices %}
+<p style="color:gray;">この問題は未回答です</p>
+{% endif %}
+
+{% for choice in choices %}
+
+<label style="display:block; margin:8px 0;">
+
+    <input 
+        type="checkbox"
+        disabled
+        {% if choice in selected_choices %}checked{% endif %}
+    >
+
+    {{ choice.text }}
+
+    {% if choice.is_correct %}
+        <span style="color:green;">（正解）</span>
+    {% endif %}
+
+    {% if choice in selected_choices and not choice.is_correct %}
+        <span style="color:red;">（あなたの誤答）</span>
+    {% endif %}
+
+</label>
+
+<p>{{ choice.explanation }}</p>
+
+{% endfor %}
+
+{% if has_next %}
+<a href="">
+    次の問題
+</a>
+{% else %}
+<a href="">
+    結果を見る
+</a>
+{% endif %}
+
+{% endblock %}
