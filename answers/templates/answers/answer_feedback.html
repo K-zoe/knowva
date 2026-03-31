@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-問題に回答 - Knowva
+答え合わせ - Knowva
 {% endblock %}
 
 {% block extra_css %}
@@ -11,14 +11,12 @@
 
 {% block content %}
 
-<h1>テスト</h1>
-
-
-
 <h2>{{ question.text }}</h2>
 
-{% if not selected_choices %}
-<p style="color:gray;">この問題は未回答です</p>
+{% if answer.is_correct %}
+    <p style="color:gray;">正解</p>
+{% else %}
+    <p style="color:gray;">不正解</p>
 {% endif %}
 
 {% for choice in choices %}
@@ -33,12 +31,15 @@
 
     {{ choice.text }}
 
-    {% if choice.is_correct %}
-        <span style="color:green;">（正解）</span>
-    {% endif %}
+    {% if choice.is_correct and choice in selected_choices %}
+        <span style="color:green;">（回答は正解です）</span>
 
-    {% if choice in selected_choices and not choice.is_correct %}
-        <span style="color:red;">（あなたの誤答）</span>
+    {% elif choice.is_correct and choice not in selected_choices %}
+        <span style="color:green;">（正解）</span>
+
+    {% elif not choice.is_correct and choice in selected_choices %}
+        <span style="color:red;">（回答は不正解です）</span>
+
     {% endif %}
 
 </label>
@@ -47,14 +48,25 @@
 
 {% endfor %}
 
-{% if has_next %}
-<a href="">
-    次の問題
-</a>
-{% else %}
-<a href="">
-    結果を見る
-</a>
+{% if prev_index is not None %}
+    <a href="{% url 'answer_feedback' question.quiz.course.uuid question.quiz.uuid prev_index %}">
+        前の回答
+    </a><br>
 {% endif %}
 
+{% if next_index is not None%}
+    <a href="{% url 'answer_feedback' question.quiz.course.uuid question.quiz.uuid next_index %}">
+        次の回答
+    </a><br>
+{% endif %}
+
+{% if session.finished_at %}
+    <a href= "{% url 'answer_attempt' question.quiz.course.uuid question.quiz.uuid %}">
+        再挑戦
+    </a>
+{% else %}
+    <a href = "{% url 'answer_attempt' question.quiz.course.uuid question.quiz.uuid %}" >
+        問題を解く
+    </a>
+{% endif %}
 {% endblock %}

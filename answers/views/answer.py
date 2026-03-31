@@ -61,7 +61,28 @@ class AnswerFeedbackView(LoginRequiredMixin, QuizSessionMixin, QuizObjectMixin, 
 
     def dispatch(self,request, *args, **kwargs):
         self.quiz = self.get_quiz(kwargs)
-        return super().dispatch(request, *args, **kwargs)        
+        return super().dispatch(request, *args, **kwargs)    
+
+    def get_prev_index(self, session, url_index, current_index):
+        if url_index == 0:
+            return None
+        
+        elif url_index > 0:
+            return url_index -1
+        
+    def get_next_index(self, session, url_index, current_index):
+
+        if url_index == current_index and session.finished_at:
+            return None
+        
+        elif url_index + 1 == current_index and session.finished_at is None:
+            return None
+
+        elif url_index < current_index and url_index >= 0:
+            return url_index + 1
+        
+        else:
+            return None
 
     def get(self, request, *args, **kwargs):
         session = self.get_session(self.quiz)
@@ -72,6 +93,14 @@ class AnswerFeedbackView(LoginRequiredMixin, QuizSessionMixin, QuizObjectMixin, 
             raise Http404()
         if url_index < 0 or url_index > current_index:
             raise Http404()
+        
+        #画面に表示させるURL制御
+        prev_index = self.get_prev_index(session, url_index, current_index)
+        next_index = self.get_next_index(session, url_index, current_index)
+
+        print(prev_index)
+        print(next_index)
+
 
         question_pk = session.question_order[url_index]
         question = get_object_or_404(
@@ -93,9 +122,12 @@ class AnswerFeedbackView(LoginRequiredMixin, QuizSessionMixin, QuizObjectMixin, 
         selected_choices = answer.choices.all()
 
         context = {
+            'session':session,
             'answer':answer,
             'question':question,
             'choices':choice,
-            'selected_choices':selected_choices
+            'selected_choices':selected_choices,
+            'prev_index':prev_index,
+            'next_index':next_index
         }
         return render(request, self.template_name, context)
