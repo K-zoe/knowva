@@ -6,67 +6,122 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'answers/css/answer.css' %}">
+<link rel="stylesheet" href="{% static 'answers/css/answer_feedback.css' %}">
 {% endblock %}
 
 {% block content %}
 
-<h2>{{ question.text }}</h2>
+<div class="answer-container">
 
-{% if answer.is_correct %}
-    <p style="color:gray;">正解</p>
-{% else %}
-    <p style="color:gray;">不正解</p>
-{% endif %}
+    <!-- 問題 -->
+    <div class="question-card">
 
-{% for choice in choices %}
+        <div class="question-header">
+            <h2 class="question-title">{{question.title}}</h2>
 
-<label style="display:block; margin:8px 0;">
+            <div class="answer-result {% if answer.is_correct %}correct{% else %}incorrect{% endif %}">
+                {% if answer.is_correct %}
+                    ✔ 正解
+                {% else %}
+                    ✖ 不正解
+                {% endif %}
+            </div>
+        </div>
+        <p>
+            問題：{{ question.text|linebreaksbr}}
+        </p>
+        <p>
+            解説：{{ question.explanation|linebreaksbr}}
+        </p>
 
-    <input 
-        type="checkbox"
-        disabled
-        {% if choice in selected_choices %}checked{% endif %}
-    >
+    </div>
 
-    {{ choice.text }}
+    <!-- 選択肢 -->
+    <div class="choices">
 
-    {% if choice.is_correct and choice in selected_choices %}
-        <span style="color:green;">（回答は正解です）</span>
+        {% for choice in choices %}
 
-    {% elif choice.is_correct and choice not in selected_choices %}
-        <span style="color:green;">（正解）</span>
+        <div class="choice-card
+            {% if choice in selected_choices %} selected {% endif %}
+            {% if choice.is_correct %} correct-choice {% endif %}
+            {% if not choice.is_correct and choice in selected_choices %} incorrect-choice {% endif %}
+        ">
 
-    {% elif not choice.is_correct and choice in selected_choices %}
-        <span style="color:red;">（回答は不正解です）</span>
+            <div class="choice-body">
 
-    {% endif %}
+                <input 
+                    type="checkbox"
+                    class="choice-checkbox"
+                    disabled
+                    {% if choice in selected_choices %}checked{% endif %}
+                >
 
-</label>
+                <span class="choice-text">
+                    {{ forloop.counter }}. {{ choice.text }}
+                </span>
 
-<p>{{ choice.explanation }}</p>
+            </div>
 
-{% endfor %}
+            <div class="choice-result">
+                {% if choice.is_correct and choice in selected_choices %}
+                    <span class="correct-text">あなたの回答：正解</span>
 
-{% if prev_index is not None %}
-    <a href="{% url 'answer_feedback' question.quiz.course.uuid question.quiz.uuid prev_index %}">
-        前の回答
-    </a><br>
-{% endif %}
+                {% elif choice.is_correct %}
+                    <span class="correct-text">正解</span>
 
-{% if next_index is not None%}
-    <a href="{% url 'answer_feedback' question.quiz.course.uuid question.quiz.uuid next_index %}">
-        次の回答
-    </a><br>
-{% endif %}
+                {% elif choice in selected_choices %}
+                    <span class="incorrect-text">あなたの回答：不正解</span>
+                {% endif %}
+            </div>
 
-{% if session.finished_at %}
-    <a href= "{% url 'answer_attempt' question.quiz.course.uuid question.quiz.uuid %}">
-        再挑戦
-    </a>
-{% else %}
-    <a href = "{% url 'answer_attempt' question.quiz.course.uuid question.quiz.uuid %}" >
-        問題を解く
-    </a>
-{% endif %}
+            {% if choice.explanation %}
+            <div class="choice-explanation">
+                解説：{{ choice.explanation|linebreaksbr }}
+            </div>
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- ナビ -->
+    <div class="answer-navigation">
+
+        {% if prev_index is not None %}
+        <a class="nav-btn"
+           href="{% url 'answer_feedback' question.quiz.course.uuid question.quiz.uuid prev_index %}">
+            ← 前の回答
+        </a>
+        {% endif %}
+
+        {% if next_index is not None %}
+        <a class="nav-btn"
+           href="{% url 'answer_feedback' question.quiz.course.uuid question.quiz.uuid next_index %}">
+            次の回答 →
+        </a>
+        {% endif %}
+
+    </div>
+
+    <!-- アクション -->
+    <div class="answer-actions">
+
+        {% if session.finished_at %}
+        <a class="btn-main"
+           href="{% url 'answer_attempt' question.quiz.course.uuid question.quiz.uuid %}">
+            もう一度挑戦する
+        </a>
+        {% else %}
+        <a class="btn-main"
+           href="{% url 'answer_attempt' question.quiz.course.uuid question.quiz.uuid %}">
+            次の問題へ
+        </a>
+        {% endif %}
+
+    </div>
+
+</div>
+
 {% endblock %}

@@ -98,10 +98,6 @@ class AnswerFeedbackView(LoginRequiredMixin, QuizSessionMixin, QuizObjectMixin, 
         prev_index = self.get_prev_index(session, url_index, current_index)
         next_index = self.get_next_index(session, url_index, current_index)
 
-        print(prev_index)
-        print(next_index)
-
-
         question_pk = session.question_order[url_index]
         question = get_object_or_404(
             Question,
