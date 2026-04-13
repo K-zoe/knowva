@@ -1,12 +1,12 @@
 from django.urls import path
-from answers.views.list import CourseQuizListView
+from answers.views.list import CourseSearchView
 from answers.views.answer import (
     AnswerAttempView,
     AnswerFeedbackView
 )
 
 urlpatterns = [
-    path('course_quiz_list/<uuid:course_uuid>/', CourseQuizListView.as_view(), name = 'course_quiz_list'),
+    path('course_search/', CourseSearchView.as_view(), name = 'course_search'),
 
     path('answer_attempt/<uuid:course_uuid>/<uuid:quiz_uuid>/', AnswerAttempView.as_view(), name = 'answer_attempt'),
 

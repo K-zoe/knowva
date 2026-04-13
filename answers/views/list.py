@@ -1,26 +1,27 @@
 from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View
+from django.views.generic import ListView
 from quizzes.models import (
     Course,
     Quiz,
     Question,
     Choice
 )
+from answers.forms import CourseSearchForm
 
-class CourseQuizListView(View):
-    #NOTE:　ここまではアカウントを作成していないユーザーでもアクセスできる。
-    template_name = 'answers/course_quiz_list.html'
+class CourseSearchView(ListView):
+    template_name = 'answers/course_search.html'
+    model = Course
+    context_object_name = 'courses'
+    paginate_by = 10
 
-    def get(self, request, *args, **kwargs):
-        #TODO: 回答済みのクイズは成果率と再挑戦ボタンを表示。回答機能を作成した後に実装する。
-        #TODO: 未回答のクイズは、挑戦ボタンを表示。
-        course = get_object_or_404(
-            Course,
-            pk = kwargs.get('course_pk')
-        )
-        quizzes = Quiz.objects.filter(course = course).all()
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(
+            is_public = True,
+            quiz__is_public = True
+        ).distinct()
 
-        context ={'course': course, 'quizzes': quizzes}
+        self.form = CourseSearchForm(self.request.GET)
 
-        return render(request, self.template_name, context)
+        return queryset
