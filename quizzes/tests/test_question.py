@@ -1,4 +1,4 @@
-from .base import BaseTest
+from test.base import BaseTest
 from django.urls import reverse
 from quizzes.models import Question, Choice
 
