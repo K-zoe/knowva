@@ -3,7 +3,7 @@ from ..models import Course,Quiz,Question,Choice
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
-from ..forms import (
+from ..forms.create import (
     CourseForm,
     QuizEditForm,
     QuestionForm,

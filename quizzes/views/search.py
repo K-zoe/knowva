@@ -7,7 +7,7 @@ from quizzes.models import (
     Question,
     Choice
 )
-from answers.forms import CourseSearchForm
+from quizzes.forms.search import CourseSearchForm
 
 class CourseSearchView(ListView):
     template_name = 'answers/course_search.html'
@@ -23,5 +23,7 @@ class CourseSearchView(ListView):
         ).distinct()
 
         self.form = CourseSearchForm(self.request.GET)
+
+        queryset = self.form.filter_queryset(queryset)
 
         return queryset
