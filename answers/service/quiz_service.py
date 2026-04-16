@@ -157,4 +157,4 @@ class QuizService:
             )
             answer.choices.add(*user_choice)
         except IntegrityError:
-            print("不正な操作")
+            raise ValueError("不正な操作")

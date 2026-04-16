@@ -36,7 +36,7 @@ class AnswerTest(BaseTest):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_answer_attempt_view_is_not_public_fail(self):
+    def test_answer_attempt_view_is_not_public_failure(self):
         #NOTE:コースと問題集が公開されていない問題は表示されないかテスト。
         course, quiz = self.create_course(is_public = False)
         response = self.client.get(
@@ -51,3 +51,61 @@ class AnswerTest(BaseTest):
 
         self.assertEqual(response.status_code, 404)
 
+
+    def test_can_answer_success(self):
+        #NOTE:回答できるかテスト。
+        course, quiz = self.create_course()
+
+        response = self.client.get(
+            reverse(
+                'answer_attempt',
+                kwargs = {
+                    'course_uuid': course.uuid,
+                    'quiz_uuid': quiz.uuid
+                }
+            )
+        )
+
+        response = self.client.post(
+            reverse(
+                'answer_attempt',
+                kwargs = {
+                    'course_uuid': course.uuid,
+                    'quiz_uuid': quiz.uuid
+                }
+            ),
+            {
+                'choice':['1'],
+            }
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_can_answer_failure(self):
+        #NOTE:回答できるかテスト。
+        course, quiz = self.create_course()
+
+        response = self.client.get(
+            reverse(
+                'answer_attempt',
+                kwargs = {
+                    'course_uuid': course.uuid,
+                    'quiz_uuid': quiz.uuid
+                }
+            )
+        )
+
+        response = self.client.post(
+            reverse(
+                'answer_attempt',
+                kwargs = {
+                    'course_uuid': course.uuid,
+                    'quiz_uuid': quiz.uuid
+                }
+            ),
+            {
+                'choice':['8'],
+            }
+        )
+
+        self.assertEqual(response.status_code, 302)
