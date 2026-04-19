@@ -2,83 +2,103 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from answers.service.quiz_service import QuizService
 from quizzes.models import Question, Choice
 from answers.models import Answer
+from answers.forms import AnswerForm
+from answers.views.mixins import QuizMixin
+from answers.service.quiz_service import QuizSessionService
 
-class AnswerAttempView(LoginRequiredMixin, QuizService, View):
+class AnswerAttempView(LoginRequiredMixin, QuizMixin, View):
     template_name = 'answers/answer.html'
 
     def dispatch(self, request, *args, **kwargs):
-        course_uuid = kwargs.get('course_uuid')
-        quiz_uuid = kwargs.get('quiz_uuid')
-        self.quiz = self.get_quiz(course_uuid, quiz_uuid)
+        self.course_uuid = kwargs.get('course_uuid')
+        self.quiz_uuid = kwargs.get('quiz_uuid')
+        self.quiz = self.get_quiz(self.course_uuid, self.quiz_uuid)
         self.user = request.user
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        session = self.check_and_get_session(self.user, self.quiz)
-        question = self.get_question(session)
+        session_service = QuizSessionService(self.user, self.quiz)
+        #sessionの状態に合わせて、取得、作成、再作成。
+        session = session_service.get_or_create_session()
+        if session is None:
+            raise Http404()
+        
+        question = session_service.get_question(session)
         if question is None:
             raise Http404()
-        context = {'question': question}
+        
+        form = AnswerForm(question = question)
+        context = {'question': question, 'form': form}
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        session = self.get_session(self.user, self.quiz)
-        user_choice = request.POST.getlist('choice')
-        #NOTE: session情報を前提にする。
-        self.check_answer(session, user_choice)
+        session_service = QuizSessionService(self.user, self.quiz)
+
+        session = session_service.get_session()
+        if session is None:
+            raise Http404()
+        
+        question = session_service.get_question(session)
+
+        form = AnswerForm(request.POST, question = question)
+        if not form.is_valid():
+            return render(request, self.template_name, {'question': question, 'form': form})
+        
+        user_choice = form.cleaned_data['choices']
+
+        answer = session_service.check_answer(session, user_choice)
+        if answer is None:
+            #TODO: エラー処理をどうするか。
+            raise Http404()
 
         url_index = session.current_index
+        session_service.next_or_finish_question(session)
 
-        self.next_or_finish_question(session)
+        return redirect('answer_feedback', self.course_uuid, self.quiz_uuid, url_index)
 
-        if session is None:
-            pass
-        #status = self.next_or_finish_question(session)
-        return redirect('answer_feedback', kwargs.get('course_uuid'), kwargs.get('quiz_uuid'), url_index)
-
-class AnswerFeedbackView(LoginRequiredMixin, QuizService, View):
+class AnswerFeedbackView(LoginRequiredMixin, QuizMixin, View):
     template_name = 'answers/answer_feedback.html'
 
     def dispatch(self,request, *args, **kwargs):
-        course_uuid = kwargs.get('course_uuid')
-        quiz_uuid = kwargs.get('quiz_uuid')
-        self.quiz = self.get_quiz(course_uuid, quiz_uuid)
+        self.course_uuid = kwargs.get('course_uuid')
+        self.quiz_uuid = kwargs.get('quiz_uuid')
+        self.quiz = self.get_quiz(self.course_uuid, self.quiz_uuid)
         self.user = request.user
         return super().dispatch(request, *args, **kwargs)    
 
     def get(self, request, *args, **kwargs):
-        session = self.get_session(self.user, self.quiz)
+        session_service = QuizSessionService(self.user, self.quiz)
+        session = session_service.get_session()
+        if session is None:
+            raise Http404()
+        
+        #URLパラメーターのindexチェック
         current_index = session.current_index
         url_index = kwargs.get('index')
-
         if url_index is None:
             raise Http404()
         if url_index < 0 or url_index > current_index:
             raise Http404()
         
         #画面に表示させるURL制御
-        prev_index = self.get_prev_index(url_index)
-        next_index = self.get_next_index(session, url_index, current_index)
+        prev_index = session_service.get_prev_index(url_index)
+        next_index = session_service.get_next_index(session, url_index, current_index)
 
         question_pk = session.question_order[url_index]
         question = get_object_or_404(
             Question,
             pk = question_pk
         )
-        
         choice = Choice.objects.filter(
             question = question
         ).all()
-
         answer = get_object_or_404(
             Answer,
             session = session,
             question = question
         )
-
         selected_choices = answer.choices.all()
 
         context = {

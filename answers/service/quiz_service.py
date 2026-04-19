@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from quizzes.models import (
     Course,
     Quiz,
@@ -11,61 +10,59 @@ from answers.models import(
     Answer
 )
 import random
-from django.db import IntegrityError
 
-class QuizService:
-    #NOTE: クイズセッションの管理を行う。
-    @staticmethod
-    def get_session(user,quiz) -> QuizSession:
+class QuizSessionService:
+    #NOTE: Session情報の管理を行う。
+    def __init__(self, user, quiz):
+        self.user = user
+        self.quiz = quiz
+    
+    def get_session(self) -> QuizSession:
         session = QuizSession.objects.filter(
-            user = user,
-            quiz = quiz,
+            user = self.user,
+            quiz = self.quiz,
         ).first()
         return session
     
-    @staticmethod
-    def create_session(user,quiz) -> QuizSession:
-        #TODO:quizの登録だけでquiestionがない可能性があるので対応が必要
+    def create_session(self) -> QuizSession | None:
         question_list = list(
             Question.objects.filter(
-                quiz = quiz
+                quiz = self.quiz
             ).values_list('pk', flat = True)
         )
         random.shuffle(question_list)
 
         if not question_list:
-            #NOTE: questionがない場合は回答ボタンを表示させないようにするが、念のため
-            raise ValueError('このクイズには問題がありません。')
+            return None
         
         session = QuizSession.objects.create(
-            user = user,
-            quiz = quiz,
+            user = self.user,
+            quiz = self.quiz,
             question_order = question_list
         )
         return session
     
-    @staticmethod
-    def delete_session(user, session_pk):
+    def delete_session(self, session_pk) -> None:
         QuizSession.objects.filter(
             pk = session_pk,
-            user = user
+            user = self.user
         ).delete()
 
-    @staticmethod
-    def check_and_get_session(user, quiz):
-        session = QuizService.get_session(user, quiz)
+    def get_or_create_session(self) -> QuizSession:
+        #NOTE: sessionの状態に合わせて、取得、作成、再作成して返す。
+        session = self.get_session()
         if session:
             if session.is_active is False or session.finished_at:
                 #再挑戦。
-                QuizService.delete_session(user, session.pk)
-                session = QuizService.create_session(user, quiz)
+                self.delete_session(session.pk)
+                session = self.create_session()
         else:
-            session = QuizService.create_session(user, quiz)
+            session = self.create_session()
 
         return session
     
-    @staticmethod
-    def next_or_finish_question(session):
+    def next_or_finish_question(self, session) -> None:
+        #NOTE: sessionの状態を更新する。次の問題に進むか、終了させるか。
         current_index = session.current_index + 1
         
         total = len(session.question_order)
@@ -79,16 +76,14 @@ class QuizService:
             session.current_index+=1
             session.save(update_fields = ['current_index'])
 
-    @staticmethod
-    def get_prev_index(url_index):
+    def get_prev_index(self, url_index) -> int | None:
         if url_index == 0:
             return None
         
         elif url_index > 0:
             return url_index -1
 
-    @staticmethod
-    def get_next_index(session, url_index, current_index):
+    def get_next_index(self, session, url_index, current_index) -> int | None:
 
         if url_index == current_index and session.finished_at:
             return None
@@ -102,24 +97,7 @@ class QuizService:
         else:
             return None
     
-    @staticmethod
-    def get_quiz(course_uuid, quiz_uuid) -> Quiz:
-        #NOTE: 公開フラグが有効になっているものだけを返す。
-        course = get_object_or_404(
-            Course,
-            uuid = course_uuid,
-            is_public = True
-        )
-        quiz = get_object_or_404(
-            Quiz,
-            course = course,
-            uuid = quiz_uuid,
-            is_public = True
-        )
-        return quiz
-    
-    @staticmethod
-    def get_question(session) -> Question | None:
+    def get_question(self, session) -> Question | None:
         #NOTE:問題表示の取得時だけ使用する。回答時の取得は別に用意する。
         for idx in range(session.current_index, len(session.question_order)):
             question = Question.objects.filter(
@@ -135,8 +113,8 @@ class QuizService:
 
         return None
 
-    @staticmethod
-    def check_answer(session, user_choice):
+    def check_answer(self, session, user_choice) -> Answer | None:
+        #NOTE: 回答の正誤を判定して保存する。
         question_pk = session.question_order[session.current_index]
         question = Question.objects.filter(pk = question_pk).first()
         choices = Choice.objects.filter(
@@ -148,7 +126,7 @@ class QuizService:
             is_correct = True
         else:
             is_correct = False
-        
+
         try:
             answer = Answer.objects.create(
                 session = session,
@@ -156,5 +134,7 @@ class QuizService:
                 is_correct = is_correct
             )
             answer.choices.add(*user_choice)
-        except IntegrityError:
-            raise ValueError("不正な操作")
+            return answer
+        
+        except:
+            return None

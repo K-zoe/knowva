@@ -34,37 +34,34 @@
     <form method="post" class="answer-form">
         {% csrf_token %}
 
-        <!-- 選択肢 -->
-        <div class="choices">
+        {% if form.errors %}
+            <div class="error">
+                {{ form.errors }}
+            </div>
+        {% endif %}
 
-            {% for choice in question.choice.all %}
+        <div class="choices">
+            {% for checkbox in form.choices %}
             <label class="choice-card">
 
                 <div class="choice-body">
 
-                    <input
-                        type="checkbox"
-                        name="choice"
-                        value="{{ choice.id }}"
-                        class="choice-checkbox"
-                    >
+                    {{ checkbox.tag }}
 
                     <span class="choice-number">
                         {{ forloop.counter }}
                     </span>
 
                     <span class="choice-text">
-                        {{ choice.text }}
+                        {{ checkbox.choice_label }}
                     </span>
 
                 </div>
 
             </label>
             {% endfor %}
-
         </div>
 
-        <!-- 回答ボタン -->
         <div class="answer-actions">
             <button type="submit" class="btn-answer">
                 回答する
