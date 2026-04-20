@@ -3,7 +3,7 @@ from django import forms
 class AnswerForm(forms.Form):
     choices = forms.MultipleChoiceField(
         required=True,
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple(attrs={'class':'choice-checkbox'}),
         error_messages={
             'required': '少なくとも1つ選択してください'
         }

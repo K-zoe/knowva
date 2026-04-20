@@ -10,6 +10,7 @@ from answers.models import(
     Answer
 )
 import random
+from django.db import IntegrityError
 
 class QuizSessionService:
     #NOTE: Session情報の管理を行う。
@@ -42,11 +43,8 @@ class QuizSessionService:
         )
         return session
     
-    def delete_session(self, session_pk) -> None:
-        QuizSession.objects.filter(
-            pk = session_pk,
-            user = self.user
-        ).delete()
+    def delete_session(self, session) -> None:
+        session.delete()
 
     def get_or_create_session(self) -> QuizSession:
         #NOTE: sessionの状態に合わせて、取得、作成、再作成して返す。
@@ -54,7 +52,7 @@ class QuizSessionService:
         if session:
             if session.is_active is False or session.finished_at:
                 #再挑戦。
-                self.delete_session(session.pk)
+                self.delete_session(session)
                 session = self.create_session()
         else:
             session = self.create_session()
@@ -84,13 +82,13 @@ class QuizSessionService:
             return url_index -1
 
     def get_next_index(self, session, url_index, current_index) -> int | None:
-
+        #url_indexが現在のindexで、かつsessionが終了している場合はNone
         if url_index == current_index and session.finished_at:
             return None
-        
+        #url_indexに1足したindexが現在のindexで、かつsessionが終了していない場合はNone
         elif url_index + 1 == current_index and session.finished_at is None:
             return None
-
+        #url_indexが現在のindexより小さく。
         elif url_index < current_index and url_index >= 0:
             return url_index + 1
         
@@ -98,7 +96,7 @@ class QuizSessionService:
             return None
     
     def get_question(self, session) -> Question | None:
-        #NOTE:問題表示の取得時だけ使用する。回答時の取得は別に用意する。
+        #NOTE:session情報から次の問題を取得する。
         for idx in range(session.current_index, len(session.question_order)):
             question = Question.objects.filter(
                 pk=session.question_order[idx],
@@ -136,5 +134,5 @@ class QuizSessionService:
             answer.choices.add(*user_choice)
             return answer
         
-        except:
+        except IntegrityError:
             return None
