@@ -1,6 +1,8 @@
 from test.base import BaseTest
 from accounts.models import User
 from django.urls import reverse
+from answers.models import QuizSession,Answer
+from quizzes.models import Choice
 
 class AnswerTest(BaseTest):
     def create_course(self, question_count = 3, is_public = True):
@@ -52,8 +54,42 @@ class AnswerTest(BaseTest):
         self.assertEqual(response.status_code, 404)
 
 
-    def test_can_answer_success(self):
-        #NOTE:回答できるかテスト。
+    def test_answer_success(self):
+        #NOTE:回答テスト
+        course, quiz = self.create_course()
+        #sessionを作成
+        response = self.client.get(
+            reverse(
+                'answer_attempt',
+                kwargs = {
+                    'course_uuid': course.uuid,
+                    'quiz_uuid': quiz.uuid
+                }
+            )
+        )
+        session = QuizSession.objects.first()
+        quiestion_pk = session.question_order[session.current_index]
+        correct_choice = Choice.objects.filter(
+            question__pk = quiestion_pk,
+            is_correct = True
+        ).first()
+
+        response = self.client.post(
+            reverse(
+                'answer_attempt',
+                kwargs = {
+                    'course_uuid': course.uuid,
+                    'quiz_uuid': quiz.uuid
+                }
+            ),
+            {'choices':[correct_choice.pk],}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Answer.objects.count(), 1)
+
+    def test_answer_failure(self):
+        #NOTE:不正な回答がはじかれるかテスト
         course, quiz = self.create_course()
 
         response = self.client.get(
@@ -74,38 +110,8 @@ class AnswerTest(BaseTest):
                     'quiz_uuid': quiz.uuid
                 }
             ),
-            {
-                'choice':['1'],
-            }
+            {'choices':['99999']}
         )
 
-        self.assertEqual(response.status_code, 302)
-
-    def test_can_answer_failure(self):
-        #NOTE:回答できるかテスト。
-        course, quiz = self.create_course()
-
-        response = self.client.get(
-            reverse(
-                'answer_attempt',
-                kwargs = {
-                    'course_uuid': course.uuid,
-                    'quiz_uuid': quiz.uuid
-                }
-            )
-        )
-
-        response = self.client.post(
-            reverse(
-                'answer_attempt',
-                kwargs = {
-                    'course_uuid': course.uuid,
-                    'quiz_uuid': quiz.uuid
-                }
-            ),
-            {
-                'choice':['8'],
-            }
-        )
-
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Answer.objects.count(), 0)

@@ -8,7 +8,7 @@ from answers.forms import AnswerForm
 from answers.views.mixins import QuizMixin
 from answers.service.quiz_service import QuizSessionService
 
-class AnswerAttempView(LoginRequiredMixin, QuizMixin, View):
+class AnswerAttemptView(LoginRequiredMixin, QuizMixin, View):
     template_name = 'answers/answer.html'
 
     def dispatch(self, request, *args, **kwargs):
