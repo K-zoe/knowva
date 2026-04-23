@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+結果 - Knowva
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'answers/css/result.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="result-container">
+
+    <!-- スコアカード -->
+    <div class="score-card">
+
+        <h1 class="result-title">クイズ結果</h1>
+
+        <div class="score-display">
+            <span class="score-correct">{{ score.correct }}</span>
+            <span class="score-separator"> / </span>
+            <span class="score-total">{{ score.total }}</span>
+        </div>
+
+        <p class="score-label">問正解</p>
+
+        <div class="score-result-label {% if score.correct == score.total %}perfect{% elif score.correct >= score.total|divisibleby:2 %}good{% else %}retry{% endif %}">
+            {% if score.correct == score.total %}
+                🎉 パーフェクト！
+            {% elif score.correct > 0 %}
+                👍 よく頑張りました！
+            {% else %}
+                💪 もう一度挑戦しよう！
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- アクション -->
+    <div class="result-actions">
+
+        <a class="btn-main-red"
+           href="{% url 'answer_attempt' session.quiz.course.uuid session.quiz.uuid %}">
+            もう一度挑戦する
+        </a>
+
+        <a class="btn-main"
+           href="{% url 'answer_feedback' session.quiz.course.uuid session.quiz.uuid 0 %}">
+            回答を見直す
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

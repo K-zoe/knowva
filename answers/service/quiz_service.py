@@ -22,6 +22,7 @@ class QuizSessionService:
         session = QuizSession.objects.filter(
             user = self.user,
             quiz = self.quiz,
+            is_active = True
         ).first()
         return session
     
@@ -136,3 +137,20 @@ class QuizSessionService:
         
         except IntegrityError:
             return None
+
+    def check_session_finished(self, session) -> bool:
+        #NOTE: sessionが終了しているかどうかを判定する。
+        if session.finished_at and session.is_active is True:
+            return True
+        else:
+            return False
+        
+    def calculate_score(self, session) -> dict:
+        #NOTE: 全問中何問正解したかを返す。
+        total = len(session.question_order)
+        correct = Answer.objects.filter(
+            session = session,
+            is_correct = True
+        ).count()
+
+        return {'total': total, 'correct': correct}

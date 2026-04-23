@@ -109,10 +109,16 @@
     <div class="answer-actions">
 
         {% if session.finished_at %}
-        <a class="btn-main"
+        <a class="btn-main-red"
            href="{% url 'answer_attempt' question.quiz.course.uuid question.quiz.uuid %}">
             もう一度挑戦する
         </a>
+        <br>
+        <a class="btn-main"
+            href="{% url 'result' question.quiz.course.uuid question.quiz.uuid %}">
+                結果を見る
+        </a>
+
         {% else %}
         <a class="btn-main"
            href="{% url 'answer_attempt' question.quiz.course.uuid question.quiz.uuid %}">
