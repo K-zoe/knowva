@@ -10,10 +10,10 @@ from quizzes.models import (
 from quizzes.forms.search import CourseSearchForm
 
 class CourseSearchView(ListView):
-    template_name = 'answers/course_search.html'
+    template_name = 'quizzes/course_search.html'
     model = Course
     context_object_name = 'courses'
-    paginate_by = 10
+    paginate_by = 1
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -21,9 +21,13 @@ class CourseSearchView(ListView):
             is_public = True,
             quiz__is_public = True
         ).distinct()
-
+        #入力フォームの制御はFormクラスに任せる。
         self.form = CourseSearchForm(self.request.GET)
-
         queryset = self.form.filter_queryset(queryset)
 
         return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.form
+        return context

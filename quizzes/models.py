@@ -8,6 +8,7 @@ class Course(models.Model):
     user = models.ForeignKey('accounts.User', on_delete = models.CASCADE, related_name = 'course')
     description = models.TextField(blank = True, null = True)
     is_public = models.BooleanField(default=False)
+    like_count = models.PositiveIntegerField(default = 0)
 
 class Quiz(models.Model):
     uuid = models.UUIDField(default = uuid.uuid4, unique = True)
@@ -32,3 +33,10 @@ class Choice(models.Model):
     explanation = models.TextField(blank=True, null = True)
     is_correct = models.BooleanField(default = False)
     
+
+class Like(models.Model):
+    user = models.ForeignKey('accounts.User', on_delete = models.CASCADE, related_name = 'like')
+    course = models.ForeignKey('Course', on_delete = models.CASCADE, related_name = 'like')
+
+    class Meta:
+        unique_together = ('user', 'course')

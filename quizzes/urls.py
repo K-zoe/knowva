@@ -10,6 +10,8 @@ from .views.edit import(
     QuizEditView,
     QuestionEditView,
 )
+from .views.search import CourseSearchView
+
 from .views.delete import(
     course_delete_view,
     quiz_delete_view,
@@ -30,4 +32,6 @@ urlpatterns = [
     path('course_delete/<uuid:course_uuid>/', course_delete_view, name = 'course_delete'),
     path('quiz_delete/<uuid:course_uuid>/<uuid:quiz_uuid>/', quiz_delete_view, name = 'quiz_delete'),
     path('question_delete/<uuid:course_uuid>/<uuid:quiz_uuid>/<uuid:question_uuid>/', question_delete_view, name = 'question_delete'),
+    #Search
+    path('course_search/', CourseSearchView.as_view(), name = 'course_search'),
 ]

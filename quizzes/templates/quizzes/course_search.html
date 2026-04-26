@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+コース検索 - Knowva
+{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static '/quizzes/css/course_search.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="course-search">
+    <h1 class="page-title">コース検索</h1>
+
+    <!-- 検索フォーム -->
+    <form method="get" class="search-form">
+
+        <div class="form-group">
+            <label>{{ form.keyword.label }}</label>
+            {{ form.keyword }}
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>{{ form.sort_field.label }}</label>
+                {{ form.sort_field }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.sort_order.label }}</label>
+                {{ form.sort_order }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">検索する</button>
+    </form>
+
+    <!-- 検索結果 -->
+    <div class="result-list">
+        {% for course in courses %}
+            <div class="result-card">
+                <h3 class="course-title">{{ course.title }}</h3>
+
+                <div class="meta">
+                    <span>👍 {{ course.like_count }}</span>
+                    <span>{{ course.update_at }}</span>
+                </div>
+            </div>
+        {% empty %}
+            <p class="empty">検索結果がありません</p>
+        {% endfor %}
+    </div>
+
+    <!-- ページネーション -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?keyword={{ form.keyword.value }}&sort_field={{ form.sort_field.value }}&sort_order={{ form.sort_order.value }}&page={{ page_obj.previous_page_number }}">
+                ← 前へ
+            </a>
+        {% endif %}
+
+        <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?keyword={{ form.keyword.value }}&sort_field={{ form.sort_field.value }}&sort_order={{ form.sort_order.value }}&page={{ page_obj.next_page_number }}">
+                次へ →
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

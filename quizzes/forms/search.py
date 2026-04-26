@@ -4,7 +4,7 @@ class CourseSearchForm(forms.Form):
     keyword = forms.CharField(required = False, label = 'キーワード')
 
     SORT_CHOICES = [
-        ('created_at', '作成日'),
+        ('quiz__update_at', '公開日'),
         ('like_count','いいね数')
     ]
 
@@ -26,32 +26,32 @@ class CourseSearchForm(forms.Form):
         initial = 'desc'
     )
 
-def filter_queryset(self, queryset):
-    if not self.is_valid():
-        return queryset
+    def filter_queryset(self, queryset):
+        if not self.is_valid():
+            return queryset
 
-    keyword = self.cleaned_data.get('keyword')
-    sort_field = self.cleaned_data.get('sort_field')
-    sort_order = self.cleaned_data.get('sort_order')
+        keyword = self.cleaned_data.get('keyword')
+        sort_field = self.cleaned_data.get('sort_field')
+        sort_order = self.cleaned_data.get('sort_order')
 
-    #NOTE:キーワード検索。タグ検索は#から始まるキーワードで行う。
-    if keyword:
-        if keyword.startswith('#'):
-            tag = keyword.lstrip('#')
-            queryset = queryset.filter(tag__icontains=tag)
+        #NOTE:キーワード検索。タグ検索は#から始まるキーワードで行う。
+        if keyword:
+            if keyword.startswith('#'):
+                tag = keyword.lstrip('#')
+                queryset = queryset.filter(tag__icontains=tag)
+            else:
+                queryset = queryset.filter(title__icontains=keyword)
+
+        allowed_fields = ['update_at', 'like_count']
+
+        if sort_field in allowed_fields:
+            sort_order = sort_order or 'desc'
+
+            if sort_order == 'desc':
+                sort_field = '-' + sort_field
+
+            queryset = queryset.order_by(sort_field)
         else:
-            queryset = queryset.filter(title__icontains=keyword)
+            queryset = queryset.order_by('-like_count')
 
-    allowed_fields = ['created_at', 'like_count']
-
-    if sort_field in allowed_fields:
-        sort_order = sort_order or 'desc'
-
-        if sort_order == 'desc':
-            sort_field = '-' + sort_field
-
-        queryset = queryset.order_by(sort_field)
-    else:
-        queryset = queryset.order_by('-like_count')
-
-    return queryset
+        return queryset
