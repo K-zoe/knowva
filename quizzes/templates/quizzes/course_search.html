@@ -41,6 +41,7 @@
         {% for course in courses %}
             <div class="result-card">
                 <h3 class="course-title">{{ course.title }}</h3>
+                <a href="{% url 'course_detail' course.uuid %}" class="btn-outline">詳細を見る</a>
 
                 <div class="meta">
                     <span>👍 {{ course.like_count }}</span>

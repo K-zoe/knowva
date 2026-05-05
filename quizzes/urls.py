@@ -11,6 +11,7 @@ from .views.edit import(
     QuestionEditView,
 )
 from .views.search import CourseSearchView
+from .views.detail import CourseDetailView
 
 from .views.delete import(
     course_delete_view,
@@ -34,4 +35,7 @@ urlpatterns = [
     path('question_delete/<uuid:course_uuid>/<uuid:quiz_uuid>/<uuid:question_uuid>/', question_delete_view, name = 'question_delete'),
     #Search
     path('course_search/', CourseSearchView.as_view(), name = 'course_search'),
+    #Detail
+    path('course_detail/<uuid:course_uuid>/', CourseDetailView.as_view(), name = 'course_detail'),
+    
 ]

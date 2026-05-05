@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ course.title }} - Knowva
+{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static '/quizzes/css/course_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="course-detail">
+
+    <!-- コース情報 -->
+    <h1 class="page-title">コース名：{{ course.title }}</h1>
+
+    {% if course.description %}
+        <p class="course-description">
+            <span class="label">説明：</span>
+            <span class="text">{{ course.description }}</span>
+        </p>
+    {% endif %}
+
+    <!-- メタ情報 -->
+    <div class="meta">
+        <span>👍 {{ course.like_count }}</span>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 問題一覧 -->
+    <h2 class="section-title">問題一覧</h2>
+
+    <div class="quiz-list">
+        {% for quiz in quizzes %}
+            <div class="quiz-card">
+
+                <h3 class="quiz-title">タイトル：{{ quiz.title }}</h3>
+
+                {% if quiz.description %}
+                    <p class="quiz-desc">
+                        <span class="label">説明：</span>
+                        <span class="text">{{ quiz.description }}</span>
+                    </p>
+                {% endif %}
+
+                <!-- アクション -->
+                <div class="quiz-action">
+
+                    {% if quiz.user_sessions %}
+                        {% with session=quiz.user_sessions.0 %}
+
+                            {% if session.finished_at and session.is_active == True %}
+                                <a href="{% url 'result' course.uuid quiz.uuid %}" class="btn-success">
+                                    📊 結果確認
+                                </a>
+                            {% elif session.is_active == True %}
+                                <a href="{% url 'answer_attempt' course.uuid quiz.uuid %}" class="btn-success">
+                                    ▶ 再開
+                                </a>
+                            {% elif session.is_active == False %}
+                                <a href="{% url 'answer_attempt' course.uuid quiz.uuid %}" class="btn-primary">
+                                    ▶ 挑戦
+                                </a>
+                            {% endif %}
+
+                        {% endwith %}
+                    {% else %}
+                        <a href="{% url 'answer_attempt' course.uuid quiz.uuid %}" class="btn-primary">
+                            ▶ 挑戦
+                        </a>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        {% empty %}
+            <p class="empty">問題がありません</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+<!-- 戻る -->
+<div class="back-nav">
+    <a href="{% url 'course_search' %}" class="back-btn">
+        ← 検索に戻る
+    </a>
+</div>
+{% endblock %}

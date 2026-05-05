@@ -1,0 +1,236 @@
+/* 全体 */
+.course-detail {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* タイトル */
+.page-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* 説明 */
+.course-description {
+    display: flex;
+    margin-bottom: 20px;
+    color: #555;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+.course-description .label{
+    flex-shrink: 0;
+}
+.course-description .text{
+    white-space: pre-line;
+}
+
+/* メタ情報 */
+.meta {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+/* 区切り線 */
+.divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 30px 0;
+}
+
+/* セクションタイトル */
+.section-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* 問題リスト */
+.quiz-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* カード */
+.quiz-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    transition: 0.2s;
+}
+
+/* ホバー */
+.quiz-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* タイトル */
+.quiz-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+/* 説明 */
+.quiz-desc {
+    display: flex;
+    color: #666;
+    margin-bottom: 15px;
+    white-space: pre-line;
+}
+.quiz-desc .label{
+    flex-shrink: 0;
+}
+.quiz-desc .text{
+    white-space: pre-line;
+}
+
+/* ボタンエリア */
+.quiz-action {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+/* 青ボタン（挑戦） */
+.btn-primary {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* 緑ボタン（再開・結果確認） */
+.btn-success {
+    background: var(--gradient-main);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-success:hover {
+    opacity: 0.9;
+}
+
+/* サブボタン（必要なら） */
+.btn-secondary {
+    background: #f1f1f1;
+    color: #333;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+/* 空状態 */
+.empty {
+    color: #888;
+    text-align: center;
+}
+
+/* 戻る */
+.back-nav {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back-btn {
+    color: #4facfe;
+    text-decoration: none;
+}
+
+.back-btn:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   レスポンシブ対応（スマホ）
+   ========================= */
+@media (max-width: 768px) {
+
+    /* 全体余白 */
+    .course-detail {
+        padding: 0 15px;
+    }
+
+    /* タイトル */
+    .page-title {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    /* 説明 */
+    .course-description {
+        font-size: 14px;
+    }
+
+    /* セクションタイトル */
+    .section-title {
+        font-size: 18px;
+    }
+
+    /* カード */
+    .quiz-card {
+        padding: 15px;
+    }
+
+    /* クイズタイトル */
+    .quiz-title {
+        font-size: 16px;
+    }
+
+    /* 説明 */
+    .quiz-desc {
+        font-size: 13px;
+    }
+
+    /* ボタンをフル幅に */
+    .quiz-action {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-primary,
+    .btn-success,
+    .btn-secondary {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    /* メタ情報 */
+    .meta {
+        font-size: 13px;
+        text-align: center;
+    }
+
+    /* 戻るボタン */
+    .back-btn {
+        display: inline-block;
+        margin-top: 10px;
+    }
+}
