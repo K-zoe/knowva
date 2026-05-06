@@ -53,22 +53,25 @@
 
                             {% if session.finished_at and session.is_active == True %}
                                 <a href="{% url 'result' course.uuid quiz.uuid %}" class="btn-success">
-                                    📊 結果確認
+                                    結果確認
+                                </a>
+                                <a href="{% url 'answer_attempt' course.uuid quiz.uuid %}" class="btn-primary">
+                                    再挑戦
                                 </a>
                             {% elif session.is_active == True %}
                                 <a href="{% url 'answer_attempt' course.uuid quiz.uuid %}" class="btn-success">
-                                    ▶ 再開
+                                    再開
                                 </a>
                             {% elif session.is_active == False %}
                                 <a href="{% url 'answer_attempt' course.uuid quiz.uuid %}" class="btn-primary">
-                                    ▶ 挑戦
+                                    挑戦
                                 </a>
                             {% endif %}
 
                         {% endwith %}
                     {% else %}
                         <a href="{% url 'answer_attempt' course.uuid quiz.uuid %}" class="btn-primary">
-                            ▶ 挑戦
+                            挑戦
                         </a>
                     {% endif %}
 
