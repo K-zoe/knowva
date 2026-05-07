@@ -117,3 +117,29 @@
     transform: translateY(-2px);
     box-shadow: var(--shadow-glow);
 }
+
+.back-nav {
+    max-width: 900px;
+    margin: 3px auto 0;
+    padding: 0 16px;
+    text-align: center;
+}
+
+.back-btn {
+    display: inline-flex;
+    gap: 6px;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    color: var(--gray-600);
+    text-decoration: none;
+
+    padding: 8px 4px;
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
