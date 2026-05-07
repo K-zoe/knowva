@@ -41,18 +41,25 @@ class LogoutPageView(LogoutView):
     next_page = reverse_lazy('login')
 
 class CurrentCoursesView(LoginRequiredMixin, ListView):
-    #マイページを開いた最初の表示
-    #model = ''#TODO: 解いている問題を表示するようにする。
+    #NOTE:マイページを開いた最初の表示。解いている問題の一覧を表示する。
     template_name = 'accounts/current_courses.html'
-    paginate_by = None #TODO: ページネーション機能を追加
+    model = Course
+    context_object_name = 'courses'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(
+            is_public = True,
+            quiz__is_public = True,
+            quiz__sessions__user = self.request.user
+        ).distinct()
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
-    def get_queryset(self):
-        #TODO: 解いている問題のリスト作成が完了したら、修正する。
-        return None#super().get_queryset()
     
 class MyCreatedCoursesView(LoginRequiredMixin, ListView):
     model = Course

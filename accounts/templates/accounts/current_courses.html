@@ -29,21 +29,9 @@
             <article class="course-card">
                 <div class="course-header">
                     <h3 class="course-title">{{ course.title }}</h3>
-                    <span class="course-badge">進行中</span>
                 </div>
 
-                <p class="course-description">
-                    {{ course.description|default:"このコースで新しい知識を習得しましょう。" }}
-                </p>
-
-                <div class="course-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: {{ course.progress|default:35 }}%"></div>
-                    </div>
-                    <span class="progress-text">{{ course.progress|default:35 }}% 完了</span>
-                </div>
-
-                <a href="" class="btn-continue">続きを学習</a>
+                <a href="{% url 'course_detail' course.uuid %}" class="btn-continue">続きを学習</a>
             </article>
             {% endfor %}
         </div>
