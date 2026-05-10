@@ -9,8 +9,8 @@ class CourseSearchForm(forms.Form):
     ]
 
     ORDER_CHOICES = [
-        ('asc', '昇順'),
-        ('desc', '降順')
+        ('desc', '降順'),
+        ('asc', '昇順')
     ]
 
     sort_field = forms.ChoiceField(
@@ -28,7 +28,7 @@ class CourseSearchForm(forms.Form):
 
     def filter_queryset(self, queryset):
         if not self.is_valid():
-            return queryset
+            return queryset.order_by('-updated_at')
 
         keyword = self.cleaned_data.get('keyword')
         sort_field = self.cleaned_data.get('sort_field')
@@ -42,7 +42,7 @@ class CourseSearchForm(forms.Form):
             else:
                 queryset = queryset.filter(title__icontains=keyword)
 
-        allowed_fields = ['update_at', 'like_count']
+        allowed_fields = ['updated_at', 'like_count']
 
         if sort_field in allowed_fields:
             sort_order = sort_order or 'desc'

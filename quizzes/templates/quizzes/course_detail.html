@@ -14,6 +14,15 @@
 
     <!-- コース情報 -->
     <h1 class="page-title">コース名：{{ course.title }}</h1>
+    <p class="course-info">
+        <span class="label">作成者：</span>
+        <span class="text">{{ course.user.username }}</span>
+    </p>
+
+    <p class="course-info">
+        <span class="label">タグ：</span>
+        <span class="text">{{ course.tag }}</span>
+    </p>
 
     {% if course.description %}
         <p class="course-description">

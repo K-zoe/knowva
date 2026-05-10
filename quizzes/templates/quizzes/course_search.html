@@ -41,6 +41,14 @@
         {% for course in courses %}
             <div class="result-card">
                 <h3 class="course-title">{{ course.title }}</h3>
+                <p class="course-info">
+                    <span class="label">タグ：</span>
+                    <span class="text">{{ course.tag }}</span>
+                </p>
+                <p class="course-info">
+                    <span class="label">作成者：</span>
+                    <span class="text">{{ course.user.username }}</span>
+                </p>
                 <a href="{% url 'course_detail' course.uuid %}" class="btn-outline">詳細を見る</a>
 
                 <div class="meta">
