@@ -9,7 +9,6 @@ class Course(models.Model):
     description = models.TextField(blank = True, null = True)
     is_public = models.BooleanField(default=False)
     like_count = models.PositiveIntegerField(default = 0)
-    updated_at = models.DateTimeField(auto_now = True)
 
 class Quiz(models.Model):
     uuid = models.UUIDField(default = uuid.uuid4, unique = True)

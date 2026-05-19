@@ -17,8 +17,10 @@
     <form method="get" class="search-form">
 
         <div class="form-group">
-            <label>{{ form.keyword.label }}</label>
-            {{ form.keyword }}
+            <label>{{ form.title.label }}</label>
+            {{ form.title }}
+            <label>{{ form.tag.label }}</label>
+            {{ form.tag }}
         </div>
 
         <div class="form-row">
@@ -45,10 +47,6 @@
                     <span class="label">タグ：</span>
                     <span class="text">{{ course.tag }}</span>
                 </p>
-                <p class="course-info">
-                    <span class="label">作成者：</span>
-                    <span class="text">{{ course.user.username }}</span>
-                </p>
                 <a href="{% url 'course_detail' course.uuid %}" class="btn-outline">詳細を見る</a>
 
                 <div class="meta">
@@ -64,7 +62,7 @@
     <!-- ページネーション -->
     <div class="pagination">
         {% if page_obj.has_previous %}
-            <a href="?keyword={{ form.keyword.value }}&sort_field={{ form.sort_field.value }}&sort_order={{ form.sort_order.value }}&page={{ page_obj.previous_page_number }}">
+            <a href="?title={{ form.title.value|default:'' }}&tag={{ form.tag.value|default:'' }}&sort_field={{ form.sort_field.value }}&sort_order={{ form.sort_order.value }}&page={{ page_obj.previous_page_number }}">
                 ← 前へ
             </a>
         {% endif %}
@@ -72,7 +70,7 @@
         <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
 
         {% if page_obj.has_next %}
-            <a href="?keyword={{ form.keyword.value }}&sort_field={{ form.sort_field.value }}&sort_order={{ form.sort_order.value }}&page={{ page_obj.next_page_number }}">
+            <a href="?title={{ form.title.value|default:'' }}&tag={{ form.tag.value|default:'' }}&sort_field={{ form.sort_field.value }}&sort_order={{ form.sort_order.value }}&page={{ page_obj.next_page_number }}">
                 次へ →
             </a>
         {% endif %}
