@@ -15,7 +15,7 @@ class CourseForm(forms.ModelForm):
                 attrs = {'placeholder':'コース名を入力してください。'}
             ),
             'tag':forms.TextInput(
-                attrs = {'placeholder':'例：#基本情報, #ITパスポート'}
+                attrs = {'placeholder':'例：基本情報,ITパスポート'}
             ),
             'description':forms.Textarea(
                 attrs = {'placeholder':'コースの説明を入力してください。'}
