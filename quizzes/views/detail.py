@@ -3,9 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView
 from quizzes.models import (
     Course,
-    Quiz,
-    Question,
-    Choice
+    Like
 )
 from answers.models import QuizSession
 from django.db.models import Prefetch
@@ -40,10 +38,16 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
                     to_attr = 'user_sessions'
                     )
                 )
+        like = Like.objects.filter(user = self.request.user, course = course).first()
+        if like:
+            liked = True
+        else:
+            liked = False
 
         context.update({
             'course':course,
             'quizzes':quizzes,
+            'liked': liked
         })
 
         return context
