@@ -32,8 +32,9 @@
     {% endif %}
 
     <!-- メタ情報 -->
-    <div class="meta">
-        <span>👍 {{ course.like_count }}</span>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <div id="like-area" class="like-container">
+        {% include 'quizzes/course_like_button.html' %}
     </div>
 
     <hr class="divider">

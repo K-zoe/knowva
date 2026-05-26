@@ -12,12 +12,12 @@ from .views.edit import(
 )
 from .views.search import CourseSearchView
 from .views.detail import CourseDetailView
-
 from .views.delete import(
     course_delete_view,
     quiz_delete_view,
     question_delete_view,
 )
+from .views.likes import LikeView
 
 urlpatterns = [
     #Create
@@ -37,5 +37,7 @@ urlpatterns = [
     path('course_search/', CourseSearchView.as_view(), name = 'course_search'),
     #Detail
     path('course_detail/<uuid:course_uuid>/', CourseDetailView.as_view(), name = 'course_detail'),
+
+    path('course_like/<uuid:course_uuid>/', LikeView.as_view(), name='course_like'),
     
 ]

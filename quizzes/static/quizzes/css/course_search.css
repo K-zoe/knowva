@@ -149,3 +149,33 @@
         flex-direction: column;
     }
 }
+
+/*いいね*/
+.meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+}
+
+/* いいね部分 */
+.meta-like {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* ハート */
+.meta-heart {
+    width: 22px;
+    height: 22px;
+    fill: #10b981; /* 赤系ハート */
+}
+
+/* 日付 */
+.meta-date {
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
