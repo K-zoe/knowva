@@ -55,7 +55,7 @@
 
         <!-- モバイルメニュー -->
         <div class="mobile-menu" id="mobileMenu">
-            <a href="" class="mobile-nav-link">ホーム</a>
+            <a href="{% url 'course_search' %}" class="mobile-nav-link">ホーム</a>
             <a href="#" class="mobile-nav-link">ランキング</a>
             {%if user.is_authenticated%}
                 <a href="{% url 'mypage_current_courses' %}" class="mobile-nav-link">マイページ</a>

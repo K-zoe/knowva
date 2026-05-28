@@ -237,13 +237,22 @@
 
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; /* 2行まで */
-    overflow: hidden;
-    word-break: break-word;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+}
+
+.course-info{
+    display:flex;
+}
+
+.course-info .label{
+    flex-shrink: 0;
 }
 
 .tag{
     font-size: 0.9rem;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
 }
 
 /* ========================================

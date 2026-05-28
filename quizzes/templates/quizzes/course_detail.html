@@ -11,30 +11,34 @@
 
 {% block content %}
 <div class="course-detail">
+    <div class="course-header">
 
-    <!-- コース情報 -->
-    <h1 class="page-title">コース名：{{ course.title }}</h1>
-    <p class="course-info">
-        <span class="label">作成者：</span>
-        <span class="text">{{ course.user.username }}</span>
-    </p>
-
-    <p class="course-info">
-        <span class="label">タグ：</span>
-        <span class="text">{{ course.tag }}</span>
-    </p>
-
-    {% if course.description %}
-        <p class="course-description">
-            <span class="label">説明：</span>
-            <span class="text">{{ course.description }}</span>
+        <!-- コース情報 -->
+        <div class="course-info">
+            <h1 class="course-title">{{ course.title }}</h1>
+        </div>
+        <p class="course-info">
+            <span class="label">作成者：</span>
+            <span class="text">{{ course.user.username }}</span>
         </p>
-    {% endif %}
 
-    <!-- メタ情報 -->
-    <script src="https://unpkg.com/htmx.org"></script>
-    <div id="like-area" class="like-container">
-        {% include 'quizzes/course_like_button.html' %}
+        <p class="course-info">
+            <span class="label">タグ：</span>
+            <span class="text">{{ course.tag }}</span>
+        </p>
+
+        {% if course.description %}
+            <p class="course-description">
+                <span class="label">説明：</span>
+                <span class="text">{{ course.description }}</span>
+            </p>
+        {% endif %}
+
+        <!-- メタ情報 -->
+        <script src="https://unpkg.com/htmx.org"></script>
+        <div id="like-area" class="like-container">
+            {% include 'quizzes/course_like_button.html' %}
+        </div>
     </div>
 
     <hr class="divider">

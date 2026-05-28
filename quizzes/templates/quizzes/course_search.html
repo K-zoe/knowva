@@ -47,8 +47,6 @@
                     <span class="label">タグ：</span>
                     <span class="text">{{ course.tag }}</span>
                 </p>
-                <a href="{% url 'course_detail' course.uuid %}" class="btn-outline">詳細を見る</a>
-
                 <div class="meta">
                     <span class="meta-like">
                         <svg class="meta-heart" viewBox="0 0 24 24">
@@ -59,11 +57,11 @@
                         </svg>
                         <span>{{ course.like_count }}</span>
                     </span>
-
                     <span class="meta-date">
                         {{ course.update_at }}
                     </span>
                 </div>
+                <a href="{% url 'course_detail' course.uuid %}" class="btn-continue">詳細を見る</a>
             </div>
         {% empty %}
             <p class="empty">検索結果がありません</p>

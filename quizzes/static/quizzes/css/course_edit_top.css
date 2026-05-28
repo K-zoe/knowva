@@ -49,8 +49,8 @@
 }
 
 .course-status.public {
-    background: var(--primary-light);
-    color: var(--primary-dark);
+    background: rgba(0, 208, 132, 0.15);
+    color: var(--primary);
 }
 
 .course-status.private {
@@ -239,8 +239,8 @@
 }
 
 .quiz-status.public {
-    background: var(--primary-light);
-    color: var(--primary-dark);
+    background: rgba(0, 208, 132, 0.15);
+    color: var(--primary);
 }
 
 .quiz-status.private {

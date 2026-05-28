@@ -14,7 +14,7 @@ class CourseSearchView(ListView):
     template_name = 'quizzes/course_search.html'
     model = Course
     context_object_name = 'courses'
-    paginate_by = 1
+    paginate_by = 10
 
     def get_form(self):
         # formの生成を1箇所に集約。キャッシュして複数回呼ばれても安全。

@@ -4,11 +4,29 @@
     margin: 0 auto;
 }
 
+.course-info{
+    display:flex;
+}
+
+.course-info .label{
+    flex-shrink: 0;
+}
+
+.course-info .text{
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+}
+
 /* タイトル */
-.page-title {
+.course-title {
     font-size: 28px;
     margin-bottom: 10px;
     color: #333;
+    display: flex;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
 }
 
 /* 説明 */
@@ -18,6 +36,8 @@
     color: #555;
     line-height: 1.6;
     white-space: pre-line;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
 }
 .course-description .label{
     flex-shrink: 0;

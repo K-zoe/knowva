@@ -34,6 +34,13 @@
             </p>
         {% endif %}
 
+        {% if course.description %}
+            <p class="course-description">
+                <span class="label">説明：</span>
+                {{ course.description }}
+            </p>
+        {% endif %}
+
         <div class="meta">
             <span class="meta-like">
                 <svg class="meta-heart" viewBox="0 0 24 24">
@@ -45,12 +52,6 @@
                 <span>{{ course.like_count }}</span>
             </span>
         </div>
-
-        {% if course.description %}
-            <p class="course-description">
-                {{ course.description }}
-            </p>
-        {% endif %}
 
         <!-- コース操作 -->
         <div class="course-actions">
