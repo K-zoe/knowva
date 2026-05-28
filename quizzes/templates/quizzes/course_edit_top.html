@@ -37,7 +37,7 @@
         {% if course.description %}
             <p class="course-description">
                 <span class="label">説明：</span>
-                {{ course.description }}
+                {{ course.description|linebreaksbr }}
             </p>
         {% endif %}
 
@@ -95,7 +95,7 @@
 
                 {% if quiz.description %}
                     <p class="quiz-description">
-                        {{ quiz.description }}
+                        {{ quiz.description|linebreaksbr }}
                     </p>
                 {% endif %}
 

@@ -69,6 +69,11 @@
     transition: 0.2s;
 }
 
+.choice-number {
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
 /* 選択 */
 .choice-card.selected {
     box-shadow: 0 0 0 3px rgba(0,208,132,0.2);
@@ -127,6 +132,7 @@
     font-size: 0.9rem;
     color: var(--gray-600);
     line-height: 1.6;
+    display:flex;
 }
 
 /* ===============================

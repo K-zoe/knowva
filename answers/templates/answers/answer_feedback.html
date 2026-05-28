@@ -56,8 +56,12 @@
                     {% if choice in selected_choices %}checked{% endif %}
                 >
 
+                <span class="choice-number">
+                    {{ forloop.counter }}
+                </span>
+                
                 <span class="choice-text">
-                    {{ forloop.counter }}. {{ choice.text }}
+                    {{ choice.text|linebreaksbr }}
                 </span>
 
             </div>
@@ -75,9 +79,10 @@
             </div>
 
             {% if choice.explanation %}
-            <div class="choice-explanation">
-                解説：{{ choice.explanation|linebreaksbr }}
-            </div>
+                <div class="choice-explanation">
+                    <span class="label">解説：</span>
+                    <span class="text">{{ choice.explanation|linebreaksbr }}</span>
+                </div>
             {% endif %}
 
         </div>

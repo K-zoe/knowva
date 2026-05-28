@@ -30,7 +30,7 @@
         {% if course.description %}
             <p class="course-description">
                 <span class="label">説明：</span>
-                <span class="text">{{ course.description }}</span>
+                <span class="text">{{ course.description|linebreaksbr }}</span>
             </p>
         {% endif %}
 
@@ -55,7 +55,7 @@
                 {% if quiz.description %}
                     <p class="quiz-desc">
                         <span class="label">説明：</span>
-                        <span class="text">{{ quiz.description }}</span>
+                        <span class="text">{{ quiz.description|linebreaksbr }}</span>
                     </p>
                 {% endif %}
 
