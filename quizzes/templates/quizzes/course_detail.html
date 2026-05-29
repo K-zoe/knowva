@@ -14,15 +14,15 @@
     <div class="course-header">
 
         <!-- コース情報 -->
-        <div class="course-info">
+        <div class="course-title-area">
             <h1 class="course-title">{{ course.title }}</h1>
         </div>
-        <p class="course-info">
+        <p class="course-creator">
             <span class="label">作成者：</span>
             <span class="text">{{ course.user.username }}</span>
         </p>
 
-        <p class="course-info">
+        <p class="course-tag">
             <span class="label">タグ：</span>
             <span class="text">{{ course.tag }}</span>
         </p>
@@ -50,7 +50,7 @@
         {% for quiz in quizzes %}
             <div class="quiz-card">
 
-                <h3 class="quiz-title">タイトル：{{ quiz.title }}</h3>
+                <h3 class="quiz-title">{{ quiz.title }}</h3>
 
                 {% if quiz.description %}
                     <p class="quiz-desc">

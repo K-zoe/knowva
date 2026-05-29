@@ -4,15 +4,40 @@
     margin: 0 auto;
 }
 
-.course-info{
+.course-header {
+    background: #fff;
+    border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    transition:0.2s;
+    padding: 20px;
+}
+
+.course-title-area{
     display:flex;
 }
 
-.course-info .label{
+.course-creator .label{
     flex-shrink: 0;
 }
 
-.course-info .text{
+.course-creator .text{
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+}
+
+.course-tag {
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 10px;
+    padding-bottom:10px;
+}
+
+.course-tag .label{
+    flex-shrink: 0;
+}
+
+.course-tag .text{
     white-space: pre-line;
     overflow-wrap: anywhere;
     word-break: keep-all;
@@ -94,6 +119,9 @@
     font-size: 18px;
     margin-bottom: 8px;
     color: #333;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 /* 説明 */
@@ -122,7 +150,7 @@
     background: var(--danger);
     color: white;
     padding: 8px 55px;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm);
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
@@ -139,7 +167,7 @@
     background: var(--gradient-main);
     color: white;
     padding: 8px 55px;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm);
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
@@ -156,7 +184,7 @@
     background: #f1f1f1;
     color: #333;
     padding: 8px 14px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
