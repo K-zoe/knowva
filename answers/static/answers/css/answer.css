@@ -21,7 +21,7 @@
 
 .question-card {
     background: var(--white);
-    padding: 2.5rem;
+    padding: 1.5rem;
     border-radius: var(--radius);
     box-shadow: var(--shadow-md);
     margin-bottom: 2rem;
@@ -157,4 +157,10 @@
 .back-btn:hover {
     color: var(--primary);
     text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .answer-container{
+        padding: 0 15px;
+    }
 }

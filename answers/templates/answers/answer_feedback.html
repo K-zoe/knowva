@@ -27,11 +27,13 @@
                 {% endif %}
             </div>
         </div>
-        <p>
-            問題：{{ question.text|linebreaksbr}}
+        <p class="question-text">
+            <span class="label">問題：</span>
+            <span class="text">{{ question.text|linebreaksbr}}</span>
         </p>
-        <p>
-            解説：{{ question.explanation|linebreaksbr}}
+        <p class="question-explanation">
+            <span class="label">解説：</span>
+            <span class="text">{{ question.explanation|linebreaksbr}}</span>
         </p>
 
     </div>
@@ -46,6 +48,17 @@
             {% if choice.is_correct %} correct-choice {% endif %}
             {% if not choice.is_correct and choice in selected_choices %} incorrect-choice {% endif %}
         ">
+            <div class="choice-result">
+                {% if choice.is_correct and choice in selected_choices %}
+                    <span class="correct-text">あなたの回答：正解</span>
+
+                {% elif choice.is_correct %}
+                    <span class="correct-text">正解</span>
+
+                {% elif choice in selected_choices %}
+                    <span class="incorrect-text">あなたの回答：不正解</span>
+                {% endif %}
+            </div>
 
             <div class="choice-body">
 
@@ -64,18 +77,6 @@
                     {{ choice.text|linebreaksbr }}
                 </span>
 
-            </div>
-
-            <div class="choice-result">
-                {% if choice.is_correct and choice in selected_choices %}
-                    <span class="correct-text">あなたの回答：正解</span>
-
-                {% elif choice.is_correct %}
-                    <span class="correct-text">正解</span>
-
-                {% elif choice in selected_choices %}
-                    <span class="incorrect-text">あなたの回答：不正解</span>
-                {% endif %}
             </div>
 
             {% if choice.explanation %}
@@ -102,6 +103,7 @@
         {% endif %}
 
         {% if next_index is not None %}
+        <div></div>
         <a class="nav-btn"
            href="{% url 'answer_feedback' question.quiz.course.uuid question.quiz.uuid next_index %}">
             次の回答 →
