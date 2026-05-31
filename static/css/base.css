@@ -399,6 +399,22 @@ body.menu-open {
 }
 
 @media (max-width: 768px) {
+    .course-title {
+        font-size: 16px;
+    }
+
+    .question-title {
+        font-size:16px;
+    }
+
+    .label {
+        font-size: 13px;
+    }
+
+    .text {
+        font-size:13px;
+    }
+
     .nav-links {
         display: none;
     }

@@ -26,7 +26,7 @@
         </h1>
 
         <p class="question-text">
-            <span class="question-label">問題：</span>
+            <span class="label">問題：</span>
             <span class="text">{{ question.text|linebreaksbr }}</span>
         </p>
 
@@ -53,9 +53,9 @@
                         {{ forloop.counter }}
                     </span>
 
-                    <span class="choice-text">
-                        {{ checkbox.choice_label|linebreaksbr }}
-                    </span>
+                    <div class="choice-text">
+                        <span class="text">{{ checkbox.choice_label|linebreaksbr }}</span>
+                    </div>
 
                 </div>
 
