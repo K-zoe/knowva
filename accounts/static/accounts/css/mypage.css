@@ -229,7 +229,6 @@
 }
 
 .course-title {
-    font-size: 1.125rem;
     font-weight: 600;
     color: var(--gray-800);
     line-height: 1.4;
@@ -249,8 +248,7 @@
     flex-shrink: 0;
 }
 
-.tag{
-    font-size: 0.9rem;
+.text {
     overflow-wrap: anywhere;
     word-break: keep-all;
 }

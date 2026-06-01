@@ -94,9 +94,9 @@
                 </div>
 
                 {% if quiz.description %}
-                    <p class="quiz-description">
-                        {{ quiz.description|linebreaksbr }}
-                    </p>
+                    <div class="quiz-description">
+                        <span class="text">{{ quiz.description|linebreaksbr }}</span>
+                    </div>
                 {% endif %}
 
                 <div class="quiz-footer">

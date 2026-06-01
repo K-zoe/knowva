@@ -35,7 +35,6 @@
 }
 
 .course-title {
-    font-size: 1.8rem;
     font-weight: 700;
     word-break: break-word;
 }
@@ -62,7 +61,6 @@
 
 .course-tag-text {
     margin-top: 0.75rem;
-    font-size: 0.9rem;
     color: var(--gray-600);
 }
 
@@ -84,7 +82,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
     color: #6b7280;
     margin-top: 0.5rem;
 }
@@ -226,7 +223,6 @@
 }
 
 .quiz-title {
-    font-size: 1.1rem;
     font-weight: 700;
     word-break: break-word;
 }
@@ -250,7 +246,6 @@
 
 .quiz-description {
     margin: 0.8rem 0;
-    font-size: 0.9rem;
     color: var(--gray-600);
     word-break: break-word;
 }
