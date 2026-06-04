@@ -1,14 +1,13 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from django.http import Http404
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from quizzes.models import Question, Choice
 from answers.models import Answer
 from answers.forms import AnswerForm
-from answers.views.mixins import QuizMixin
 from answers.service.quiz_service import QuizSessionService
+from answers.views.base import BaseView
 
-class AnswerAttemptView(LoginRequiredMixin, QuizMixin, View):
+class AnswerAttemptView(BaseView, View):
     template_name = 'answers/answer.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -58,7 +57,7 @@ class AnswerAttemptView(LoginRequiredMixin, QuizMixin, View):
 
         return redirect('answer_feedback', self.course_uuid, self.quiz_uuid, url_index)
 
-class AnswerFeedbackView(LoginRequiredMixin, QuizMixin, View):
+class AnswerFeedbackView(BaseView, View):
     template_name = 'answers/answer_feedback.html'
 
     def dispatch(self,request, *args, **kwargs):
@@ -113,7 +112,7 @@ class AnswerFeedbackView(LoginRequiredMixin, QuizMixin, View):
         
         return render(request, self.template_name, context)
     
-class QuizResultView(LoginRequiredMixin, QuizMixin, View):
+class QuizResultView(BaseView, View):
     #NOTE: 全体の結果表示
     template_name = 'answers/result.html'
 

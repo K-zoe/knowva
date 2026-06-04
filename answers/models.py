@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import JSONField
 from django.utils import timezone
+from answers.managers import QuizSessionManager, AnswerManager
 
 class QuizSession(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
@@ -10,6 +11,9 @@ class QuizSession(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default = True)
+
+    objects = models.Manager()
+    custom_objects = QuizSessionManager()
 
     def __str__(self):
         return f"{self.user} - {self.quiz} ({self.started_at})"
@@ -52,6 +56,9 @@ class Answer(models.Model):
     choices = models.ManyToManyField('quizzes.Choice')# 複数選択肢に対応
     is_correct = models.BooleanField()
     answered_at = models.DateTimeField(auto_now_add=True)
+
+    objects = models.Manager()
+    custom_objects = AnswerManager()
 
     def __str__(self):
         return f"{self.session} - {self.question}"

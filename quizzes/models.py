@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from quizzes.managers import QuizManager
 
 class Course(models.Model):
     uuid = models.UUIDField(default = uuid.uuid4, unique = True)
@@ -18,6 +19,9 @@ class Quiz(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     is_public = models.BooleanField(default = False)
+
+    objects = models.Manager()
+    custom_objects = QuizManager()
 
 
 class Question(models.Model):

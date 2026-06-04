@@ -1,7 +1,14 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from django.db import models
 
+if TYPE_CHECKING:
+    from accounts.models import User
+    from quizzes.models import Quiz
+    from answers.models import QuizSession,Answer
+
 class QuizSessionQuerySet(models.QuerySet):
-    def get_session(self, user, quiz):
+    def get_session(self, user: 'User' , quiz: 'Quiz') -> QuizSession | None:
         return self.filter(
             user = user,
             quiz = quiz,
@@ -9,7 +16,7 @@ class QuizSessionQuerySet(models.QuerySet):
         ).first()
 
 class AnswerQuerySet(models.QuerySet):
-    def calculate_score(self, session):
+    def calculate_score(self, session: 'QuizSession'):
         #TODO: total=len(session.question_order)はサービスに移す
         total = len(session.question_order)
         correct = self.filter(
