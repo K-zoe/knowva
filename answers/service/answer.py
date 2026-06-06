@@ -1,0 +1,74 @@
+from quizzes.models import (
+    Course,
+    Quiz,
+    Question,
+    Choice
+)
+from django.utils import timezone
+from answers.models import(
+    QuizSession,
+    Answer
+)
+import random
+from django.db import IntegrityError
+
+class AnswerService:
+    def __init__(self, session):
+        self.session = session
+
+    def get_prev_index(self, url_index) -> int | None:
+        if url_index == 0:
+            return None
+        
+        elif url_index > 0:
+            return url_index -1
+
+    def get_next_index(self, url_index, current_index) -> int | None:
+        #url_indexが現在のindexで、かつsessionが終了している場合はNone
+        if url_index == current_index and self.session.finished_at:
+            return None
+        #url_indexに1足したindexが現在のindexで、かつsessionが終了していない場合はNone
+        elif url_index + 1 == current_index and self.session.finished_at is None:
+            return None
+        #url_indexが現在のindexより小さく。
+        elif url_index < current_index and url_index >= 0:
+            return url_index + 1
+        
+        else:
+            return None
+        
+    def check_answer(self, user_choice) -> Answer | None:
+        #NOTE: 回答の正誤を判定して保存する。
+        question_pk = self.session.question_order[self.session.current_index]
+        question = Question.objects.filter(pk = question_pk).first()
+        choices = Choice.objects.filter(
+            question = question,
+            is_correct = True
+        ).values_list('pk', flat = True)
+
+        if set(map(int, user_choice)) == set(choices):
+            is_correct = True
+        else:
+            is_correct = False
+
+        try:
+            answer = Answer.objects.create(
+                session = self.session,
+                question = question,
+                is_correct = is_correct
+            )
+            answer.choices.add(*user_choice)
+            return answer
+        
+        except IntegrityError:
+            return None
+        
+    def calculate_score(self, session) -> dict:
+        #NOTE: 全問中何問正解したかを返す。
+        total = len(session.question_order)
+        correct = Answer.objects.filter(
+            session = session,
+            is_correct = True
+        ).count()
+
+        return {'total': total, 'correct': correct}

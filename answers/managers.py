@@ -5,9 +5,8 @@ from answers.querysets import QuizSessionQuerySet,AnswerQuerySet
 import random
 from quizzes.models import Question
 
-class QuizSessionManager(models.Manager):
-    def get_queryset(self):
-        return QuizSessionQuerySet(self.model, using=self._db)
+class QuizSessionManager(models.Manager.from_queryset(QuizSessionQuerySet)):
+    pass
 
     def create_session(self, user, quiz):
         question_list = list(
@@ -28,6 +27,5 @@ class QuizSessionManager(models.Manager):
         return session
     
 
-class AnswerManager(models.Manager):
-    def get_queryset(self):
-        return AnswerQuerySet(self.model, using=self._db)
+class AnswerManager(models.Manager.from_queryset(AnswerQuerySet)):
+    pass

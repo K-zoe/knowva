@@ -6,7 +6,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class QuizResultView(LoginRequiredMixin, View):
+class ResultView(LoginRequiredMixin, View):
     #NOTE: 全体の結果表示
     template_name = 'answers/result.html'
 

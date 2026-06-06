@@ -7,8 +7,8 @@ from answers.service.quiz_service import QuizSessionService
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-class AnswerFeedbackView(LoginRequiredMixin, View):
-    template_name = 'answers/answer_feedback.html'
+class FeedbackView(LoginRequiredMixin, View):
+    template_name = 'answers/feedback.html'
 
     def dispatch(self,request, *args, **kwargs):
         self.course_uuid = kwargs.get('course_uuid')

@@ -1,4 +1,4 @@
-from quizzes.models import Quiz
+from quizzes.models import Quiz, Question
 from answers.models import QuizSession
 
 class SessionService:
@@ -8,12 +8,20 @@ class SessionService:
         self.quiz_uuid = quiz_uuid
         self.user = user
 
+    def get_quiz(self):
+        try:
+            quiz = Quiz.objects.is_public().by_uuid(self.course_uuid, self.quiz_uuid).get()
+            return quiz
+        except Quiz.DoesNotExist:
+            return None
+
+    def get_session(self, quiz):
+        quiz = self.get_quiz()
+        return QuizSession.objects.get_session(self.user, quiz)
+
     def get_or_create_session(self) -> QuizSession:
-        quiz = Quiz.objects.is_public().by_uuid(self.course_uuid, self.quiz_uuid)
-        if quiz is None:
-            raise ValueError
-        
-        session = QuizSession.objects.get_session(self.user, quiz)
+        quiz = self.get_quiz()
+        session = self.get_session(quiz)
         if session:
             if session.is_active is False or session.finished_at:
                 session.delete()
@@ -28,6 +36,28 @@ class SessionService:
                 )
 
         return session
+    
+    def get_question(self, session) -> Question | None:
+        #NOTE:session情報から次の問題を取得する。
+        questions = Question.objects.filter(
+            quiz = session.quiz,
+            pk__in = session.question_order
+        )
+        question_map = {
+            question.pk : question for question in questions
+        }
+
+        for idx in range(session.current_index, len(session.question_order)):
+            question_id = session.question_order[idx]
+            question = question_map.get(question_id)
+
+            if question:
+                if idx != session.current_index:
+                    session.current_index = idx
+                    session.save(update_fields=['current_index'])
+                return question
+        
+        return None
 
     def get_next_index(self, session, url_index, current_index) -> int | None:
         #url_indexが現在のindexで、かつsessionが終了している場合はNone
