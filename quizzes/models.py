@@ -20,8 +20,7 @@ class Quiz(models.Model):
     updated_at = models.DateTimeField(auto_now = True)
     is_public = models.BooleanField(default = False)
 
-    objects = models.Manager()
-    custom_objects = QuizManager()
+    objects = QuizManager()
 
 
 class Question(models.Model):

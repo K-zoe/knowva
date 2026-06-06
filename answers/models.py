@@ -12,8 +12,7 @@ class QuizSession(models.Model):
     finished_at = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default = True)
 
-    objects = models.Manager()
-    custom_objects = QuizSessionManager()
+    objects =QuizSessionManager()
 
     def __str__(self):
         return f"{self.user} - {self.quiz} ({self.started_at})"
@@ -57,8 +56,7 @@ class Answer(models.Model):
     is_correct = models.BooleanField()
     answered_at = models.DateTimeField(auto_now_add=True)
 
-    objects = models.Manager()
-    custom_objects = AnswerManager()
+    objects = AnswerManager()
 
     def __str__(self):
         return f"{self.session} - {self.question}"

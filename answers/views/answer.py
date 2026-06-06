@@ -5,9 +5,8 @@ from quizzes.models import Question, Choice
 from answers.models import Answer
 from answers.forms import AnswerForm
 from answers.service.quiz_service import QuizSessionService
-from answers.views.base import BaseView
 
-class AnswerAttemptView(BaseView, View):
+class AnswerAttemptView(View):
     template_name = 'answers/answer.html'
 
     def dispatch(self, request, *args, **kwargs):
