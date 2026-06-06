@@ -66,7 +66,7 @@
                         {% with session=quiz.user_sessions.0 %}
 
                             {% if session.finished_at and session.is_active == True %}
-                                <a href="{% url 'result' course.uuid quiz.uuid %}" class="btn-success">
+                                <a href="{% url 'answer_result' course.uuid quiz.uuid %}" class="btn-success">
                                     結果確認
                                 </a>
                                 <a href="{% url 'answer_attempt' course.uuid quiz.uuid %}" class="btn-primary">

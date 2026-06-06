@@ -48,9 +48,6 @@ class AttemptView(LoginRequiredMixin, View):
         user_choice = form.cleaned_data['choices']
         answer_service = AnswerService(session)
         answer = answer_service.check_answer(user_choice)
-        if answer is None:
-            #TODO: エラー処理をどうするか。
-            raise Http404()
 
         url_index = session.current_index
         session.next_or_finish_question()
