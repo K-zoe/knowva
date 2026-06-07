@@ -16,6 +16,20 @@ class QuizSessionQuerySet(models.QuerySet):
         ).first()
 
 class AnswerQuerySet(models.QuerySet):
+    def for_feedback(self):
+        return self.select_related(
+            'question'
+        ).prefetch_related(
+            'question__choice',
+            'choices'
+        )
+
+    def by_session_and_question(self, session, question_pk):
+        return self.get(
+            session=session,
+            question_id=question_pk
+        )
+
     def calculate_score(self, session: 'QuizSession'):
         #TODO: total=len(session.question_order)はサービスに移す
         total = len(session.question_order)

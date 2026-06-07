@@ -52,7 +52,7 @@ class QuizSession(models.Model):
 class Answer(models.Model):
     session = models.ForeignKey('QuizSession', on_delete=models.CASCADE, related_name='answers')
     question = models.ForeignKey('quizzes.Question', on_delete=models.CASCADE)
-    choices = models.ManyToManyField('quizzes.Choice')# 複数選択肢に対応
+    choices = models.ManyToManyField('quizzes.Choice', related_name='choices')# 複数選択肢に対応
     is_correct = models.BooleanField()
     answered_at = models.DateTimeField(auto_now_add=True)
 

@@ -63,6 +63,33 @@ class AnswerService:
         except IntegrityError:
             return None
         
+    def get_feedback_data(self, url_index):
+        question_pk = self.session.question_order[url_index]
+        answer = Answer.objects.for_feedback().by_session_and_question(
+            self.session,
+            question_pk
+        )
+        question = answer.question
+        choices = question.choice.all()
+        selected_choices = answer.choices.all()
+
+        return {
+            'answer': answer,
+            'question': question,
+            'choices': choices,
+            'selected_choices': selected_choices,
+        }
+        
+    def get_answer_choice(self,question_pk):
+        answers = Answer.objects.for_feedback(). by_session_and_question(
+            self.session,
+            question_pk,
+        )
+        answer_choice = answers.choice.all()
+        if answer_choice is None:
+            raise ValueError()
+        return answer_choice
+        
     def calculate_score(self, session) -> dict:
         #NOTE: 全問中何問正解したかを返す。
         total = len(session.question_order)
