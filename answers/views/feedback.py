@@ -1,9 +1,5 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render
 from django.http import Http404
-from django.views.generic import View
-from quizzes.models import Question, Choice
-from answers.models import Answer
-from answers.service.quiz_service import QuizSessionService
 from answers.service.session import SessionService
 from answers.service.answer import AnswerService
 from django.views import View

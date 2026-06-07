@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect
 from django.http import Http404
-from django.views.generic import View
 from answers.forms import AnswerForm
 from answers.service.session import SessionService
 from answers.service.answer import AnswerService

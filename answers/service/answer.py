@@ -1,15 +1,5 @@
-from quizzes.models import (
-    Course,
-    Quiz,
-    Question,
-    Choice
-)
-from django.utils import timezone
-from answers.models import(
-    QuizSession,
-    Answer
-)
-import random
+from quizzes.models import Question, Choice
+from answers.models import Answer
 from django.db import IntegrityError
 
 class AnswerService:
