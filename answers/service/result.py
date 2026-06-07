@@ -1,15 +1,14 @@
 from answers.models import Answer
 
-class AnswerService:
-    def __init__(self, user, quiz):
-        self.user = user
-        self.quiz = quiz
+class ResultService:
+    def __init__(self, session):
+        self.session = session
         
-    def calculate_score(self, session) -> dict:
+    def calculate_score(self) -> dict:
         #NOTE: 全問中何問正解したかを返す。
-        total = len(session.question_order)
+        total = len(self.session.question_order)
         correct = Answer.objects.filter(
-            session = session,
+            session = self.session,
             is_correct = True
         ).count()
 
