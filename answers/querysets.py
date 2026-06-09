@@ -31,11 +31,7 @@ class AnswerQuerySet(models.QuerySet):
         )
 
     def calculate_score(self, session: 'QuizSession'):
-        #TODO: total=len(session.question_order)はサービスに移す
-        total = len(session.question_order)
-        correct = self.filter(
+        return self.filter(
             session = session,
             is_correct = True
         ).count()
-
-        return {'total': total, 'correct': correct}

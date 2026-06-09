@@ -33,7 +33,7 @@ class FeedbackView(LoginRequiredMixin, View):
         
         answer_service = AnswerService(session)
         prev_index = answer_service.get_prev_index(url_index)
-        next_index = session_service.get_next_index(session, url_index, current_index)
+        next_index = answer_service.get_next_index(url_index, current_index)
         
         context = answer_service.get_feedback_data(url_index)
         context['session'] = session

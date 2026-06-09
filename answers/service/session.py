@@ -59,20 +59,6 @@ class SessionService:
         
         return None
 
-    def get_next_index(self, session, url_index, current_index) -> int | None:
-        #url_indexが現在のindexで、かつsessionが終了している場合はNone
-        if url_index == current_index and session.finished_at:
-            return None
-        #url_indexに1足したindexが現在のindexで、かつsessionが終了していない場合はNone
-        elif url_index + 1 == current_index and session.finished_at is None:
-            return None
-        #url_indexが現在のindexより小さく。
-        elif url_index < current_index and url_index >= 0:
-            return url_index + 1
-        
-        else:
-            return None
-
     def check_session_finished(self, session) -> bool:
         #NOTE: sessionが終了しているかどうかを判定する。
         if session.finished_at and session.is_active is True:

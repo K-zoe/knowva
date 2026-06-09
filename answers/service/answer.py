@@ -79,13 +79,3 @@ class AnswerService:
         if answer_choice is None:
             raise ValueError()
         return answer_choice
-        
-    def calculate_score(self, session) -> dict:
-        #NOTE: 全問中何問正解したかを返す。
-        total = len(session.question_order)
-        correct = Answer.objects.filter(
-            session = session,
-            is_correct = True
-        ).count()
-
-        return {'total': total, 'correct': correct}

@@ -7,9 +7,6 @@ class ResultService:
     def calculate_score(self) -> dict:
         #NOTE: 全問中何問正解したかを返す。
         total = len(self.session.question_order)
-        correct = Answer.objects.filter(
-            session = self.session,
-            is_correct = True
-        ).count()
+        correct = Answer.objects.calculate_score(self.session)
 
         return {'total': total, 'correct': correct}
