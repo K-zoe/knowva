@@ -18,8 +18,7 @@ class ResultView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         session_service = SessionService(self.course_uuid, self.quiz_uuid, self.user)
-        quiz = session_service.get_quiz()
-        session = session_service.get_session(quiz)
+        session = session_service.get_session()
         if not session_service.check_session_finished(session):
             raise Http404()
         

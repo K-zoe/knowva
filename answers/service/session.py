@@ -15,13 +15,13 @@ class SessionService:
         except Quiz.DoesNotExist:
             return None
 
-    def get_session(self, quiz):
+    def get_session(self):
         quiz = self.get_quiz()
         return QuizSession.objects.get_session(self.user, quiz)
 
     def get_or_create_session(self) -> QuizSession:
         quiz = self.get_quiz()
-        session = self.get_session(quiz)
+        session = self.get_session()
         if session:
             if session.is_active is False or session.finished_at:
                 session.delete()

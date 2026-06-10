@@ -12,16 +12,15 @@ class FeedbackView(LoginRequiredMixin, View):
         self.course_uuid = kwargs.get('course_uuid')
         self.quiz_uuid = kwargs.get('quiz_uuid')
         self.user = request.user
-        return super().dispatch(request, *args, **kwargs)    
-
-    def get(self, request, *args, **kwargs):
-        session_service = SessionService(
+        self.session_service = SessionService(
             self.course_uuid,
             self.quiz_uuid,
             self.user
         )
-        quiz = session_service.get_quiz()
-        session = session_service.get_session(quiz)
+        return super().dispatch(request, *args, **kwargs)    
+
+    def get(self, request, *args, **kwargs):
+        session = self.session_service.get_session()
         
         #URLパラメーターのindexチェック
         current_index = session.current_index

@@ -12,33 +12,26 @@ class AttemptView(LoginRequiredMixin, View):
     def dispatch(self, request, *args, **kwargs):
         self.course_uuid = kwargs.get('course_uuid')
         self.quiz_uuid = kwargs.get('quiz_uuid')
-        #self.quiz = self.get_quiz(self.course_uuid, self.quiz_uuid)
         self.user = request.user
-        return super().dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        session_service = SessionService(
+        self.session_service = SessionService(
             self.course_uuid,
             self.quiz_uuid,
             self.user
         )
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
         #sessionの状態に合わせて、取得、作成、再作成。
-        session = session_service.get_or_create_session()
-        question = session_service.get_question(session)
+        session = self.session_service.get_or_create_session()
+        question = self.session_service.get_question(session)
         
         form = AnswerForm(question = question)
         context = {'question': question, 'form': form}
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        session_service = SessionService(
-            self.course_uuid,
-            self.quiz_uuid,
-            self.user
-        )
-        quiz = session_service.get_quiz()
-        session = session_service.get_session(quiz)
-        question = session_service.get_question(session)
+        session = self.session_service.get_session()
+        question = self.session_service.get_question(session)
 
         form = AnswerForm(request.POST, question = question)
         if not form.is_valid():
@@ -46,7 +39,7 @@ class AttemptView(LoginRequiredMixin, View):
         
         user_choice = form.cleaned_data['choices']
         answer_service = AnswerService(session)
-        answer = answer_service.check_answer(user_choice)
+        answer_service.check_answer(user_choice)
 
         url_index = session.current_index
         session.next_or_finish_question()
