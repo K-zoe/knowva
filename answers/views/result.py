@@ -4,6 +4,10 @@ from answers.service.session import SessionService
 from answers.service.result import ResultService
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from answers.exceptions import (
+    QuizNotFoundException,
+    InvalidSessionException
+)
 
 
 class ResultView(LoginRequiredMixin, View):
@@ -14,13 +18,21 @@ class ResultView(LoginRequiredMixin, View):
         self.course_uuid = kwargs.get('course_uuid')
         self.quiz_uuid = kwargs.get('quiz_uuid')
         self.user = request.user
+        self.session_service = SessionService(
+            self.course_uuid,
+            self.quiz_uuid,
+            self.user
+        )
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        session_service = SessionService(self.course_uuid, self.quiz_uuid, self.user)
-        session = session_service.get_session()
-        if not session_service.check_session_finished(session):
-            raise Http404()
+        try:
+            session = self.session_service.get_session()
+            self.session_service.check_session_finished(session)
+        except QuizNotFoundException:
+            raise Http404('問題が見つかりません。')
+        except InvalidSessionException:
+            raise Http404('有効なセッションが見つかりません。')
         
         result_serivice = ResultService(session)
         score = result_serivice.calculate_score()

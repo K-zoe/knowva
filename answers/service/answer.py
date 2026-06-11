@@ -1,6 +1,10 @@
 from quizzes.models import Question, Choice
 from answers.models import Answer
 from django.db import IntegrityError
+from answers.exceptions import (
+    QuestionNotFoundException,
+    ChoiceNotFoundException
+)
 
 class AnswerService:
     def __init__(self, session):
@@ -31,10 +35,15 @@ class AnswerService:
         #NOTE: 回答の正誤を判定して保存する。
         question_pk = self.session.question_order[self.session.current_index]
         question = Question.objects.filter(pk = question_pk).first()
+        if not question:
+            raise QuestionNotFoundException('問題が見つかりません。')
+        
         choices = Choice.objects.filter(
             question = question,
             is_correct = True
         ).values_list('pk', flat = True)
+        if not choices:
+            raise ChoiceNotFoundException('選択肢が見つかりません。')
 
         if set(map(int, user_choice)) == set(choices):
             is_correct = True
@@ -77,5 +86,5 @@ class AnswerService:
         )
         answer_choice = answers.choice.all()
         if answer_choice is None:
-            raise ValueError()
+            raise ChoiceNotFoundException('選択肢が見つかりません。')
         return answer_choice

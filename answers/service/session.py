@@ -1,5 +1,10 @@
 from quizzes.models import Quiz, Question
 from answers.models import QuizSession
+from answers.exceptions import (
+    QuizNotFoundException,
+    QuestionNotFoundException,
+    InvalidSessionException
+)
 
 class SessionService:
     #NOTE: Session情報の管理を行う。
@@ -8,14 +13,14 @@ class SessionService:
         self.quiz_uuid = quiz_uuid
         self.user = user
 
-    def get_quiz(self):
+    def get_quiz(self) -> Quiz:
         try:
             quiz = Quiz.objects.is_public().by_uuid(self.course_uuid, self.quiz_uuid).get()
             return quiz
         except Quiz.DoesNotExist:
-            return None
+            raise QuizNotFoundException('問題集が存在しません。')
 
-    def get_session(self):
+    def get_session(self) -> QuizSession:
         quiz = self.get_quiz()
         return QuizSession.objects.get_session(self.user, quiz)
 
@@ -43,6 +48,8 @@ class SessionService:
             quiz = session.quiz,
             pk__in = session.question_order
         )
+        if not questions:
+            raise QuestionNotFoundException('問題が見つかりません。')
         question_map = {
             question.pk : question for question in questions
         }
@@ -62,6 +69,6 @@ class SessionService:
     def check_session_finished(self, session) -> bool:
         #NOTE: sessionが終了しているかどうかを判定する。
         if session.finished_at and session.is_active is True:
-            return True
+            pass
         else:
-            return False
+            raise InvalidSessionException('有効なセッションが見つかりません。')

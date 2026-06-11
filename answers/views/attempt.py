@@ -5,6 +5,11 @@ from answers.service.session import SessionService
 from answers.service.answer import AnswerService
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from answers.exceptions import (
+    QuizNotFoundException,
+    QuestionNotFoundException,
+    ChoiceNotFoundException
+)
 
 class AttemptView(LoginRequiredMixin, View):
     template_name = 'answers/attempt.html'
@@ -22,24 +27,41 @@ class AttemptView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         #sessionの状態に合わせて、取得、作成、再作成。
-        session = self.session_service.get_or_create_session()
-        question = self.session_service.get_question(session)
+        try:
+            session = self.session_service.get_or_create_session()
+            question = self.session_service.get_question(session)
+        except QuizNotFoundException:
+            raise Http404('問題が見つかりません。')
+        except QuestionNotFoundException:
+            raise Http404('問題が見つかりません。')
+
         
         form = AnswerForm(question = question)
         context = {'question': question, 'form': form}
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        session = self.session_service.get_session()
-        question = self.session_service.get_question(session)
+        try:
+            session = self.session_service.get_session()
+            question = self.session_service.get_question(session)
+        except QuizNotFoundException:
+            raise Http404('問題が見つかりません。')
+        except QuestionNotFoundException:
+            raise Http404('問題が見つかりません。')
 
         form = AnswerForm(request.POST, question = question)
         if not form.is_valid():
             return render(request, self.template_name, {'question': question, 'form': form})
         
         user_choice = form.cleaned_data['choices']
-        answer_service = AnswerService(session)
-        answer_service.check_answer(user_choice)
+
+        try:
+            answer_service = AnswerService(session)
+            answer_service.check_answer(user_choice)
+        except QuestionNotFoundException:
+            raise Http404('問題が見つかりません。')
+        except ChoiceNotFoundException:
+            raise Http404('問題が見つかりません。')
 
         url_index = session.current_index
         session.next_or_finish_question()

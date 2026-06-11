@@ -26,9 +26,9 @@ class FeedbackView(LoginRequiredMixin, View):
         current_index = session.current_index
         url_index = kwargs.get('index')
         if url_index is None:
-            raise Http404()
+            raise Http404('問題が見つかりません。')
         if url_index < 0 or url_index > current_index:
-            raise Http404()
+            raise Http404('問題が見つかりません。')
         
         answer_service = AnswerService(session)
         prev_index = answer_service.get_prev_index(url_index)
