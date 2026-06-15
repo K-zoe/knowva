@@ -20,19 +20,21 @@ class BaseTest(TestCase):
             password = 'test12345'
         )
 
-    def course_create(self):
+    def course_create(self, is_public = True):
         course = Course.objects.create(
             title = 'テストコース',
             tag = 'テストタグ',
             user = self.user,
             description = 'テストコースの説明',
+            is_public = is_public
         )
         return course
     
-    def quiz_create(self, course):
+    def quiz_create(self, course, is_public = True):
         quiz = Quiz.objects.create(
             course = course,
             title = 'テストクイズ',
+            is_public = is_public
         )
         return quiz
     

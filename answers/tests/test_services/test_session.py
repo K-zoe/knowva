@@ -26,7 +26,6 @@ class SessionServiceTest(BaseTest):
             self.quiz.uuid,
             self.user
         )
-        print(f'a:{create_session}')
+        
         session = session_serivce.get_session()
-        print(f'b:{session}')
         self.assertEqual(session,create_session)
