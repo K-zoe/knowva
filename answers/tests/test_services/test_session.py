@@ -18,7 +18,7 @@ class SessionServiceTest(BaseTest):
 
         return session
 
-    def test__get_session_correct(self):
+    def test_get_session_success(self):
         self.create_course_quize_question()
         create_session = self.create_session(self.quiz)
         session_serivce = SessionService(
@@ -29,3 +29,14 @@ class SessionServiceTest(BaseTest):
         
         session = session_serivce.get_session()
         self.assertEqual(session,create_session)
+
+    def test_get_or_create_session_success(self):
+        self.create_course_quize_question()
+        session_serivce = SessionService(
+            self.course.uuid,
+            self.quiz.uuid,
+            self.user
+        )
+        session = session_serivce.get_or_create_session()
+        self.assertEqual(session.user, self.user)
+        self.assertEqual(session.quiz.uuid, self.quiz.uuid)
