@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import WeekLikeRanking
 
-# Register your models here.
+@admin.register(WeekLikeRanking)
+class RankingAdmin(admin.ModelAdmin):
+    pass

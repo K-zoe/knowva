@@ -40,6 +40,7 @@ class Choice(models.Model):
 class Like(models.Model):
     user = models.ForeignKey('accounts.User', on_delete = models.CASCADE, related_name = 'like')
     course = models.ForeignKey('Course', on_delete = models.CASCADE, related_name = 'like')
+    created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('user', 'course')
