@@ -24,6 +24,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Application definition
 
 INSTALLED_APPS = [
+    'debug_toolbar',
     'answers.apps.AnswersConfig',
     'accounts.apps.AccountsConfig',
     'quizzes.apps.QuizzesConfig',
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
