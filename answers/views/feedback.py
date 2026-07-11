@@ -4,6 +4,7 @@ from answers.service.session import SessionService
 from answers.service.answer import AnswerService
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from answers.exceptions import QuizNotFoundException
 
 class FeedbackView(LoginRequiredMixin, View):
     template_name = 'answers/feedback.html'
@@ -17,11 +18,17 @@ class FeedbackView(LoginRequiredMixin, View):
             self.quiz_uuid,
             self.user
         )
-        return super().dispatch(request, *args, **kwargs)    
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        session = self.session_service.get_session()
-        
+        try:
+            session = self.session_service.get_session()
+        except QuizNotFoundException:
+            raise Http404('問題が見つかりません。')
+
+        if session is None:
+            raise Http404('有効なセッションが見つかりません。')
+
         #URLパラメーターのindexチェック
         current_index = session.current_index
         url_index = kwargs.get('index')

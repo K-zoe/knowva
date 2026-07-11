@@ -80,11 +80,11 @@ class AnswerService:
         }
         
     def get_answer_choice(self,question_pk):
-        answers = Answer.objects.for_feedback(). by_session_and_question(
+        answers = Answer.objects.for_feedback().by_session_and_question(
             self.session,
             question_pk,
         )
-        answer_choice = answers.choice.all()
+        answer_choice = answers.choices.all()
         if answer_choice is None:
             raise ChoiceNotFoundException('選択肢が見つかりません。')
         return answer_choice

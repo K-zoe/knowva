@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path,include
 
@@ -6,5 +7,9 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('quizzes/', include('quizzes.urls')),
     path('answers/', include('answers.urls')),
-    path('__debug__/', include('debug_toolbar.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('__debug__/', include('debug_toolbar.urls')),
+    ]
